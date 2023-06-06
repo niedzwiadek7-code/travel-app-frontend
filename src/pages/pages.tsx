@@ -11,17 +11,15 @@ export const Pages: Record<string, PageInterface> = {
 }
 
 const App: React.FC = () => (
-  <div>
-    <Routes>
-      {Object.keys(Pages).map((key) => (
-        <Route
-          key={key}
-          path={Pages[key].link}
-          element={Pages[key].component}
-        />
-      ))}
-    </Routes>
-  </div>
+  <Routes>
+    {Object.keys(Pages).map((key) => (
+      <Route
+        key={key}
+        path={Pages[key].link}
+        element={Pages[key].component}
+      />
+    ))}
+  </Routes>
 )
 
 export default App
