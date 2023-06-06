@@ -1,13 +1,17 @@
 import React from 'react'
 import { Routes, Route } from 'react-router-dom'
-import PageInterface from './interfaces/PageInterface'
+import Page from './class/Page'
 import * as Public from './public'
 
-export const Pages: Record<string, PageInterface> = {
-  WELCOME: {
-    link: '/welcome',
-    component: <Public.Welcome.Component />,
-  },
+export const Pages: Record<string, Page> = {
+  WELCOME: new Page(
+    '/welcome',
+    <Public.Welcome.Component />,
+  ),
+  LOGIN: new Page(
+    '/login',
+    <Public.Login.Component />,
+  ),
 }
 
 const App: React.FC = () => (

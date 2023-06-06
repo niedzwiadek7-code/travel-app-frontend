@@ -1,9 +1,12 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 import { Button, Stack, useTheme } from '@mui/material'
 import Style from './Welcome.module.scss'
+import { Pages } from '../../pages'
 
 const Welcome: React.FC = () => {
   const theme = useTheme()
+  const navigate = useNavigate()
 
   return (
     <Stack
@@ -36,6 +39,7 @@ const Welcome: React.FC = () => {
 
       <Button
         variant="contained"
+        onClick={() => navigate(Pages.LOGIN.getRedirectLink())}
       >
         Zaloguj się do istniejącego konta
       </Button>
