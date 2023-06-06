@@ -3,12 +3,14 @@ import {
   Button,
   Stack, useTheme,
 } from '@mui/material'
+import { useNavigate } from 'react-router-dom'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { Email, Key } from '@mui/icons-material'
 import Styles from './Login.module.scss'
 import * as Input from '../../../components/UI/Input'
 import { useDependencies } from '../../../context/dependencies'
 import { useAuth } from '../../../context/auth'
+import { Pages } from '../../../pages/pages'
 
 type Inputs = {
   email: string,
@@ -17,21 +19,27 @@ type Inputs = {
 
 const Login: React.FC = () => {
   const theme = useTheme()
-  const { getApiService } = useDependencies()
+  const { getApiService, getToastUtils } = useDependencies()
   const apiService = getApiService()
   const { setToken } = useAuth()
+  const navigate = useNavigate()
 
   const {
     register, handleSubmit, formState: { errors },
   } = useForm<Inputs>()
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    const toastUtils = getToastUtils()
     try {
       const authService = apiService.getAuth()
       const token = await authService.login(data)
       setToken(token)
+      navigate(Pages.DASHBOARD.getRedirectLink())
     } catch (err) {
-      console.log(err)
+      toastUtils.Toast.showToast(
+        toastUtils.types.ERROR,
+        'Niepoprawne dane logowania',
+      )
     }
   }
 

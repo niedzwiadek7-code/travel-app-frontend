@@ -3,10 +3,19 @@ import React, {
 } from 'react'
 import Backend from '../../services/backend'
 import { DependencyInterface } from './DependencyInterface'
+import { Toast, Types } from '../../utils/Toast'
 
 export class Dependency {
   getApiService() {
     return new Backend()
+  }
+
+  getToastUtils() {
+    const toast = new Toast()
+    return {
+      Toast: toast,
+      types: Types.Type,
+    }
   }
 }
 
