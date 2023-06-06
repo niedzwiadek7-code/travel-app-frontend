@@ -7,6 +7,8 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { Email, Key } from '@mui/icons-material'
 import Styles from './Login.module.scss'
 import * as Input from '../../../components/UI/Input'
+import { useDependencies } from '../../../context/dependencies'
+import { useAuth } from '../../../context/auth'
 
 type Inputs = {
   email: string,
@@ -15,13 +17,22 @@ type Inputs = {
 
 const Login: React.FC = () => {
   const theme = useTheme()
+  const { getApiService } = useDependencies()
+  const apiService = getApiService()
+  const { setToken } = useAuth()
 
   const {
     register, handleSubmit, formState: { errors },
   } = useForm<Inputs>()
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
-    console.log(data)
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    try {
+      const authService = apiService.getAuth()
+      const token = await authService.login(data)
+      setToken(token)
+    } catch (err) {
+      console.log(err)
+    }
   }
 
   return (

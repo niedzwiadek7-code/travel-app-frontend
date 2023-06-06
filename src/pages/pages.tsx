@@ -2,6 +2,7 @@ import React from 'react'
 import { Routes, Route } from 'react-router-dom'
 import Page from './class/Page'
 import * as Public from './public'
+import * as Auth from './auth'
 
 export const Pages: Record<string, Page> = {
   WELCOME: new Page(
@@ -11,6 +12,11 @@ export const Pages: Record<string, Page> = {
   LOGIN: new Page(
     '/login',
     <Public.Login.Component />,
+  ),
+
+  DASHBOARD: new Page(
+    '/dashboard',
+    <Auth.Dashboard.Component />,
   ),
 }
 
