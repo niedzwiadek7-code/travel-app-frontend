@@ -3,12 +3,26 @@ import {
   Button,
   Stack, useTheme,
 } from '@mui/material'
+import { SubmitHandler, useForm } from 'react-hook-form'
 import { Email, Key } from '@mui/icons-material'
 import Styles from './Login.module.scss'
 import * as Input from '../../../components/UI/Input'
 
-const Welcome: React.FC = () => {
+type Inputs = {
+  email: string,
+  password: string,
+}
+
+const Login: React.FC = () => {
   const theme = useTheme()
+
+  const {
+    register, handleSubmit, formState: { errors },
+  } = useForm<Inputs>()
+
+  const onSubmit: SubmitHandler<Inputs> = (data) => {
+    console.log(data)
+  }
 
   return (
     <Stack
@@ -33,41 +47,49 @@ const Welcome: React.FC = () => {
         </div>
       </Stack>
 
-      <Stack
-        spacing={2}
-        direction="row"
-      >
-        <Input.Component
-          variant={Input.Variant.OUTLINED}
-          type={Input.Type.EMAIL}
-          label="Email"
-          icon={
-            <Email />
-          }
-        />
-
-        <Input.Component
-          variant={Input.Variant.OUTLINED}
-          type={Input.Type.PASSWORD}
-          label="Hasło"
-          icon={
-            <Key />
-          }
-        />
-      </Stack>
-
-      <Stack
-        alignItems="end"
-      >
-        <Button
-          variant="contained"
-          className={Styles.button}
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <Stack
+          spacing={2}
+          direction="row"
         >
-          Zaloguj się
-        </Button>
-      </Stack>
+          <Input.Component
+            variant={Input.Variant.OUTLINED}
+            type={Input.Type.EMAIL}
+            label="Email"
+            icon={
+              <Email />
+            }
+            data={register('email')}
+            error={errors?.email?.message || ''}
+          />
+
+          <Input.Component
+            variant={Input.Variant.OUTLINED}
+            type={Input.Type.PASSWORD}
+            label="Hasło"
+            icon={
+              <Key />
+            }
+            data={register('password', { required: { value: true, message: 'To pole jest wymagane' } })}
+            error={errors?.password?.message || ''}
+          />
+        </Stack>
+
+        <Stack
+          alignItems="end"
+        >
+          <Button
+            type="submit"
+            variant="contained"
+            className={Styles.button}
+          >
+            Zaloguj się
+          </Button>
+        </Stack>
+      </form>
+
     </Stack>
   )
 }
 
-export default Welcome
+export default Login
