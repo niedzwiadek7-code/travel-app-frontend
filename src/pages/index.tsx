@@ -1,13 +1,11 @@
 import React from 'react'
-import { Button } from '@mui/material'
 import * as Layout from '../components/Layout'
+import Content from './pages'
 
-const Content: React.FC = () => (
+const App: React.FC = () => (
   <Layout.PublicLayout>
-    <div>
-      <Button variant="contained" color="primary"> Hi hey hello </Button>
-    </div>
+    <Content />
   </Layout.PublicLayout>
 )
 
-export default Content
+export default App
