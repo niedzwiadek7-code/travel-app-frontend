@@ -1,0 +1,18 @@
+@import 'src/assets/scss/vars';
+
+.container {
+  margin: 30% $size-4 $size-4;
+  text-align: center;
+  height: 100%;
+  .header {
+    margin: $size-0;
+  }
+  .description {
+    max-width: 300px;
+    margin-bottom: $size-7;
+  }
+
+  .button {
+    width: 200px;
+  }
+}
