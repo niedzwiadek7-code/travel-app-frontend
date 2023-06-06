@@ -1,10 +1,10 @@
 import React from 'react'
-import { Button } from '@mui/material'
 import './App.scss'
+import Content from './pages'
 
 const App = () => (
   <div className="App">
-    <Button variant="contained" color="primary"> Hi hey hello </Button>
+    <Content />
   </div>
 )
 
