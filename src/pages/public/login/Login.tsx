@@ -95,8 +95,20 @@ const Login: React.FC = () => {
         </Stack>
 
         <Stack
-          alignItems="end"
+          marginTop={1}
+          direction="row"
+          gap={1}
+          justifyContent="end"
         >
+          <Button
+            type="submit"
+            variant="contained"
+            className={Styles.button}
+            onClick={() => navigate(Pages.WELCOME.getRedirectLink())}
+          >
+            Powrót
+          </Button>
+
           <Button
             type="submit"
             variant="contained"
