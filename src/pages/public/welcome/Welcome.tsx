@@ -33,6 +33,7 @@ const Welcome: React.FC = () => {
 
       <Button
         variant="contained"
+        onClick={() => navigate(Pages.REGISTER.getRedirectLink())}
       >
         Stwórz nowe konto
       </Button>

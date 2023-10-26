@@ -10,6 +10,11 @@ class Auth {
     return response.access_token
   }
 
+  public async register(data?: any): Promise<string> {
+    const response = await this.apiService.post<{access_token: string}>(`${this.authUrl}/signup`, data)
+    return response.access_token
+  }
+
   constructor() {
     this.apiService = new ApiService('')
   }

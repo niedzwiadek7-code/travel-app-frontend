@@ -13,6 +13,10 @@ export const Pages: Record<string, Page> = {
     '/login',
     <Public.Login.Component />,
   ),
+  REGISTER: new Page(
+    '/register',
+    <Public.Register.Component />,
+  ),
 
   DASHBOARD: new Page(
     '/dashboard',
