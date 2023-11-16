@@ -20,7 +20,7 @@ const PublicLayout: React.FC<Props> = (props) => (
         className={Styles.img}
       />
     </Grid>
-    <Grid item xs={6}>
+    <Grid item xs={6} sx={{ padding: '1rem' }}>
       {props.children}
     </Grid>
   </Grid>

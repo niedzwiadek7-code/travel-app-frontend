@@ -3,7 +3,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { TravelRecipe } from '../../model'
 
-const initialState: TravelRecipe = new TravelRecipe({})
+const initialState: TravelRecipe = new TravelRecipe({
+  name: 'Wycieczka',
+})
 
 export const travelRecipeSlice = createSlice({
   name: 'travelRecipe',

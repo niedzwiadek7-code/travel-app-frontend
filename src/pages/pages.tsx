@@ -22,6 +22,10 @@ export const Pages: Record<string, Page> = {
     '/dashboard',
     <Auth.Dashboard.Component />,
   ),
+  CREATE_TRAVEL: new Page(
+    '/create-travel',
+    <Auth.CreateTravel.Component />,
+  ),
 }
 
 const App: React.FC = () => (
