@@ -16,7 +16,8 @@ type Props = {
   type: Type,
   label: string,
   icon?: ReactNode,
-  data: any,
+  data?: any,
+  default?: (string | number),
   // eslint-disable-next-line no-unused-vars
   onChange?: (e: any) => void,
   error?: string,
@@ -49,6 +50,9 @@ const InputComponent: React.FC<Props> = (props) => {
       variant={props.variant}
       error={Boolean(props.error)}
       sx={{ width: '100%' }}
+      onChange={
+        (e: React.ChangeEvent<HTMLInputElement>) => props.onChange && props.onChange(e.target.value)
+      }
     >
       <InputLabel htmlFor={uuid}>
         { props.label }
@@ -61,8 +65,8 @@ const InputComponent: React.FC<Props> = (props) => {
             {props.icon}
           </InputAdornment>
         )}
+        defaultValue={props.default}
         label={props.label}
-        onChange={props.onChange}
         {...props.data}
       />
       {props.error && (
@@ -78,6 +82,8 @@ InputComponent.defaultProps = {
   icon: <> </>,
   onChange: () => {},
   error: '',
+  default: '',
+  data: {},
 }
 
 export default InputComponent
