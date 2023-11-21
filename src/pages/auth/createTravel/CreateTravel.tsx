@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import {
   Stack, TableContainer, Table, TableHead, TableRow, TableCell,
-  TableBody, TableFooter, Button,
+  TableBody, TableFooter,
 } from '@mui/material'
 import { useAppDispatch, useAppSelector } from '../../../app/hooks'
 import * as Input from '../../../components/UI/Input'
@@ -10,6 +10,7 @@ import { RootState } from '../../../app/store'
 import { useDependencies } from '../../../context/dependencies'
 import { useAuth } from '../../../context/auth'
 import { ActivityType } from '../../../model'
+import * as TravelDaysTable from './TravelDaysTable'
 
 const CreateTravel: React.FC = () => {
   const travelRecipe = useAppSelector((state: RootState) => state.travelRecipe)
@@ -102,51 +103,7 @@ const CreateTravel: React.FC = () => {
           Przeglądaj poszczególne dni swojej wycieczki
         </h2>
 
-        <TableContainer>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell> Dzień wyjazdu </TableCell>
-                <TableCell> Ilość aktywności </TableCell>
-                <TableCell> Czas do zaplanowania </TableCell>
-                <TableCell align="center"> Akcja </TableCell>
-              </TableRow>
-            </TableHead>
-
-            <TableBody>
-              <TableRow>
-                <TableCell> Dzień 1. </TableCell>
-                <TableCell> 4 </TableCell>
-                <TableCell> 8h 30 min </TableCell>
-                <TableCell align="center">
-                  <Button
-                    type="button"
-                    variant="contained"
-                  >
-                    Przeglądaj
-                  </Button>
-                </TableCell>
-              </TableRow>
-
-              <TableRow>
-                <TableCell />
-                <TableCell />
-                <TableCell />
-                <TableCell align="center">
-                  <Button
-                    type="button"
-                    variant="contained"
-                    color="success"
-                  >
-                    Zaplanuj
-                    <br />
-                    następny dzień
-                  </Button>
-                </TableCell>
-              </TableRow>
-            </TableBody>
-          </Table>
-        </TableContainer>
+        <TravelDaysTable.Component />
       </Stack>
     </Stack>
   )

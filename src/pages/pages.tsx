@@ -26,6 +26,14 @@ export const Pages: Record<string, Page> = {
     '/create-travel',
     <Auth.CreateTravel.Component />,
   ),
+  TRAVEL_DAY: new Page(
+    '/travel-day/:countDay',
+    <Auth.TravelDay.Component />,
+  ),
+  ADD_ACTIVITY: new Page(
+    '/add-activity/:countDay',
+    <Auth.AddActivity.Component />,
+  ),
 }
 
 const App: React.FC = () => (

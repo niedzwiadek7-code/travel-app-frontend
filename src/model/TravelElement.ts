@@ -1,10 +1,7 @@
-type Activity = {
-  id: number,
-  name: string
-}
+import Activity from './Activity'
 
 class TravelElement {
-  id: number
+  id: string
 
   dayCount: number
 

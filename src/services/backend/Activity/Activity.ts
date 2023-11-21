@@ -10,6 +10,10 @@ class Activity {
     return this.apiService.get<ActivityEntity>(`${this.activityUrl}/find/${id}`)
   }
 
+  public async getAll(): Promise<ActivityEntity[]> {
+    return this.apiService.get<ActivityEntity[]>(`${this.activityUrl}/all`)
+  }
+
   public async getTypes(): Promise<ActivityTypeEntity[]> {
     return this.apiService.get<ActivityTypeEntity[]>(`${this.activityUrl}/get-types`)
   }
