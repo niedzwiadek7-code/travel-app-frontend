@@ -11,6 +11,8 @@ class Activity {
 
   customParameters: Record<string, string>
 
+  price: number
+
   constructor(obj: any) {
     this.id = obj.id
     this.accepted = obj.accepted
@@ -18,6 +20,7 @@ class Activity {
     this.description = obj.description
     this.activityType = obj.activityType
     this.customParameters = obj.customParameters
+    this.price = obj.number
   }
 }
 

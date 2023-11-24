@@ -13,14 +13,14 @@ const PublicLayout: React.FC<Props> = (props) => (
     spacing={0}
     className={Styles.container}
   >
-    <Grid item xs={6}>
+    <Grid item xs={12} lg={6} className={Styles.content}>
       <img
         src={Theme}
         alt=""
         className={Styles.img}
       />
     </Grid>
-    <Grid item xs={6} sx={{ padding: '1rem' }}>
+    <Grid item xs={12} lg={6} sx={{ padding: '1rem' }}>
       {props.children}
     </Grid>
   </Grid>

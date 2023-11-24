@@ -11,21 +11,23 @@ class Date {
     this.minute = date.minute()
   }
 
-  compareDates(date1Str: string, date2Str: string) {
-    const date1 = dayjs(date1Str)
-    const date2 = dayjs(date2Str)
-
-    const diff = date1.diff(date2)
-
-    if (diff > 0) {
+  static compareDates(date1: Date, date2: Date) {
+    if (date1.hour > date2.hour) {
       return 1
     }
 
-    if (diff < 0) {
+    if (date1.hour < date2.hour) {
       return -1
     }
 
-    return 0
+    return date1.minute > date2.minute ? 1 : -1
+  }
+
+  static timeDiff(date1: Date, date2: Date) {
+    if (date1.minute >= date2.minute) {
+      return date2.hour - date1.hour
+    }
+    return date2.hour - date1.hour + 1
   }
 
   toString() {

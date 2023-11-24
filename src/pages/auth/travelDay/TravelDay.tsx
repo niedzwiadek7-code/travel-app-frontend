@@ -58,7 +58,7 @@ const TravelDay: React.FC = () => {
                     ? elem.activity.customParameters.place
                     : `${elem.activity.customParameters.from} - ${elem.activity.customParameters.to}`}
                 </TableCell>
-                <TableCell> Do zaimplementowania </TableCell>
+                <TableCell> { elem.price } </TableCell>
                 <TableCell>
                   <Stack>
                     <Button

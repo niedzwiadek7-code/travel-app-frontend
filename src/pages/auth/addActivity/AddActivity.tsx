@@ -1,17 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import {
-  Button,
-  Stack, useTheme,
+  Button, Stack,
 } from '@mui/material'
 import { useDependencies } from '../../../context/dependencies'
 import { useAuth } from '../../../context/auth'
 import { Activity } from '../../../model'
 import { Pages } from '../../../pages/pages'
-import * as SaveActivityModal from './SaveActivityModal'
+import * as ActivityCard from './ActivityCard'
 
 const AddActivity: React.FC = () => {
-  const theme = useTheme()
   const { countDay } = useParams()
   const { getApiService } = useDependencies()
   const { token } = useAuth()
@@ -60,42 +58,11 @@ const AddActivity: React.FC = () => {
         gap={2}
       >
         {activities.map((activity) => (
-          <Stack
+          <ActivityCard.Component
             key={activity.id}
-            gap={1}
-            style={{ padding: '.8em', backgroundColor: theme.palette.grey['200'], borderRadius: '.8em' }}
-          >
-            <Stack
-              direction="row"
-              alignItems="center"
-              justifyContent="space-between"
-            >
-              <div> {activity.name} </div>
-              <div>
-                {
-                  activity.customParameters.place
-                    ? activity.customParameters.place
-                    : `${activity.customParameters.from} - ${activity.customParameters.to}`
-                }
-              </div>
-              <div>
-                Cena w przyszłości
-              </div>
-            </Stack>
-            <hr
-              style={{ backgroundColor: theme.palette.grey['900'], height: '1px', width: '100%' }}
-            />
-            <Stack>
-              <Stack
-                justifyContent="flex-end"
-              >
-                <SaveActivityModal.Component
-                  activity={activity}
-                  countDay={countDay}
-                />
-              </Stack>
-            </Stack>
-          </Stack>
+            activity={activity}
+            countDay={countDay}
+          />
         ))}
       </Stack>
 
