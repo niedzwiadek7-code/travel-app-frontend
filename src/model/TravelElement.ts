@@ -1,4 +1,5 @@
 import Activity from './Activity'
+import Date from './Date'
 
 class TravelElement {
   id: string

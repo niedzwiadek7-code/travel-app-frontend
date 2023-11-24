@@ -1,6 +1,6 @@
 import dayjs from 'dayjs'
 
-class Date {
+class DateModel {
   hour: number
 
   minute: number
@@ -11,7 +11,7 @@ class Date {
     this.minute = date.minute()
   }
 
-  static compareDates(date1: Date, date2: Date) {
+  static compareDates(date1: DateModel, date2: DateModel) {
     if (date1.hour > date2.hour) {
       return 1
     }
@@ -23,7 +23,7 @@ class Date {
     return date1.minute > date2.minute ? 1 : -1
   }
 
-  static timeDiff(date1: Date, date2: Date) {
+  static timeDiff(date1: DateModel, date2: DateModel) {
     if (date1.minute >= date2.minute) {
       return date2.hour - date1.hour
     }
@@ -37,4 +37,4 @@ class Date {
   }
 }
 
-export default Date
+export default DateModel

@@ -1,24 +1,14 @@
 import React from 'react'
 import {
-  Stack, Table, TableCell, TableContainer, TableHead, TableRow, TableBody, Button,
+  Stack, Button,
 } from '@mui/material'
 import { useNavigate, useParams } from 'react-router-dom'
-import { useAppSelector, useAppDispatch } from '../../../app/hooks'
-import { RootState } from '../../../app/store'
 import { Pages } from '../../../pages/pages'
-import { deleteActivityFromTravel } from '../../../features/travelRecipe/travelRecipeSlice'
+import * as TravelDayTable from './TravelDayTable'
 
 const TravelDay: React.FC = () => {
   const { countDay } = useParams()
   const navigate = useNavigate()
-  const travelElements = useAppSelector((state: RootState) => state.travelRecipe.travelElements)
-  const dispatch = useAppDispatch()
-
-  const travelElementsThisDay = travelElements.filter((e) => e.dayCount === parseInt(countDay || '', 10))
-
-  const deleteActivity = (id: string) => {
-    dispatch(deleteActivityFromTravel(id))
-  }
 
   if (!countDay) {
     return (
@@ -34,48 +24,9 @@ const TravelDay: React.FC = () => {
         Dzień {countDay}
       </h2>
 
-      <TableContainer>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell />
-              <TableCell> Ramy czasowe </TableCell>
-              <TableCell> Aktywność </TableCell>
-              <TableCell> Miejsce </TableCell>
-              <TableCell> Cena </TableCell>
-              <TableCell> Akcja </TableCell>
-            </TableRow>
-          </TableHead>
-
-          <TableBody>
-            {travelElementsThisDay.map((elem) => (
-              <TableRow key={`${elem.from}-${elem.to}`}>
-                <TableCell />
-                <TableCell> {elem.from.toString()} - {elem.to.toString()} </TableCell>
-                <TableCell> {elem.activity.name} </TableCell>
-                <TableCell>
-                  { elem.activity.customParameters.place
-                    ? elem.activity.customParameters.place
-                    : `${elem.activity.customParameters.from} - ${elem.activity.customParameters.to}`}
-                </TableCell>
-                <TableCell> { elem.price } </TableCell>
-                <TableCell>
-                  <Stack>
-                    <Button
-                      type="button"
-                      variant="contained"
-                      color="error"
-                      onClick={() => deleteActivity(elem.id)}
-                    >
-                      Odwołaj
-                    </Button>
-                  </Stack>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+      <TravelDayTable.Component
+        countDay={parseInt(countDay, 10)}
+      />
 
       <Stack
         direction="row"
