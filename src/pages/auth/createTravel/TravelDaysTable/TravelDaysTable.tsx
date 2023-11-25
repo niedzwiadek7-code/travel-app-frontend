@@ -43,7 +43,7 @@ const TravelDaysTable: React.FC = () => {
       for (let i = 1; i <= travelRecipe.countDays; i += 1) {
         const travelElementsOnThisDay = travelElements.filter((elem) => elem.dayCount === i)
         const countOfActivities = travelElementsOnThisDay.length
-        const timeToManage = '8h 30min'
+        const timeToManage = ''
 
         sorted.push({
           countDay: i,

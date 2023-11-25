@@ -58,7 +58,7 @@ const SaveActivityModal: React.FC<Props> = (props) => {
       if (props.activity.customParameters.price_type === 'per_entry') {
         return props.activity.price
       }
-      return Date.timeDiff(range[0], range[1]) * props.activity.price
+      return Math.ceil(Date.timeDiff(range[0], range[1]) / 60) * props.activity.price
     }
 
     const travelElement = new TravelElement({

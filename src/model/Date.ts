@@ -24,10 +24,7 @@ class DateModel {
   }
 
   static timeDiff(date1: DateModel, date2: DateModel) {
-    if (date1.minute >= date2.minute) {
-      return date2.hour - date1.hour
-    }
-    return date2.hour - date1.hour + 1
+    return (date2.hour - date1.hour) * 60 + (date2.minute - date1.minute)
   }
 
   toString() {
