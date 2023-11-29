@@ -51,8 +51,19 @@ const AddActivity: React.FC = () => {
       <h2
         style={{ marginTop: 0 }}
       >
-        Dodawanie aktywności (Dzień {countDay}.)
+        List dostępnych aktywności
       </h2>
+
+      <Stack>
+        <Button
+          variant="outlined"
+          onClick={() => navigate(Pages.ACTIVITY_CREATE.getRedirectLink({
+            countDay,
+          }))}
+        >
+          Dodaj nową aktywność
+        </Button>
+      </Stack>
 
       <Stack
         gap={2}

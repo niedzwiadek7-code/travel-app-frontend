@@ -34,6 +34,11 @@ export const Pages: Record<string, Page> = {
     '/add-activity/:countDay',
     <Auth.AddActivity.Component />,
   ),
+
+  ACTIVITY_CREATE: new Page(
+    '/activity/add/:countDay',
+    <Auth.ActivityForm.Component />,
+  ),
 }
 
 const App: React.FC = () => (

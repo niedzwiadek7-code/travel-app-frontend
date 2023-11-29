@@ -1,5 +1,6 @@
 import ApiService from '../ApiService'
 import { Activity as ActivityEntity, ActivityType as ActivityTypeEntity } from '../../../model'
+import { ActivityDto } from './dto'
 
 class Activity {
   private activityUrl = '/activity'
@@ -16,6 +17,10 @@ class Activity {
 
   public async getTypes(): Promise<ActivityTypeEntity[]> {
     return this.apiService.get<ActivityTypeEntity[]>(`${this.activityUrl}/get-types`)
+  }
+
+  public async putActivity(data: ActivityDto): Promise<Activity> {
+    return this.apiService.post<Activity>(`${this.activityUrl}`, data)
   }
 
   constructor(token: string) {
