@@ -10,6 +10,17 @@ class Travel {
     return this.apiService.get<TravelRecipe>(`${this.travelUrl}/${id}`)
   }
 
+  public async createTravelRecipe(data: TravelRecipe) {
+    const transformedData = {
+      ...data,
+      travelElements: data.travelElements.map((travelElement) => ({
+        ...travelElement,
+        activityId: travelElement.activity.id,
+      })),
+    }
+    return this.apiService.post<TravelRecipe>(this.travelUrl, transformedData)
+  }
+
   constructor(token: string) {
     this.apiService = new ApiService(token)
   }
