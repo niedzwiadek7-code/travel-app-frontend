@@ -40,6 +40,7 @@ const Attraction: React.FC<Props> = (props) => {
           ? props.travelElement.activity.place
           : `${props.travelElement.activity.from} - ${props.travelElement.activity.to}`}
       </TableCell>
+      <TableCell> {props.travelElement.numberOfPeople} </TableCell>
       <TableCell> { formatter.format(props.travelElement.price) } </TableCell>
       <TableCell>
         <Stack>

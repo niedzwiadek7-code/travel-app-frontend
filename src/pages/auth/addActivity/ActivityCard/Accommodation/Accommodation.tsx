@@ -1,7 +1,7 @@
 import React from 'react'
 import { Stack, useTheme } from '@mui/material'
 import { Activity as ActivityEntity } from '../../../../../model'
-import * as SaveActivityModal from '../../../../../components/SaveActivityModal/Accommodation'
+import * as SaveActivityModal from '../../../../../components/SaveActivityModal'
 
 type Props = {
   activity: ActivityEntity

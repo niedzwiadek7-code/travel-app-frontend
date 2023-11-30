@@ -31,6 +31,7 @@ const TravelDayTable: React.FC<Props> = (props) => {
             <TableCell> Ramy czasowe </TableCell>
             <TableCell> Aktywność </TableCell>
             <TableCell> Miejsce </TableCell>
+            <TableCell> Ilość osób </TableCell>
             <TableCell> Cena </TableCell>
             <TableCell> Akcja </TableCell>
           </TableRow>

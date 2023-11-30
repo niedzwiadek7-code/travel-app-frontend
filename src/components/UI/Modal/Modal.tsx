@@ -2,15 +2,15 @@ import React, {
   cloneElement, ReactElement, ReactNode, useState,
 } from 'react'
 import {
-  Modal, Box, Typography, Stack, Button,
+  Box, Button, Modal, Stack, Typography,
 } from '@mui/material'
-import type { Action } from './Action'
+import * as Action from './Action'
 
 type Props = {
   buttonComponent: ReactNode,
   title: string,
   content: ReactNode,
-  actions?: Action[]
+  actions?: Action.Action[]
 }
 
 const ModalComponent: React.FC<Props> = (props) => {
@@ -58,6 +58,7 @@ const ModalComponent: React.FC<Props> = (props) => {
               <Button
                 key={action.name}
                 variant="contained"
+                type={action?.type || 'button'}
                 onClick={action.onClick}
               >
                 {action.name}

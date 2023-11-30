@@ -40,6 +40,7 @@ const Restaurant: React.FC<Props> = (props) => {
           ? props.travelElement.activity.place
           : `${props.travelElement.activity.from} - ${props.travelElement.activity.to}`}
       </TableCell>
+      <TableCell />
       <TableCell> { formatter.format(props.travelElement.price) } </TableCell>
       <TableCell>
         <Stack>
