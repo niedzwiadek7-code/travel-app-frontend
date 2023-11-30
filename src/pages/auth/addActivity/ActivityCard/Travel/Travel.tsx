@@ -1,6 +1,6 @@
 import React from 'react'
 import { Stack, useTheme } from '@mui/material'
-import * as SaveActivityModal from './SaveActivityModal'
+import * as SaveActivityModal from '../../../../../components/SaveActivityModal/Travel'
 import { Activity as ActivityEntity } from '../../../../../model'
 
 type Props = {
@@ -29,7 +29,7 @@ const Travel: React.FC<Props> = (props) => {
       >
         <div> {props.activity.name} </div>
         <div>
-          { `${props.activity.customParameters.from} - ${props.activity.customParameters.to}` }
+          { `${props.activity.from} - ${props.activity.to}` }
         </div>
         <div>
           {formatter.format(props.activity.price)}

@@ -9,9 +9,15 @@ class Activity {
 
   activityType: string
 
-  customParameters: Record<string, string>
-
   price: number
+
+  from: string
+
+  to: string
+
+  place: string
+
+  priceType: string
 
   constructor(obj: any) {
     this.id = obj.id
@@ -19,8 +25,12 @@ class Activity {
     this.name = obj.name
     this.description = obj.description
     this.activityType = obj.activityType
-    this.customParameters = obj.customParameters
     this.price = obj.number
+
+    this.from = obj.from
+    this.to = obj.to
+    this.place = obj.place
+    this.priceType = obj.priceType
   }
 }
 

@@ -15,7 +15,8 @@ type Props = {
   name: string
   register: any
   // eslint-disable-next-line no-unused-vars
-  onChange?: (e: any) => void
+  onChange?: (e: any) => void,
+  disabled?: boolean,
 }
 
 const SelectComponent: React.FC<Props> = (props) => {
@@ -34,6 +35,7 @@ const SelectComponent: React.FC<Props> = (props) => {
       variant={props.variant}
       fullWidth
       error={Boolean(props.errorMessage)}
+      disabled={props.disabled}
     >
       <InputLabel id={id}> {props.label} </InputLabel>
       <Select
@@ -65,6 +67,7 @@ const SelectComponent: React.FC<Props> = (props) => {
 }
 
 SelectComponent.defaultProps = {
+  disabled: false,
   errorMessage: undefined,
   default: '',
   onChange: () => {},

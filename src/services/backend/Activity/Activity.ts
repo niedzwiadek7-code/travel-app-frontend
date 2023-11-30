@@ -19,8 +19,8 @@ class Activity {
     return this.apiService.get<ActivityTypeEntity[]>(`${this.activityUrl}/get-types`)
   }
 
-  public async putActivity(data: ActivityDto): Promise<Activity> {
-    return this.apiService.post<Activity>(`${this.activityUrl}`, data)
+  public async putActivity(data: ActivityDto): Promise<ActivityEntity> {
+    return this.apiService.post<ActivityEntity>(`${this.activityUrl}`, data)
   }
 
   constructor(token: string) {

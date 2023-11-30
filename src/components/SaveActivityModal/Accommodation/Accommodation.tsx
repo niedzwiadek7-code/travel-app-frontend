@@ -7,12 +7,12 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo'
 import { useNavigate } from 'react-router-dom'
 import { v4 as uuid4v } from 'uuid'
-import { useAppDispatch } from '../../../../../../app/hooks'
-import * as Modal from '../../../../../../components/UI/Modal'
-import { Activity as ActivityEntity, Date, TravelElement } from '../../../../../../model'
-import { Pages } from '../../../../../pages'
-import { putActivity } from '../../../../../../features/travelRecipe/travelRecipeSlice'
-import { useDependencies } from '../../../../../../context/dependencies'
+import { useAppDispatch } from '../../../app/hooks'
+import * as Modal from '../../UI/Modal'
+import { Activity as ActivityEntity, Date, TravelElement } from '../../../model'
+import { Pages } from '../../../pages/pages'
+import { putActivity } from '../../../features/travelRecipe/travelRecipeSlice'
+import { useDependencies } from '../../../context/dependencies'
 
 type Props = {
   activity: ActivityEntity,

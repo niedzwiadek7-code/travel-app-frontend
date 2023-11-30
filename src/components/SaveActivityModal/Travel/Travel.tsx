@@ -1,26 +1,26 @@
 import React, { useState } from 'react'
-import { Button, Stack } from '@mui/material'
+import {
+  Button, Stack,
+} from '@mui/material'
 import { LocalizationProvider, SingleInputTimeRangeField } from '@mui/x-date-pickers-pro'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo'
 import { useNavigate } from 'react-router-dom'
 import { v4 as uuid4v } from 'uuid'
-import { useAppDispatch } from '../../../../../../app/hooks'
-import * as Modal from '../../../../../../components/UI/Modal'
-import { ActivityType, Date, TravelElement } from '../../../../../../model'
-import { Pages } from '../../../../../pages'
-import { putActivity } from '../../../../../../features/travelRecipe/travelRecipeSlice'
-import * as Input from '../../../../../../components/UI/Input'
-import { useDependencies } from '../../../../../../context/dependencies'
+import { useAppDispatch } from '../../../app/hooks'
+import * as Modal from '../../UI/Modal'
+import { Activity as ActivityEntity, Date, TravelElement } from '../../../model'
+import { Pages } from '../../../pages/pages'
+import { putActivity } from '../../../features/travelRecipe/travelRecipeSlice'
+import { useDependencies } from '../../../context/dependencies'
 
 type Props = {
-  activity: ActivityType,
+  activity: ActivityEntity,
   countDay: string,
 }
 
-const SaveActivityModal: React.FC<Props> = (props) => {
+const Travel: React.FC<Props> = (props) => {
   const { getToastUtils } = useDependencies()
-  const [price, setPrice] = useState(0)
   const [range, setRange] = useState<Date[]>([])
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
@@ -36,15 +36,6 @@ const SaveActivityModal: React.FC<Props> = (props) => {
   }
 
   const putTravelElement = () => {
-    if (price <= 0) {
-      const toastUtils = getToastUtils()
-      toastUtils.Toast.showToast(
-        toastUtils.types.ERROR,
-        'Cena musi być większa od 0',
-      )
-      return
-    }
-
     if (!range[0] || !range[1]) {
       const toastUtils = getToastUtils()
       toastUtils.Toast.showToast(
@@ -69,7 +60,7 @@ const SaveActivityModal: React.FC<Props> = (props) => {
       from: range[0],
       to: range[1],
       activity: props.activity,
-      price,
+      price: props.activity.price,
     })
     dispatch(putActivity(travelElement))
     navigate(Pages.TRAVEL_DAY.getRedirectLink({
@@ -90,9 +81,7 @@ const SaveActivityModal: React.FC<Props> = (props) => {
       )}
       title={props.activity.name}
       content={(
-        <Stack
-          gap={2}
-        >
+        <Stack>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DemoContainer components={['SingleInputTimeRangeField']}>
               <SingleInputTimeRangeField
@@ -102,16 +91,6 @@ const SaveActivityModal: React.FC<Props> = (props) => {
               />
             </DemoContainer>
           </LocalizationProvider>
-
-          <Input.Component
-            variant={Input.Variant.OUTLINED}
-            type={Input.Type.NUMBER}
-            label="Przewidywana wydana kwota"
-            default={price}
-            onChange={(value: number) => {
-              setPrice(value)
-            }}
-          />
         </Stack>
       )}
       actions={[
@@ -124,4 +103,4 @@ const SaveActivityModal: React.FC<Props> = (props) => {
   )
 }
 
-export default SaveActivityModal
+export default Travel

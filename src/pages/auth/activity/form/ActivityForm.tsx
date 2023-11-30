@@ -1,12 +1,16 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button, Stack } from '@mui/material'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import * as Select from '../../../../components/UI/Select'
 import InputsMap from './InputsMap'
 import * as Input from '../../../../components/UI/Input'
 import { useDependencies } from '../../../../context/dependencies'
 import { useAuth } from '../../../../context/auth'
+import { Activity } from '../../../../model'
+import { Pages } from '../../../../pages/pages'
+import * as Loading from '../../../../components/UI/Loading'
+import SaveActivityModal from './SaveActivityModal'
 
 type Inputs = {
   activityType: string
@@ -21,30 +25,39 @@ type Inputs = {
 
 const ActivityForm: React.FC = () => {
   // eslint-disable-next-line no-unused-vars
-  const { countDay } = useParams()
+  const { countDay, id } = useParams()
   const {
-    register, handleSubmit, watch,
+    register,
+    handleSubmit,
+    watch,
+    setValue,
   } = useForm<Inputs>()
+  const [activity, setActivity] = useState<undefined | Activity>(undefined)
+  const [loading, setLoading] = useState<boolean>(true)
   const activityType = watch('activityType')
+  const navigate = useNavigate()
 
   const { getApiService, getToastUtils } = useDependencies()
   const apiService = getApiService()
   const { token } = useAuth()
+  const activityService = apiService.getActivity(token)
   const toastUtils = getToastUtils()
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     try {
-      const activityService = apiService.getActivity(token)
       const transformedData = {
         ...data,
         price: parseInt(data.price, 10),
       }
-      const activityResult = await activityService.putActivity(transformedData)
-      console.log(activityResult)
+      const result = await activityService.putActivity(transformedData)
       toastUtils.Toast.showToast(
         toastUtils.types.SUCCESS,
         'Udało się stworzyć nową aktywność',
       )
+      navigate(Pages.ACTIVITY_EDIT.getRedirectLink({
+        countDay: countDay || '',
+        id: result.id.toString(),
+      }))
     } catch (err) {
       toastUtils.Toast.showToast(
         toastUtils.types.ERROR,
@@ -53,12 +66,36 @@ const ActivityForm: React.FC = () => {
     }
   }
 
+  useEffect(() => {
+    if (id) {
+      const fetchData = async () => {
+        setLoading(true)
+        const activityTemp = await activityService.get(id)
+        setActivity(activityTemp)
+        setValue('activityType', activityTemp.activityType)
+        setLoading(false)
+      }
+      fetchData()
+    } else {
+      setActivity(undefined)
+      setLoading(false)
+    }
+  }, [id])
+
+  if (loading) {
+    return (
+      <Loading.Component />
+    )
+  }
+
   return (
-    <Stack>
+    <Stack
+      gap={2}
+    >
       <h2
         style={{ marginTop: 0 }}
       >
-        Dodaj aktywność
+        { activity ? 'Edytuj aktywność' : 'Dodaj aktywność' }
       </h2>
 
       <form
@@ -78,6 +115,8 @@ const ActivityForm: React.FC = () => {
             }}
             name="activityType"
             register={register}
+            default={activity && activity.activityType}
+            disabled={Boolean(activity)}
           />
 
           {(InputsMap[activityType] || []).map((input) => {
@@ -90,6 +129,7 @@ const ActivityForm: React.FC = () => {
                     type={Input.Type.TEXT}
                     label={input.label}
                     data={register(input.name)}
+                    default={(activity && activity[input.name]) || ''}
                   />
                 )
               case 'price':
@@ -100,6 +140,7 @@ const ActivityForm: React.FC = () => {
                     type={Input.Type.NUMBER}
                     label={input.label}
                     data={register(input.name)}
+                    default={(activity && activity[input.name]) || ''}
                   />
                 )
               case 'select':
@@ -108,9 +149,10 @@ const ActivityForm: React.FC = () => {
                     key={input.name}
                     variant={Select.Variant.OUTLINED}
                     label={input.label}
-                    options={input.options}
+                    options={input.options || {}}
                     name={input.name}
                     register={register}
+                    default={(activity && activity[input.name]) || ''}
                   />
                 )
               default:
@@ -122,10 +164,33 @@ const ActivityForm: React.FC = () => {
             type="submit"
             variant="contained"
           >
-            Dodaj aktywność
+            { activity ? 'Edytuj aktywność' : 'Dodaj aktywność' }
           </Button>
         </Stack>
       </form>
+
+      {
+        countDay && activity && (
+          <SaveActivityModal
+            activity={activity}
+            countDay={countDay}
+          />
+        )
+      }
+
+      {
+        countDay && (
+          <Button
+            type="button"
+            variant="contained"
+            onClick={() => navigate(Pages.ADD_ACTIVITY.getRedirectLink({
+              countDay,
+            }))}
+          >
+            Powrót
+          </Button>
+        )
+      }
     </Stack>
   )
 }

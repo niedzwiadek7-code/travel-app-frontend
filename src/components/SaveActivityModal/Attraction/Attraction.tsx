@@ -7,19 +7,19 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo'
 import { useNavigate } from 'react-router-dom'
 import { v4 as uuid4v } from 'uuid'
-import { useAppDispatch } from '../../../../../../app/hooks'
-import * as Modal from '../../../../../../components/UI/Modal'
-import { Activity as ActivityEntity, Date, TravelElement } from '../../../../../../model'
-import { Pages } from '../../../../../pages'
-import { putActivity } from '../../../../../../features/travelRecipe/travelRecipeSlice'
-import { useDependencies } from '../../../../../../context/dependencies'
+import { useAppDispatch } from '../../../app/hooks'
+import * as Modal from '../../UI/Modal'
+import { Activity as ActivityEntity, Date, TravelElement } from '../../../model'
+import { Pages } from '../../../pages/pages'
+import { putActivity } from '../../../features/travelRecipe/travelRecipeSlice'
+import { useDependencies } from '../../../context/dependencies'
 
 type Props = {
   activity: ActivityEntity,
   countDay: string,
 }
 
-const SaveActivityModal: React.FC<Props> = (props) => {
+const Attraction: React.FC<Props> = (props) => {
   const { getToastUtils } = useDependencies()
   const [range, setRange] = useState<Date[]>([])
   const dispatch = useAppDispatch()
@@ -54,13 +54,20 @@ const SaveActivityModal: React.FC<Props> = (props) => {
       return
     }
 
+    const getTotalPrice = () => {
+      if (props.activity.priceType === 'per_entry') {
+        return props.activity.price
+      }
+      return Math.ceil(Date.timeDiff(range[0], range[1]) / 60) * props.activity.price
+    }
+
     const travelElement = new TravelElement({
       id: uuid4v(),
       dayCount: parseInt(props.countDay, 10),
       from: range[0],
       to: range[1],
       activity: props.activity,
-      price: props.activity.price,
+      price: getTotalPrice(),
     })
     dispatch(putActivity(travelElement))
     navigate(Pages.TRAVEL_DAY.getRedirectLink({
@@ -103,4 +110,4 @@ const SaveActivityModal: React.FC<Props> = (props) => {
   )
 }
 
-export default SaveActivityModal
+export default Attraction

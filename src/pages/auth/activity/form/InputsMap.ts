@@ -1,3 +1,30 @@
+/* eslint-disable no-shadow */
+/* eslint-disable no-unused-vars */
+
+enum InputName {
+  name = 'name',
+  description = 'description',
+  place = 'place',
+  price = 'price',
+  priceType = 'priceType',
+  from = 'from',
+  to = 'to',
+  activityType = 'activityType'
+}
+
+enum InputType {
+  text = 'text',
+  price = 'price',
+  select = 'select'
+}
+
+type InputDefinition = {
+  name: InputName,
+  label: string
+  type: InputType
+  options?: Record<string, string>
+}
+
 export default {
   Restauracja: [
     {
@@ -96,4 +123,4 @@ export default {
       type: 'price',
     },
   ],
-} as Record<string, Array<Record<string, any>>>
+} as Record<string, Array<InputDefinition>>

@@ -1,7 +1,7 @@
 import React from 'react'
 import { Stack, useTheme } from '@mui/material'
 import { Activity as ActivityEntity } from '../../../../../model'
-import * as SaveActivityModal from './SaveActivityModal'
+import * as SaveActivityModal from '../../../../../components/SaveActivityModal/Attraction'
 
 type Props = {
   activity: ActivityEntity
@@ -40,11 +40,11 @@ const Attraction: React.FC<Props> = (props) => {
       >
         <div> {props.activity.name} </div>
         <div>
-          { props.activity.customParameters.place }
+          { props.activity.place }
         </div>
         <div>
           { formatter.format(props.activity.price) } /
-          {getPriceTypeWord(props.activity.customParameters.price_type)}
+          {getPriceTypeWord(props.activity.priceType)}
         </div>
       </Stack>
       <hr
