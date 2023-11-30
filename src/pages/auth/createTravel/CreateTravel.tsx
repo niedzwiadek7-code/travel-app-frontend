@@ -1,20 +1,24 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   Button,
   Stack,
 } from '@mui/material'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../../app/hooks'
 import * as Input from '../../../components/UI/Input'
-import { setName } from '../../../features/travelRecipe/travelRecipeSlice'
+import { setName, setNewTravelRecipe } from '../../../features/travelRecipe/travelRecipeSlice'
 import { RootState } from '../../../app/store'
 import * as TravelDaysTable from './TravelDaysTable'
 import * as TravelSummaryTable from './TravelSummaryTable'
 import { useDependencies } from '../../../context/dependencies'
 import { useAuth } from '../../../context/auth'
 import { Pages } from '../../../pages/pages'
+import * as Loading from '../../../components/UI/Loading'
 
 const CreateTravel: React.FC = () => {
+  const { id } = useParams()
+  const [loading, setLoading] = useState<boolean>(false)
+
   const travelRecipe = useAppSelector((state: RootState) => state.travelRecipe)
   const dispatch = useAppDispatch()
   const { getApiService, getToastUtils } = useDependencies()
@@ -24,20 +28,49 @@ const CreateTravel: React.FC = () => {
   const toastUtils = getToastUtils()
   const navigate = useNavigate()
 
+  useEffect(() => {
+    const fetchData = async () => {
+      if (id) {
+        if (!travelRecipe.id) {
+          setLoading(true)
+          const travelRecipeTemp = await travelService.get(id)
+          dispatch(setNewTravelRecipe(travelRecipeTemp))
+          setLoading(false)
+        }
+      }
+    }
+    fetchData()
+  }, [id])
+
   const putTravel = async () => {
     try {
-      await travelService.createTravelRecipe(travelRecipe)
-      toastUtils.Toast.showToast(
-        toastUtils.types.SUCCESS,
-        'Udało ci się poprawnie stworzyć plan wycieczki',
-      )
-      navigate(Pages.DASHBOARD.getRedirectLink())
+      if (travelRecipe.id) {
+        await travelService.putTravelRecipe(travelRecipe)
+        toastUtils.Toast.showToast(
+          toastUtils.types.INFO,
+          'Udało ci się poprawić plan wycieczki',
+        )
+        navigate(Pages.DASHBOARD.getRedirectLink())
+      } else {
+        await travelService.createTravelRecipe(travelRecipe)
+        toastUtils.Toast.showToast(
+          toastUtils.types.SUCCESS,
+          'Udało ci się poprawnie stworzyć plan wycieczki',
+        )
+        navigate(Pages.DASHBOARD.getRedirectLink())
+      }
     } catch (err) {
       toastUtils.Toast.showToast(
         toastUtils.types.ERROR,
         'Podczas tworzenia wycieczki wystąpił nieoczekiwany błąd',
       )
     }
+  }
+
+  if (loading) {
+    return (
+      <Loading.Component />
+    )
   }
 
   return (

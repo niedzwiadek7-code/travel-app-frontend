@@ -5,8 +5,11 @@ import {
 import { useNavigate, useParams } from 'react-router-dom'
 import { Pages } from '../../../pages/pages'
 import * as TravelDayTable from './TravelDayTable'
+import { useAppSelector } from '../../../app/hooks'
+import { RootState } from '../../../app/store'
 
 const TravelDay: React.FC = () => {
+  const travelRecipe = useAppSelector((state: RootState) => state.travelRecipe)
   const { countDay } = useParams()
   const navigate = useNavigate()
 
@@ -37,7 +40,15 @@ const TravelDay: React.FC = () => {
         <Button
           type="button"
           variant="outlined"
-          onClick={() => navigate(Pages.CREATE_TRAVEL.getRedirectLink())}
+          onClick={() => {
+            if (travelRecipe.id) {
+              navigate(Pages.EDIT_TRAVEL.getRedirectLink({
+                id: travelRecipe.id.toString(),
+              }))
+            } else {
+              navigate(Pages.CREATE_TRAVEL.getRedirectLink())
+            }
+          }}
         >
           Powrót
         </Button>

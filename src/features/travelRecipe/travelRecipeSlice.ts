@@ -43,6 +43,9 @@ export const travelRecipeSlice = createSlice({
       }
     },
     reset: () => new TravelRecipe({}),
+    setNewTravelRecipe: (state, action: PayloadAction<TravelRecipe>) => ({
+      ...action.payload,
+    }),
   },
 })
 
@@ -53,6 +56,7 @@ export const {
   addCountDays,
   putActivity,
   deleteActivityFromTravel,
+  setNewTravelRecipe,
 } = travelRecipeSlice.actions
 
 export default travelRecipeSlice.reducer

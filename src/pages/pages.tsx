@@ -26,6 +26,10 @@ export const Pages: Record<string, Page> = {
     '/create-travel',
     <Auth.CreateTravel.Component />,
   ),
+  EDIT_TRAVEL: new Page(
+    '/edit-travel/:id',
+    <Auth.CreateTravel.Component />,
+  ),
   TRAVEL_DAY: new Page(
     '/travel-day/:countDay',
     <Auth.TravelDay.Component />,
@@ -40,7 +44,7 @@ export const Pages: Record<string, Page> = {
     <Auth.ActivityForm.Component />,
   ),
   ACTIVITY_EDIT: new Page(
-    '/activity/edit/:id/:countDay:',
+    '/activity/edit/:id/:countDay',
     <Auth.ActivityForm.Component />,
   ),
 }
