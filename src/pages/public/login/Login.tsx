@@ -101,7 +101,7 @@ const Login: React.FC = () => {
           justifyContent="end"
         >
           <Button
-            type="submit"
+            type="button"
             variant="contained"
             className={Styles.button}
             onClick={() => navigate(Pages.WELCOME.getRedirectLink())}
