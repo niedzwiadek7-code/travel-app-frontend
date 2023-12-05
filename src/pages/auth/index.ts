@@ -7,3 +7,5 @@ export * as AddAccommodation from './addAccommodation'
 export * as ActivityForm from './activity/form'
 
 export * as AccommodationForm from './accommodation/form'
+
+export * as TravelRecipes from './travelRecipes'

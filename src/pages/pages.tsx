@@ -60,6 +60,11 @@ export const Pages: Record<string, Page> = {
     '/accommodation/edit/:id',
     <Auth.AccommodationForm.Component />,
   ),
+
+  TRAVEL_RECIPES: new Page(
+    '/travel-recipes',
+    <Auth.TravelRecipes.Component />,
+  ),
 }
 
 const App: React.FC = () => (

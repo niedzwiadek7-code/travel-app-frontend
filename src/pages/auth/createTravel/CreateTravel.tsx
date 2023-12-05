@@ -144,6 +144,14 @@ const CreateTravel: React.FC = () => {
             : 'Zapisz plan wycieczki'
         }
       </Button>
+
+      <Button
+        type="button"
+        variant="outlined"
+        onClick={() => navigate(Pages.DASHBOARD.getRedirectLink())}
+      >
+        Powrót na stronę główną
+      </Button>
     </Stack>
   )
 }

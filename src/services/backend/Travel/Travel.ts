@@ -1,6 +1,7 @@
 import dayjs from 'dayjs'
 import ApiService from '../ApiService'
 import { TravelRecipe, Date as DateEntity } from '../../../model'
+import { UserTravelRecipe } from './dto'
 
 class Travel {
   private travelUrl = '/travel'
@@ -8,7 +9,7 @@ class Travel {
   private apiService: ApiService
 
   public async get(id: string): Promise<TravelRecipe> {
-    const result = await this.apiService.get<TravelRecipe>(`${this.travelUrl}/${id}`)
+    const result = await this.apiService.get<TravelRecipe>(`${this.travelUrl}/find/${id}`)
     result.travelElements = result.travelElements.map((elem) => {
       const transformTimeToDate = (time: string) => {
         const timeValues = time.split(':')
@@ -31,6 +32,10 @@ class Travel {
     })
 
     return result
+  }
+
+  public async getUserTravels(): Promise<UserTravelRecipe[]> {
+    return this.apiService.get<UserTravelRecipe[]>(`${this.travelUrl}/user-list`)
   }
 
   public async createTravelRecipe(data: TravelRecipe) {
