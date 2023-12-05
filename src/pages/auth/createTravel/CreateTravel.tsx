@@ -14,6 +14,7 @@ import { useDependencies } from '../../../context/dependencies'
 import { useAuth } from '../../../context/auth'
 import { Pages } from '../../../pages/pages'
 import * as Loading from '../../../components/UI/Loading'
+import * as TravelAccommodations from './TravelAccommodations'
 
 const CreateTravel: React.FC = () => {
   const { id } = useParams()
@@ -106,6 +107,26 @@ const CreateTravel: React.FC = () => {
         <h2
           style={{ marginTop: 0 }}
         >
+          Noclegi
+        </h2>
+
+        <TravelAccommodations.Component />
+
+        <Button
+          type="button"
+          variant="contained"
+          color="success"
+          onClick={() => navigate(Pages.ADD_ACCOMMODATION.getRedirectLink())}
+          style={{ marginTop: '1.5em' }}
+        >
+          Dodaj nocleg
+        </Button>
+      </Stack>
+
+      <Stack>
+        <h2
+          style={{ marginTop: 0 }}
+        >
           Przeglądaj poszczególne dni swojej wycieczki
         </h2>
 
@@ -117,7 +138,11 @@ const CreateTravel: React.FC = () => {
         variant="contained"
         onClick={putTravel}
       >
-        Zapisz plan wycieczki
+        {
+          travelRecipe.id
+            ? 'Edytuj plan wycieczki'
+            : 'Zapisz plan wycieczki'
+        }
       </Button>
     </Stack>
   )

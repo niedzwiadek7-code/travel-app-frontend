@@ -1,10 +1,10 @@
 import React from 'react'
 import { Stack, useTheme } from '@mui/material'
-import { Activity as ActivityEntity } from '../../../../../model'
-import * as SaveActivityModal from '../../../../../components/SaveActivityModal'
+import { Accommodation as AccommodationEntity } from '../../../../model'
+import * as SaveActivityModal from '../../../../components/SaveActivityModal'
 
 type Props = {
-  activity: ActivityEntity
+  accommodation: AccommodationEntity
   countDay: string
 }
 
@@ -18,7 +18,7 @@ const Accommodation: React.FC<Props> = (props) => {
 
   return (
     <Stack
-      key={props.activity.id}
+      key={props.accommodation.id}
       gap={1}
       style={{ padding: '.8em', backgroundColor: theme.palette.grey['200'], borderRadius: '.8em' }}
     >
@@ -27,12 +27,12 @@ const Accommodation: React.FC<Props> = (props) => {
         alignItems="center"
         justifyContent="space-between"
       >
-        <div> {props.activity.name} </div>
+        <div> {props.accommodation.name} </div>
         <div>
-          { props.activity.place }
+          { props.accommodation.place }
         </div>
         <div>
-          { formatter.format(props.activity.price) } / dzień
+          { formatter.format(props.accommodation.price) } / dzień
         </div>
       </Stack>
       <hr
@@ -42,11 +42,11 @@ const Accommodation: React.FC<Props> = (props) => {
         gap={2}
       >
         <Stack>
-          {props.activity.description}
+          {props.accommodation.description}
         </Stack>
         <Stack>
           <SaveActivityModal.Component
-            activity={props.activity}
+            activity={props.accommodation}
             countDay={props.countDay}
           />
         </Stack>

@@ -24,7 +24,6 @@ type Inputs = {
 }
 
 const ActivityForm: React.FC = () => {
-  // eslint-disable-next-line no-unused-vars
   const { countDay, id } = useParams()
   const {
     register,
@@ -110,7 +109,6 @@ const ActivityForm: React.FC = () => {
             options={{
               Restauracja: 'Restauracja',
               Podróż: 'Podróż',
-              Nocleg: 'Nocleg',
               Atrakcja: 'Atrakcja',
             }}
             name="activityType"

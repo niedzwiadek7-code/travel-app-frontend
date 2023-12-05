@@ -13,6 +13,7 @@ const TravelSummaryTable: React.FC = () => {
   })
 
   const travelElements = useAppSelector((state: RootState) => state.travelRecipe.travelElements)
+  const accommodations = useAppSelector((state: RootState) => state.travelRecipe.accommodations)
 
   const activityTypes = [
     'Restauracja',
@@ -22,6 +23,10 @@ const TravelSummaryTable: React.FC = () => {
   ]
 
   const getTime = (activityType?: string) => {
+    if (activityType === 'Nocleg') {
+      return 'nie dotyczy'
+    }
+
     const elements = activityType
       ? travelElements.filter((elem) => elem.activity.activityType === activityType)
       : travelElements
@@ -38,6 +43,14 @@ const TravelSummaryTable: React.FC = () => {
   }
 
   const getPrice = (activityType?: string) => {
+    if (activityType === 'Nocleg') {
+      const price = accommodations.reduce(
+        (acc, value) => acc + value.price,
+        0,
+      )
+      return formatter.format(price)
+    }
+
     const elements = activityType
       ? travelElements.filter((elem) => elem.activity.activityType === activityType)
       : travelElements
@@ -46,6 +59,15 @@ const TravelSummaryTable: React.FC = () => {
       (acc, value) => acc + value.price,
       0,
     )
+
+    if (!activityType) {
+      const accommodationsPrice = accommodations.reduce(
+        (acc, value) => acc + value.price,
+        0,
+      )
+
+      return formatter.format(price + accommodationsPrice)
+    }
 
     return formatter.format(price)
   }

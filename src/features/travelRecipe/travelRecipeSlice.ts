@@ -1,7 +1,9 @@
 /* eslint-disable no-param-reassign */
 
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { TravelRecipe, TravelElement } from '../../model'
+import {
+  TravelRecipe, TravelElement, AccommodationElement,
+} from '../../model'
 
 const initialState: TravelRecipe = new TravelRecipe({
   name: 'Wycieczka',
@@ -24,6 +26,10 @@ export const travelRecipeSlice = createSlice({
       ...state,
       travelElements: [...state.travelElements, action.payload],
     }),
+    putAccommodation: (state, action: PayloadAction<AccommodationElement>) => ({
+      ...state,
+      accommodations: [...state.accommodations, action.payload],
+    }),
     deleteDayFromTravel: (state, action: PayloadAction<number>) => {
       const newTravelElements = state.travelElements.filter(
         (elem) => elem.dayCount !== action.payload,
@@ -42,6 +48,15 @@ export const travelRecipeSlice = createSlice({
         travelElements: newTravelElements,
       }
     },
+    deleteAccommodationFromTravel: (state, action: PayloadAction<string>) => {
+      const newAccommodations = state.accommodations.filter(
+        (elem) => elem.id !== action.payload,
+      )
+      return {
+        ...state,
+        accommodations: newAccommodations,
+      }
+    },
     reset: () => new TravelRecipe({}),
     setNewTravelRecipe: (state, action: PayloadAction<TravelRecipe>) => ({
       ...action.payload,
@@ -55,7 +70,9 @@ export const {
   deleteDayFromTravel,
   addCountDays,
   putActivity,
+  putAccommodation,
   deleteActivityFromTravel,
+  deleteAccommodationFromTravel,
   setNewTravelRecipe,
 } = travelRecipeSlice.actions
 

@@ -43,28 +43,6 @@ export default {
       type: 'text',
     },
   ],
-  Nocleg: [
-    {
-      name: 'name',
-      label: 'Nazwa',
-      type: 'text',
-    },
-    {
-      name: 'description',
-      label: 'Opis',
-      type: 'text',
-    },
-    {
-      name: 'place',
-      label: 'Miejsce',
-      type: 'text',
-    },
-    {
-      name: 'price',
-      label: 'Cena (w zł)',
-      type: 'price',
-    },
-  ],
   Atrakcja: [
     {
       name: 'name',

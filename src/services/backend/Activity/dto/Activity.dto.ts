@@ -1,10 +1,10 @@
 export interface ActivityDto {
-  activityType: string
+  activityType?: string
   name: string
   description: string
-  place: string
-  price: number
-  from: string
-  to: string
-  priceType: string
+  place?: string
+  price?: number
+  from?: string
+  to?: string
+  priceType?: string
 }

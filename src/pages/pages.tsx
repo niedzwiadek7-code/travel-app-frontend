@@ -38,6 +38,10 @@ export const Pages: Record<string, Page> = {
     '/add-activity/:countDay',
     <Auth.AddActivity.Component />,
   ),
+  ADD_ACCOMMODATION: new Page(
+    '/add-accommodation',
+    <Auth.AddAccommodation.Component />,
+  ),
 
   ACTIVITY_CREATE: new Page(
     '/activity/add/:countDay',
@@ -46,6 +50,15 @@ export const Pages: Record<string, Page> = {
   ACTIVITY_EDIT: new Page(
     '/activity/edit/:id/:countDay',
     <Auth.ActivityForm.Component />,
+  ),
+
+  ACCOMMODATION_CREATE: new Page(
+    '/accommodation/add',
+    <Auth.AccommodationForm.Component />,
+  ),
+  ACCOMMODATION_EDIT: new Page(
+    '/accommodation/edit/:id',
+    <Auth.AccommodationForm.Component />,
   ),
 }
 

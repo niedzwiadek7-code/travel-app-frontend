@@ -40,6 +40,10 @@ class Travel {
         ...travelElement,
         activityId: travelElement.activity.id,
       })),
+      accommodations: data.accommodations.map((accommodationElement) => ({
+        ...accommodationElement,
+        accommodationId: accommodationElement.accommodation.id,
+      })),
     }
     return this.apiService.post<TravelRecipe>(this.travelUrl, transformedData)
   }
@@ -50,6 +54,10 @@ class Travel {
       travelElements: data.travelElements.map((travelElement) => ({
         ...travelElement,
         activityId: travelElement.activity.id,
+      })),
+      accommodations: data.accommodations.map((accommodationElement) => ({
+        ...accommodationElement,
+        accommodationId: accommodationElement.accommodation.id,
       })),
     }
     return this.apiService.put<TravelRecipe>(`${this.travelUrl}/${data.id}`, transformedData)

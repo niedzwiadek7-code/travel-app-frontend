@@ -1,7 +1,6 @@
 import React from 'react'
 import { Activity as ActivityEntity } from '../../../../model'
 import * as Travel from './Travel'
-import * as Accommodation from './Accommodation'
 import * as Attraction from './Attraction'
 import * as Restaurant from './Restaurant'
 
@@ -15,13 +14,6 @@ const ActivityCard: React.FC<Props> = (props) => {
     case 'Podróż':
       return (
         <Travel.Component
-          activity={props.activity}
-          countDay={props.countDay}
-        />
-      )
-    case 'Nocleg':
-      return (
-        <Accommodation.Component
           activity={props.activity}
           countDay={props.countDay}
         />

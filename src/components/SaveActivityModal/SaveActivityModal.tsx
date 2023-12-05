@@ -12,12 +12,18 @@ import dayjs from 'dayjs'
 import * as Modal from '../UI/Modal'
 import * as Input from '../UI/Input'
 import {
-  Activity as ActivityEntity, Date, Date as DateEntity, TravelElement,
+  Activity as ActivityEntity,
+  Date,
+  Date as DateEntity,
+  TravelElement,
+  ActivityTypes,
+  AccommodationElement,
 } from '../../model'
 import { useDependencies } from '../../context/dependencies'
-import { useAppDispatch } from '../../app/hooks'
-import { putActivity } from '../../features/travelRecipe/travelRecipeSlice'
+import { useAppDispatch, useAppSelector } from '../../app/hooks'
+import { putAccommodation, putActivity } from '../../features/travelRecipe/travelRecipeSlice'
 import { Pages } from '../../pages/pages'
+import { RootState } from '../../app/store'
 
 type Props = {
   activity: ActivityEntity
@@ -25,13 +31,15 @@ type Props = {
 }
 
 type Inputs = {
-  dates: string
+  times: string
+  numberOfDays: number
   numberOfPeople: number
   price: number
   description: string
 }
 
 const SaveActivityModal: React.FC<Props> = (props) => {
+  const travelRecipe = useAppSelector((state: RootState) => state.travelRecipe)
   const { getToastUtils } = useDependencies()
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
@@ -81,49 +89,80 @@ const SaveActivityModal: React.FC<Props> = (props) => {
     }
   }
 
+  const calculatePriceForAccommodation = (numberOfDays: number) => {
+    if (numberOfDays > 1) {
+      setValue('price', numberOfDays * props.activity.price)
+    }
+  }
+
   const onSubmit = (data: Inputs) => {
-    const dates = data.dates.split(' – ')
+    let dateStart: Date | undefined
+    let dateEnd: Date | undefined
 
-    if (!data.dates[0] || !data.dates[1]) {
-      toastUtils.Toast.showToast(
-        toastUtils.types.ERROR,
-        'Podane godziny są niepoprawne',
-      )
+    if (data.times) {
+      const createDateStr = (date: string) => {
+        const [hours, minutes] = date.split(':')
+        return dayjs()
+          .set('hour', parseInt(hours, 10))
+          .set('minute', parseInt(minutes, 10))
+          .toString()
+      }
+
+      const dates = data.times.split(' – ')
+      dateStart = new DateEntity(createDateStr(dates[0]))
+      dateEnd = new DateEntity(createDateStr(dates[1]))
+
+      if (!data.times[0] || !data.times[1]) {
+        toastUtils.Toast.showToast(
+          toastUtils.types.ERROR,
+          'Podane godziny są niepoprawne',
+        )
+        return
+      }
+
+      if (DateEntity.compareDates(dateEnd, dateStart) < 0) {
+        toastUtils.Toast.showToast(
+          toastUtils.types.ERROR,
+          'Czas rozpoczęcia aktywności musi być wcześniejszy niż czas jej zakończenia',
+        )
+        return
+      }
     }
 
-    const createDateStr = (date: string) => {
-      const [hours, minutes] = date.split(':')
-      return dayjs()
-        .set('hour', parseInt(hours, 10))
-        .set('minute', parseInt(minutes, 10))
-        .toString()
+    switch (props.activity.activityType) {
+      case ActivityTypes.ACCOMMODATION:
+        dispatch(putAccommodation(new AccommodationElement({
+          id: uuidv4(),
+          numberOfDays: data.numberOfDays,
+          description: data.description,
+          price: data.price,
+          accommodation: props.activity,
+        })))
+        if (travelRecipe.id) {
+          navigate(Pages.EDIT_TRAVEL.getRedirectLink({
+            id: travelRecipe.id.toString(),
+          }))
+        } else {
+          navigate(Pages.CREATE_TRAVEL.getRedirectLink())
+        }
+        break
+      default:
+        dispatch(putActivity(new TravelElement({
+          id: uuidv4(),
+          dayCount: parseInt(props.countDay, 10),
+          from: dateStart,
+          to: dateEnd,
+          activity: props.activity,
+          price: data.price,
+          numberOfPeople: data.numberOfPeople || undefined,
+          description: data.description,
+          numberOfDays: data.numberOfDays,
+        })))
+        navigate(Pages.TRAVEL_DAY.getRedirectLink({
+          countDay: props.countDay,
+        }))
+        break
     }
-
-    const dateStart = new DateEntity(createDateStr(dates[0]))
-    const dateEnd = new DateEntity(createDateStr(dates[1]))
-
-    if (DateEntity.compareDates(dateEnd, dateStart) < 0) {
-      toastUtils.Toast.showToast(
-        toastUtils.types.ERROR,
-        'Czas rozpoczęcia aktywności musi być wcześniejszy niż czas jej zakończenia',
-      )
-      return
-    }
-
-    const travelElement = new TravelElement({
-      id: uuidv4(),
-      dayCount: parseInt(props.countDay, 10),
-      from: dateStart,
-      to: dateEnd,
-      activity: props.activity,
-      price: data.price,
-      numberOfPeople: data.numberOfPeople || undefined,
-      description: data.description,
-    })
-    dispatch(putActivity(travelElement))
-    navigate(Pages.TRAVEL_DAY.getRedirectLink({
-      countDay: props.countDay,
-    }))
   }
 
   return (
@@ -143,19 +182,34 @@ const SaveActivityModal: React.FC<Props> = (props) => {
           <Stack
             gap={2}
           >
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DemoContainer components={['SingleInputTimeRangeField']}>
-                <SingleInputTimeRangeField
-                  ampm={false}
-                  label="Zaplanuj w terminie"
-                  {...register('dates')}
-                  onChange={calculatePriceForActivity}
-                />
-              </DemoContainer>
-            </LocalizationProvider>
 
             {
-              props.activity.price && (
+              props.activity.activityType === ActivityTypes.ACCOMMODATION ? (
+                <Input.Component
+                  variant={Input.Variant.OUTLINED}
+                  type={Input.Type.NUMBER}
+                  label="Ilość dni"
+                  data={register('numberOfDays')}
+                  onChange={calculatePriceForAccommodation}
+                />
+              ) : (
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <DemoContainer components={['SingleInputTimeRangeField']}>
+                    <SingleInputTimeRangeField
+                      ampm={false}
+                      label="Zaplanuj w terminie"
+                      {...register('times')}
+                      onChange={calculatePriceForActivity}
+                    />
+                  </DemoContainer>
+                </LocalizationProvider>
+              )
+            }
+
+            {
+              props.activity.price
+              && props.activity.activityType !== ActivityTypes.ACCOMMODATION
+              && (
                 <Input.Component
                   variant={Input.Variant.OUTLINED}
                   type={Input.Type.NUMBER}
