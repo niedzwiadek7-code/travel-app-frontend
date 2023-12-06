@@ -65,6 +65,11 @@ export const Pages: Record<string, Page> = {
     '/travel-recipes',
     <Auth.TravelRecipes.Component />,
   ),
+
+  TAKING_TRIP: new Page(
+    '/taking-trip/:id',
+    <Auth.TakingTrip.Component />,
+  ),
 }
 
 const App: React.FC = () => (

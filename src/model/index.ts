@@ -6,6 +6,8 @@ import ActivityType from './ActivityType'
 import Date from './Date'
 import Accommodation from './Accommodation'
 import AccommodationElement from './AccommodationElement'
+import TravelInstance from './TravelInstance'
+import ElementTravelInstance from './ElementTravelInstance'
 
 export * from './ActivityTypes'
 
@@ -18,4 +20,6 @@ export {
   Date,
   Accommodation,
   AccommodationElement,
+  TravelInstance,
+  ElementTravelInstance,
 }

@@ -1,7 +1,7 @@
 import dayjs from 'dayjs'
 import ApiService from '../ApiService'
-import { TravelRecipe, Date as DateEntity } from '../../../model'
-import { UserTravelRecipe } from './dto'
+import { TravelRecipe, Date as DateEntity, TravelInstance } from '../../../model'
+import { UserTravelRecipeDto, PlanATravelDto } from './dto'
 
 class Travel {
   private travelUrl = '/travel'
@@ -34,8 +34,8 @@ class Travel {
     return result
   }
 
-  public async getUserTravels(): Promise<UserTravelRecipe[]> {
-    return this.apiService.get<UserTravelRecipe[]>(`${this.travelUrl}/user-list`)
+  public async getUserTravels(): Promise<UserTravelRecipeDto[]> {
+    return this.apiService.get<UserTravelRecipeDto[]>(`${this.travelUrl}/user-list`)
   }
 
   public async createTravelRecipe(data: TravelRecipe) {
@@ -66,6 +66,10 @@ class Travel {
       })),
     }
     return this.apiService.put<TravelRecipe>(`${this.travelUrl}/${data.id}`, transformedData)
+  }
+
+  public async createATravelInstance(data: PlanATravelDto) {
+    return this.apiService.post<TravelInstance>(`${this.travelUrl}/plan-a-travel`, data)
   }
 
   constructor(token: string) {

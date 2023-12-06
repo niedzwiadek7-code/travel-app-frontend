@@ -6,7 +6,7 @@ import {
 import { useNavigate } from 'react-router-dom'
 import { ReceiptLong } from '@mui/icons-material'
 import { useDependencies } from '../../../context/dependencies'
-import { UserTravelRecipe } from '../../../services/backend/Travel/dto'
+import { UserTravelRecipeDto } from '../../../services/backend/Travel/dto'
 import { useAuth } from '../../../context/auth'
 import * as Loading from '../../../components/UI/Loading'
 import * as Header from '../../../components/Header'
@@ -20,7 +20,7 @@ const TravelRecipes: React.FC = () => {
   const apiService = getApiService()
   const travelService = apiService.getTravel(token)
   const [loading, setLoading] = useState<boolean>(true)
-  const [travelRecipes, setTravelRecipes] = useState<UserTravelRecipe[]>([])
+  const [travelRecipes, setTravelRecipes] = useState<UserTravelRecipeDto[]>([])
 
   useEffect(() => {
     const fetchData = async () => {

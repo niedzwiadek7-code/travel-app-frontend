@@ -9,7 +9,7 @@ interface AccommodationElement {
   name: number
 }
 
-export interface UserTravelRecipe {
+export interface UserTravelRecipeDto {
   id: number
   name: string
   countDays: number

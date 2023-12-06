@@ -9,19 +9,41 @@ import {
   Attractions as AttractionIcon,
   AirplanemodeActive as TravelIcon,
 } from '@mui/icons-material'
-import { UserTravelRecipe } from '../../../../services/backend/Travel/dto'
+import { useForm } from 'react-hook-form'
+import { useNavigate } from 'react-router-dom'
+import { UserTravelRecipeDto, PlanATravelDto } from '../../../../services/backend/Travel/dto'
+import * as Modal from '../../../../components/UI/Modal'
+import * as Input from '../../../../components/UI/Input'
 import MenuComponent from './Menu'
+import { useDependencies } from '../../../../context/dependencies'
+import { useAuth } from '../../../../context/auth'
+import { Pages } from '../../../pages'
 
 type Props = {
-  userTravelRecipe: UserTravelRecipe
+  userTravelRecipe: UserTravelRecipeDto
+}
+
+type ModalInputs = {
+  startDate: Date,
 }
 
 const TravelRecipeCard: React.FC<Props> = (props) => {
+  const { getApiService, getToastUtils } = useDependencies()
+  const toastUtils = getToastUtils()
+  const apiService = getApiService()
+  const { token } = useAuth()
+  const travelService = apiService.getTravel(token)
+  const navigate = useNavigate()
+
   const theme = useTheme()
   const formatter = Intl.NumberFormat('pl-PL', {
     style: 'currency',
     currency: 'PLN',
   })
+
+  const {
+    register, handleSubmit,
+  } = useForm<ModalInputs>()
 
   const calculateTotalPrice = () => {
     const activityPrice = props.userTravelRecipe.elements.reduce(
@@ -47,6 +69,24 @@ const TravelRecipeCard: React.FC<Props> = (props) => {
         return <RestaurantIcon style={{ color: theme.palette.primary.main }} />
       default:
         return <> </>
+    }
+  }
+
+  const onSubmit = async (data: ModalInputs) => {
+    try {
+      const payload: PlanATravelDto = {
+        travelRecipeId: props.userTravelRecipe.id.toString(),
+        startDate: data.startDate,
+      }
+      const result = await travelService.createATravelInstance(payload)
+      navigate(Pages.TAKING_TRIP.getRedirectLink({
+        id: result.id.toString(),
+      }))
+    } catch (e) {
+      toastUtils.Toast.showToast(
+        toastUtils.types.ERROR,
+        'Wystąpił nieoczekiwany błąd',
+      )
     }
   }
 
@@ -102,14 +142,40 @@ const TravelRecipeCard: React.FC<Props> = (props) => {
             }
           </List>
 
-          <Button
-            type="button"
-            variant="contained"
-            color="primary"
-            onClick={() => {}}
+          <form
+            onSubmit={handleSubmit(onSubmit)}
           >
-            Wybierz się na wycieczkę
-          </Button>
+            <Modal.Component
+              buttonComponent={(
+                <Button
+                  type="button"
+                  variant="contained"
+                  color="primary"
+                  style={{ width: '100%' }}
+                  onClick={() => {}}
+                >
+                  Wybierz się na wycieczkę
+                </Button>
+              )}
+              title={`Zapisz się na wycieczkę ${props.userTravelRecipe.name}`}
+              content={(
+                <Input.Component
+                  variant={Input.Variant.OUTLINED}
+                  type={Input.Type.DATE}
+                  label="Podaj datę początkową"
+                  data={register('startDate')}
+                />
+              )}
+              actions={[
+                {
+                  name: 'Wybierz się na wycieczkę',
+                  type: 'submit',
+                  onClick: handleSubmit(onSubmit),
+                },
+              ]}
+            />
+          </form>
+
         </Stack>
       </CardContent>
     </Card>
