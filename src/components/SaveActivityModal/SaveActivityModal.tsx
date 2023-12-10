@@ -235,13 +235,6 @@ const SaveActivityModal: React.FC<Props> = (props) => {
             />
           </Stack>
         )}
-        actions={[
-          {
-            name: 'Dodaj do wycieczki',
-            type: 'submit',
-            onClick: handleSubmit(onSubmit),
-          },
-        ]}
       />
     </form>
   )

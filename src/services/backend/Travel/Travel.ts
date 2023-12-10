@@ -1,7 +1,7 @@
 import dayjs from 'dayjs'
 import ApiService from '../ApiService'
 import { TravelRecipe, Date as DateEntity, TravelInstance } from '../../../model'
-import { UserTravelRecipeDto, PlanATravelDto } from './dto'
+import { UserTravelRecipeDto, PlanATravelDto, PassTravelElementDto } from './dto'
 
 class Travel {
   private travelUrl = '/travel'
@@ -70,6 +70,22 @@ class Travel {
 
   public async createATravelInstance(data: PlanATravelDto) {
     return this.apiService.post<TravelInstance>(`${this.travelUrl}/plan-a-travel`, data)
+  }
+
+  public async getTravelInstance(id: string) {
+    return this.apiService.get<TravelInstance>(`${this.travelUrl}/find/instance/${id}`)
+  }
+
+  public async passTravelElement(id: string, data: PassTravelElementDto) {
+    const formData = new FormData()
+    data.images.forEach((image) => formData.append('images', image))
+    return this.apiService.put<number>(`${this.travelUrl}/pass-travel-element/${id}`, formData, {
+      'Content-Type': 'multipart/form-data',
+    })
+  }
+
+  public async cancelTravelElementInstance(id: string) {
+    return this.apiService.post<number>(`${this.travelUrl}/travel-instance/element/cancel/${id}`)
   }
 
   constructor(token: string) {

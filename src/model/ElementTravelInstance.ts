@@ -1,5 +1,5 @@
 import Activity from './Activity'
-import Date from './Date'
+import TravelElement from './TravelElement'
 
 class ElementTravelInstance {
   id: string
@@ -8,11 +8,13 @@ class ElementTravelInstance {
 
   photos: string[]
 
-  from: Date
+  from: string
 
-  to: Date
+  to: string
 
   activity: Activity
+
+  elementTravel?: TravelElement
 
   constructor(obj: any) {
     this.id = obj.id
@@ -20,7 +22,8 @@ class ElementTravelInstance {
     this.photos = obj.photos
     this.from = obj.from
     this.to = obj.to
-    this.activity = obj.activity
+    this.activity = new Activity(obj.activity)
+    this.elementTravel = obj.elementTravel || undefined
   }
 }
 

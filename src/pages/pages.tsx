@@ -70,6 +70,10 @@ export const Pages: Record<string, Page> = {
     '/taking-trip/:id',
     <Auth.TakingTrip.Component />,
   ),
+  TAKING_TRIP_DAY: new Page(
+    '/taking-trip-day/:date',
+    <Auth.TakingTripDay.Component />,
+  ),
 }
 
 const App: React.FC = () => (

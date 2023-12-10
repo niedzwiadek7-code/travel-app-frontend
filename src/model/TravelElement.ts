@@ -18,6 +18,8 @@ class TravelElement {
 
   description: string
 
+  photos: string[]
+
   constructor(obj: any) {
     this.id = obj.id
     this.dayCount = obj.dayCount
@@ -27,6 +29,7 @@ class TravelElement {
     this.numberOfPeople = obj.numberOfPeople
     this.price = obj.price
     this.description = obj.description
+    this.photos = obj.photos
   }
 }
 

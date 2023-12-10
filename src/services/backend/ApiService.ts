@@ -5,9 +5,9 @@ class ApiService {
 
   token: string
 
-  getHeader(): Record<string, any> {
+  getHeader(headers: Record<string, string> = {}): Record<string, any> {
     const header: Record<string, any> = {
-      headers: {},
+      headers,
     }
     if (this.token) {
       header.headers.Authorization = `Bearer ${this.token}`
@@ -39,10 +39,14 @@ class ApiService {
     }
   }
 
-  public async put<T>(endpoint: string, data?: any): Promise<T> {
+  public async put<T>(
+    endpoint: string,
+    data?: any,
+    headers: Record<string, string> = {},
+  ): Promise<T> {
     const url = `${this.baseUrl}${endpoint}`
     try {
-      const header = this.getHeader()
+      const header = this.getHeader(headers)
       const response = await axios.put<T>(url, data, header)
       return response.data
     } catch (err) {

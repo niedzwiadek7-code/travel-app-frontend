@@ -9,4 +9,5 @@ export enum Type {
   DATE = 'date',
   DATETIME = 'datetime-local',
   TIME = 'time',
+  IMAGE = 'image'
 }
