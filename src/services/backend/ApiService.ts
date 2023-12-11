@@ -56,8 +56,8 @@ class ApiService {
   }
 
   public async delete<T>(endpoint: string): Promise<T> {
-    const url = `${this.baseUrl}${endpoint}`
     try {
+      const url = `${this.baseUrl}${endpoint}`
       const header = this.getHeader()
       const response = await axios.delete<T>(url, header)
       return response.data

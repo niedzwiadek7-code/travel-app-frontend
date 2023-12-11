@@ -67,7 +67,7 @@ const Cards: React.FC = () => (
     <CardComponent
       title="Zrealizowane wycieczki"
       description="Przeglądaj odbyte przez siebie wycieczki"
-      link={Pages.LOGIN.getRedirectLink()}
+      link={Pages.REALIZED_TRIPS.getRedirectLink()}
     />
   </Stack>
 )

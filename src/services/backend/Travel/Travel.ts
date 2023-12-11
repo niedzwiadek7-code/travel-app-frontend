@@ -88,6 +88,14 @@ class Travel {
     return this.apiService.post<number>(`${this.travelUrl}/travel-instance/element/cancel/${id}`)
   }
 
+  public async getAllTravelInstances() {
+    return this.apiService.get<TravelInstance[]>(`${this.travelUrl}/instance/all`)
+  }
+
+  public async deleteInstance(id: string) {
+    return this.apiService.delete<number>(`${this.travelUrl}/instance/delete/${id}`)
+  }
+
   constructor(token: string) {
     this.apiService = new ApiService(token)
   }

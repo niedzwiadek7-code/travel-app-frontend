@@ -4,9 +4,9 @@ import TravelRecipe from './TravelRecipe'
 class TravelInstance {
   id: number
 
-  from: Date
+  from: string
 
-  to: Date
+  to: string
 
   travelRecipe: TravelRecipe
 
