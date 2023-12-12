@@ -1,5 +1,6 @@
 import ElementTravelInstance from './ElementTravelInstance'
 import TravelRecipe from './TravelRecipe'
+import AccommodationElementInstance from './AccommodationElementInstance'
 
 class TravelInstance {
   id: number
@@ -12,6 +13,8 @@ class TravelInstance {
 
   travelElements: ElementTravelInstance[]
 
+  accommodationElements: AccommodationElementInstance[]
+
   constructor(obj: any) {
     this.id = obj.id
     this.from = obj.from
@@ -23,6 +26,9 @@ class TravelInstance {
     }
     this.travelElements = (obj.travelElements || []).map(
       (elem: any) => new ElementTravelInstance(elem),
+    )
+    this.accommodationElements = (obj.accommodationsElements || []).map(
+      (elem: any) => new AccommodationElementInstance(elem),
     )
   }
 }

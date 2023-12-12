@@ -96,6 +96,18 @@ class Travel {
     return this.apiService.delete<number>(`${this.travelUrl}/instance/delete/${id}`)
   }
 
+  public async cancelAccommodationElementInstance(id: string) {
+    return this.apiService.post<number>(`${this.travelUrl}/travel-instance/accommodation/cancel/${id}`)
+  }
+
+  public async passAccommodationElement(id: string, data: PassTravelElementDto) {
+    const formData = new FormData()
+    data.images.forEach((image) => formData.append('images', image))
+    return this.apiService.put<number>(`${this.travelUrl}/pass-accommodation-element/${id}`, formData, {
+      'Content-Type': 'multipart/form-data',
+    })
+  }
+
   constructor(token: string) {
     this.apiService = new ApiService(token)
   }

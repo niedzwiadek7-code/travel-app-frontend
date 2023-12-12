@@ -12,6 +12,7 @@ import * as UnexpectedError from '../../../components/UI/UnexpectedError'
 import * as Header from '../../../components/Header'
 import { Pages } from '../../pages'
 import * as TripTable from './TripTable'
+import * as AccommodationElem from './AccommodationElem'
 
 const TakingTrip: React.FC = () => {
   const { id } = useParams()
@@ -65,6 +66,21 @@ const TakingTrip: React.FC = () => {
           />
         )}
       />
+
+      <Stack>
+        <h2 style={{ marginTop: 0 }}>
+          Lista noclegów
+        </h2>
+
+        {
+          travelInstance.accommodationElements.map((elem) => (
+            <AccommodationElem.Component
+              key={elem.id}
+              accommodationElement={elem}
+            />
+          ))
+        }
+      </Stack>
 
       <Stack>
         <h2 style={{ marginTop: 0 }}>

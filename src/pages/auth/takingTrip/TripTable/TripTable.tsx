@@ -50,7 +50,9 @@ const TripTable: React.FC = () => {
             Object.entries(travelElements).map(([date, dateObj]) => (
               <TableRow key={date}>
                 <TableCell> {date} </TableCell>
-                <TableCell> {dateObj.passed} / {dateObj.count} </TableCell>
+                <TableCell>
+                  {dateObj.passed} / {dateObj.count} ({ (dateObj.passed / dateObj.count) * 100 }%)
+                </TableCell>
                 <TableCell>
                   <Button
                     type="button"

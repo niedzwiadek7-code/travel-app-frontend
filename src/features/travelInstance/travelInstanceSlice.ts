@@ -36,6 +36,32 @@ export const travelInstanceSlice = createSlice({
         travelElements,
       }
     },
+    cancelAccommodationElementInstance: (state, action: PayloadAction<string>) => {
+      const accommodationElements = state.accommodationElements.filter(
+        (elem) => elem.id.toString() !== action.payload,
+      )
+
+      return {
+        ...state,
+        accommodationElements,
+      }
+    },
+    passAccommodationElementInstance: (state, action: PayloadAction<string>) => {
+      const accommodationElements = state.accommodationElements.map((elem) => {
+        if (elem.id !== action.payload) {
+          return elem
+        }
+        return {
+          ...elem,
+          passed: true,
+        }
+      })
+
+      return {
+        ...state,
+        accommodationElements,
+      }
+    },
   },
 })
 
@@ -43,6 +69,8 @@ export const {
   setNewTravelInstance,
   passTravelElementInstance,
   cancelTravelElementInstance,
+  cancelAccommodationElementInstance,
+  passAccommodationElementInstance,
 } = travelInstanceSlice.actions
 
 export default travelInstanceSlice.reducer
