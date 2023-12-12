@@ -14,6 +14,7 @@ import { UserTravelRecipeDto } from '../../../../../services/backend/Travel/dto'
 import MenuComponent from './Menu'
 import { Pages } from '../../../../pages'
 import * as SignUpForTrip from '../../../../../components/SignUpForTrip'
+import * as CopyToClipboard from '../../../../../components/UI/CopyToClipboard'
 
 type Props = {
   userTravelRecipe: UserTravelRecipeDto
@@ -67,9 +68,18 @@ const TravelRecipeCard: React.FC<Props> = (props) => {
           color: 'white',
         }}
         action={(
-          <MenuComponent
-            travelRecipeId={props.userTravelRecipe.id.toString()}
-          />
+          <Stack
+            direction="row"
+          >
+            <CopyToClipboard.Component
+              color="white"
+              fontSize="small"
+              text={`${window.location.host}/travel-recipe/${props.userTravelRecipe.id}`}
+            />
+            <MenuComponent
+              travelRecipeId={props.userTravelRecipe.id.toString()}
+            />
+          </Stack>
         )}
       />
 

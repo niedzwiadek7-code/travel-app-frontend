@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { Button, Stack } from '@mui/material'
+import {
+  Button, Stack, Typography, useTheme,
+} from '@mui/material'
 import { ReceiptLong } from '@mui/icons-material'
 import * as UnexpectedError from '../../../../components/UI/UnexpectedError'
 import * as Header from '../../../../components/Header'
@@ -14,6 +16,7 @@ import * as AccommodationTable from './AccommodationTable'
 import * as TravelDayTable from './TravelDayTable'
 import { Pages } from '../../../pages'
 import * as SignUpForTrip from '../../../../components/SignUpForTrip'
+import * as CopyToClipboard from '../../../../components/UI/CopyToClipboard'
 
 const TravelRecipe: React.FC = () => {
   const { id } = useParams()
@@ -25,6 +28,7 @@ const TravelRecipe: React.FC = () => {
   const travelRecipe = useAppSelector((state: RootState) => state.travelRecipe)
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
+  const theme = useTheme()
 
   useEffect(() => {
     const fetchData = async () => {
@@ -65,6 +69,26 @@ const TravelRecipe: React.FC = () => {
           />
         )}
       />
+
+      <Stack
+        style={{
+          marginTop: '0',
+          marginBottom: '0',
+        }}
+        direction="row"
+        alignItems="center"
+        justifyContent="flex-end"
+        gap={1}
+      >
+        <Typography>
+          Udostępnij
+        </Typography>
+        <CopyToClipboard.Component
+          color={theme.palette.primary.main}
+          text={window.location.href}
+          fontSize="small"
+        />
+      </Stack>
 
       <Stack>
         <h2
