@@ -9,6 +9,7 @@ import * as Header from '../../../components/Header'
 import { Pages } from '../../pages'
 import * as UnexpectedError from '../../../components/UI/UnexpectedError'
 import * as TripDayElem from './TripDayElem'
+import AddActivityButton from './AddActivityButton'
 
 const TakingTripDay: React.FC = () => {
   const travelInstance = useAppSelector((state: RootState) => state.travelInstance)
@@ -59,6 +60,11 @@ const TakingTripDay: React.FC = () => {
           ))
         }
       </Stack>
+
+      <AddActivityButton
+        travelInstanceId={travelInstance.id.toString()}
+        date={date}
+      />
 
       <Button
         type="button"

@@ -235,6 +235,13 @@ const SaveActivityModal: React.FC<Props> = (props) => {
             />
           </Stack>
         )}
+        actions={[
+          {
+            name: 'Dodaj aktywność',
+            onClick: handleSubmit(onSubmit),
+            type: 'submit',
+          },
+        ]}
       />
     </form>
   )

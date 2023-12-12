@@ -57,9 +57,12 @@ const AddActivity: React.FC = () => {
       <Stack>
         <Button
           variant="outlined"
-          onClick={() => navigate(Pages.ACTIVITY_CREATE.getRedirectLink({
-            countDay,
-          }))}
+          onClick={() => navigate(Pages.ACTIVITY_CREATE.getRedirectLink(), {
+            state: {
+              travelRecipe: true,
+              countDay,
+            },
+          })}
         >
           Dodaj nową aktywność
         </Button>

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Button, Stack } from '@mui/material'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import * as Select from '../../../../components/UI/Select'
 import InputsMap from './InputsMap'
 import * as Input from '../../../../components/UI/Input'
@@ -11,6 +11,7 @@ import { Activity } from '../../../../model'
 import { Pages } from '../../../../pages/pages'
 import * as Loading from '../../../../components/UI/Loading'
 import SaveActivityModal from './SaveActivityModal'
+import * as SaveInstanceActivityModal from '../../../../components/SaveInstanceActivityModal'
 
 type Inputs = {
   activityType: string
@@ -24,7 +25,8 @@ type Inputs = {
 }
 
 const ActivityForm: React.FC = () => {
-  const { countDay, id } = useParams()
+  const { id } = useParams()
+  const { state } = useLocation()
   const {
     register,
     handleSubmit,
@@ -54,9 +56,10 @@ const ActivityForm: React.FC = () => {
         'Udało się stworzyć nową aktywność',
       )
       navigate(Pages.ACTIVITY_EDIT.getRedirectLink({
-        countDay: countDay || '',
         id: result.id.toString(),
-      }))
+      }), {
+        state,
+      })
     } catch (err) {
       toastUtils.Toast.showToast(
         toastUtils.types.ERROR,
@@ -168,21 +171,30 @@ const ActivityForm: React.FC = () => {
       </form>
 
       {
-        countDay && activity && (
+        state.travelRecipe && activity && (
           <SaveActivityModal
             activity={activity}
-            countDay={countDay}
+            countDay={state.countDay}
           />
         )
       }
 
       {
-        countDay && (
+        state.travelInstance && activity && (
+          <SaveInstanceActivityModal.Component
+            activity={activity}
+            date={state.date}
+          />
+        )
+      }
+
+      {
+        state.countDay && (
           <Button
             type="button"
             variant="contained"
             onClick={() => navigate(Pages.ADD_ACTIVITY.getRedirectLink({
-              countDay,
+              countDay: state.countDay,
             }))}
           >
             Powrót

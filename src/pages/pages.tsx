@@ -44,11 +44,11 @@ export const Pages: Record<string, Page> = {
   ),
 
   ACTIVITY_CREATE: new Page(
-    '/activity/add/:countDay',
+    '/activity/add',
     <Auth.ActivityForm.Component />,
   ),
   ACTIVITY_EDIT: new Page(
-    '/activity/edit/:id/:countDay',
+    '/activity/edit/:id',
     <Auth.ActivityForm.Component />,
   ),
 
