@@ -5,13 +5,13 @@ import {
 } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import { ReceiptLong } from '@mui/icons-material'
-import { useDependencies } from '../../../context/dependencies'
-import { UserTravelRecipeDto } from '../../../services/backend/Travel/dto'
-import { useAuth } from '../../../context/auth'
-import * as Loading from '../../../components/UI/Loading'
-import * as Header from '../../../components/Header'
+import { useDependencies } from '../../../../context/dependencies'
+import { UserTravelRecipeDto } from '../../../../services/backend/Travel/dto'
+import { useAuth } from '../../../../context/auth'
+import * as Loading from '../../../../components/UI/Loading'
+import * as Header from '../../../../components/Header'
 import * as TravelRecipeCard from './TravelRecipeCard'
-import { Pages } from '../../pages'
+import { Pages } from '../../../pages'
 
 const TravelRecipes: React.FC = () => {
   const navigate = useNavigate()

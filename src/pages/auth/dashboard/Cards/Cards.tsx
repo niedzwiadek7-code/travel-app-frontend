@@ -62,7 +62,7 @@ const Cards: React.FC = () => (
     <CardComponent
       title="Plany wycieczek"
       description="Przeglądaj zaplanowane przez siebie wycieczki"
-      link={Pages.TRAVEL_RECIPES.getRedirectLink()}
+      link={Pages.TRAVEL_RECIPES_STORE.getRedirectLink()}
     />
     <CardComponent
       title="Zrealizowane wycieczki"

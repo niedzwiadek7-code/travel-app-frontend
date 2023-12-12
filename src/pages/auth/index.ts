@@ -8,7 +8,8 @@ export * as ActivityForm from './activity/form'
 
 export * as AccommodationForm from './accommodation/form'
 
-export * as TravelRecipes from './travelRecipes'
+export * as TravelRecipesStore from './travelRecipes/store'
+export * as TravelRecipesGet from './travelRecipes/get'
 
 export * as TakingTrip from './takingTrip'
 export * as TakingTripDay from './takingTripDay'

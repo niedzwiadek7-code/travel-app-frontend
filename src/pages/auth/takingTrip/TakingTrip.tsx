@@ -93,9 +93,9 @@ const TakingTrip: React.FC = () => {
       <Button
         type="button"
         variant="outlined"
-        onClick={() => navigate(Pages.DASHBOARD.getRedirectLink())}
+        onClick={() => navigate(Pages.REALIZED_TRIPS.getRedirectLink())}
       >
-        Powrót do strony głównej
+        Powrót do listy realizowanych wycieczek
       </Button>
     </Stack>
   )

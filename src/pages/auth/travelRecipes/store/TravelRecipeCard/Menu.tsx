@@ -4,7 +4,7 @@ import {
   Menu as MenuIcon,
 } from '@mui/icons-material'
 import { useNavigate } from 'react-router-dom'
-import { Pages } from '../../../pages'
+import { Pages } from '../../../../pages'
 
 type Props = {
   travelRecipeId: string

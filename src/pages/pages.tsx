@@ -61,9 +61,13 @@ export const Pages: Record<string, Page> = {
     <Auth.AccommodationForm.Component />,
   ),
 
-  TRAVEL_RECIPES: new Page(
+  TRAVEL_RECIPES_STORE: new Page(
     '/travel-recipes',
-    <Auth.TravelRecipes.Component />,
+    <Auth.TravelRecipesStore.Component />,
+  ),
+  TRAVEL_RECIPES_GET: new Page(
+    '/travel-recipe/:id',
+    <Auth.TravelRecipesGet.Component />,
   ),
 
   TAKING_TRIP: new Page(
