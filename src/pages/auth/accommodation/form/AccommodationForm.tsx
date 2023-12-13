@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { Button, Stack } from '@mui/material'
+import { Apartment } from '@mui/icons-material'
 import { Accommodation, AccommodationElementInstance, ActivityTypes } from '../../../../model'
 import { useDependencies } from '../../../../context/dependencies'
 import { useAuth } from '../../../../context/auth'
@@ -11,6 +12,7 @@ import * as Input from '../../../../components/UI/Input'
 import * as SaveActivityModal from '../../../../components/SaveActivityModal'
 import { putAccommodationInstance } from '../../../../features/travelInstance/travelInstanceSlice'
 import { useAppDispatch } from '../../../../app/hooks'
+import * as Header from '../../../../components/Header'
 
 type Inputs = {
   name: string
@@ -116,11 +118,14 @@ const AccommodationForm: React.FC = () => {
     <Stack
       gap={2}
     >
-      <h2
-        style={{ marginTop: 0 }}
-      >
-        { accommodation ? 'Edytuj nocleg' : 'Dodaj nocleg' }
-      </h2>
+      <Header.Component
+        title={accommodation ? 'Edytuj nocleg' : 'Dodaj nocleg'}
+        icon={(
+          <Apartment
+            fontSize="large"
+          />
+        )}
+      />
 
       <form
         onSubmit={handleSubmit(onSubmit)}
@@ -195,11 +200,7 @@ const AccommodationForm: React.FC = () => {
           <Button
             type="button"
             variant="contained"
-            onClick={() => navigate(Pages.ADD_ACCOMMODATION.getRedirectLink(), {
-              state: {
-                travelRecipe: true,
-              },
-            })}
+            onClick={() => navigate(Pages.CREATE_TRAVEL.getRedirectLink())}
           >
             Powrót
           </Button>

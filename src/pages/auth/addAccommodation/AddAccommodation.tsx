@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import {
   Button, Stack,
 } from '@mui/material'
+import { Apartment } from '@mui/icons-material'
 import { useDependencies } from '../../../context/dependencies'
 import { useAuth } from '../../../context/auth'
 import { Accommodation } from '../../../model'
@@ -10,6 +11,7 @@ import { Pages } from '../../../pages/pages'
 import * as AccommodationCard from './AccommodationCard'
 import { useAppSelector } from '../../../app/hooks'
 import { RootState } from '../../../app/store'
+import * as Header from '../../../components/Header'
 
 const AddAccommodation: React.FC = () => {
   const { state } = useLocation()
@@ -43,11 +45,14 @@ const AddAccommodation: React.FC = () => {
     <Stack
       gap={2}
     >
-      <h2
-        style={{ marginTop: 0 }}
-      >
-        List dostępnych noclegów
-      </h2>
+      <Header.Component
+        title="Lista dostępnych noclegów"
+        icon={(
+          <Apartment
+            fontSize="large"
+          />
+        )}
+      />
 
       <Stack
         gap={2}

@@ -4,6 +4,7 @@ import {
   Stack,
 } from '@mui/material'
 import { useNavigate, useParams } from 'react-router-dom'
+import { Create as CreateIcon } from '@mui/icons-material'
 import { useAppDispatch, useAppSelector } from '../../../app/hooks'
 import * as Input from '../../../components/UI/Input'
 import { setName, setNewTravelRecipe } from '../../../features/travelRecipe/travelRecipeSlice'
@@ -16,6 +17,7 @@ import { Pages } from '../../../pages/pages'
 import * as Loading from '../../../components/UI/Loading'
 import * as TravelAccommodations from './TravelAccommodations'
 import AddAccommodationButton from './AddAccommodationButton'
+import * as Header from '../../../components/Header'
 
 const CreateTravel: React.FC = () => {
   const { id } = useParams()
@@ -79,6 +81,15 @@ const CreateTravel: React.FC = () => {
     <Stack
       gap={3}
     >
+      <Header.Component
+        title="Tworzenie wycieczki"
+        icon={(
+          <CreateIcon
+            fontSize="large"
+          />
+        )}
+      />
+
       <Stack
         direction="row"
         alignItems="center"

@@ -3,11 +3,13 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import {
   Button, Stack,
 } from '@mui/material'
+import { DownhillSkiing } from '@mui/icons-material'
 import { useDependencies } from '../../../context/dependencies'
 import { useAuth } from '../../../context/auth'
 import { Activity } from '../../../model'
 import { Pages } from '../../../pages/pages'
 import * as ActivityCard from './ActivityCard'
+import * as Header from '../../../components/Header'
 
 const AddActivity: React.FC = () => {
   const { state } = useLocation()
@@ -40,11 +42,14 @@ const AddActivity: React.FC = () => {
     <Stack
       gap={2}
     >
-      <h2
-        style={{ marginTop: 0 }}
-      >
-        List dostępnych aktywności
-      </h2>
+      <Header.Component
+        title="Lista dostępnych aktywności"
+        icon={(
+          <DownhillSkiing
+            fontSize="large"
+          />
+        )}
+      />
 
       <Stack
         gap={2}

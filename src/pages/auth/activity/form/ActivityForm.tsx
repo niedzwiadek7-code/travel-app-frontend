@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Button, Stack } from '@mui/material'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
+import { DownhillSkiing } from '@mui/icons-material'
 import * as Select from '../../../../components/UI/Select'
 import InputsMap from './InputsMap'
 import * as Input from '../../../../components/UI/Input'
@@ -12,6 +13,7 @@ import { Pages } from '../../../../pages/pages'
 import * as Loading from '../../../../components/UI/Loading'
 import SaveActivityModal from './SaveActivityModal'
 import * as SaveInstanceActivityModal from '../../../../components/SaveInstanceActivityModal'
+import * as Header from '../../../../components/Header'
 
 type Inputs = {
   activityType: string
@@ -94,11 +96,14 @@ const ActivityForm: React.FC = () => {
     <Stack
       gap={2}
     >
-      <h2
-        style={{ marginTop: 0 }}
-      >
-        { activity ? 'Edytuj aktywność' : 'Dodaj aktywność' }
-      </h2>
+      <Header.Component
+        title={activity ? 'Edytuj aktywność' : 'Dodaj aktywność'}
+        icon={(
+          <DownhillSkiing
+            fontSize="large"
+          />
+        )}
+      />
 
       <form
         onSubmit={handleSubmit(onSubmit)}
@@ -193,7 +198,7 @@ const ActivityForm: React.FC = () => {
           <Button
             type="button"
             variant="contained"
-            onClick={() => navigate(Pages.ADD_ACTIVITY.getRedirectLink({
+            onClick={() => navigate(Pages.TRAVEL_DAY.getRedirectLink({
               countDay: state.countDay,
             }))}
           >
