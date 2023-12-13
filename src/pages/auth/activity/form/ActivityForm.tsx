@@ -201,6 +201,20 @@ const ActivityForm: React.FC = () => {
           </Button>
         )
       }
+
+      {
+        state.travelInstance && (
+          <Button
+            type="button"
+            variant="contained"
+            onClick={() => navigate(Pages.TAKING_TRIP_DAY.getRedirectLink({
+              date: state.date,
+            }))}
+          >
+            Powrót
+          </Button>
+        )
+      }
     </Stack>
   )
 }

@@ -36,8 +36,14 @@ const PassAccommodationTravelModal: React.FC<Props> = (props) => {
 
   const onSubmit = async (data: Inputs) => {
     try {
-      await travelService.passAccommodationElement(props.accommodationElement.id, data)
-      dispatch(passAccommodationElementInstance(props.accommodationElement.id))
+      const result = await travelService.passAccommodationElement(
+        props.accommodationElement.id,
+        data,
+      )
+      dispatch(passAccommodationElementInstance({
+        id: props.accommodationElement.id,
+        photos: result.urls,
+      }))
     } catch (err) {
       toastUtils.Toast.showToast(
         toastUtils.types.ERROR,

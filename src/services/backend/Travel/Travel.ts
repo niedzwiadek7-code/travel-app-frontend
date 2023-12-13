@@ -12,7 +12,7 @@ import {
   PlanATravelDto,
   PassTravelElementDto,
   AddActivityToTravelInstanceDto,
-  AddAccommodationToTravelInstanceDto,
+  AddAccommodationToTravelInstanceDto, PassElementDto,
 } from './dto'
 
 class Travel {
@@ -91,7 +91,7 @@ class Travel {
   public async passTravelElement(id: string, data: PassTravelElementDto) {
     const formData = new FormData()
     data.images.forEach((image) => formData.append('images', image))
-    return this.apiService.put<number>(`${this.travelUrl}/pass-travel-element/${id}`, formData, {
+    return this.apiService.put<PassElementDto>(`${this.travelUrl}/pass-travel-element/${id}`, formData, {
       'Content-Type': 'multipart/form-data',
     })
   }
@@ -115,7 +115,7 @@ class Travel {
   public async passAccommodationElement(id: string, data: PassTravelElementDto) {
     const formData = new FormData()
     data.images.forEach((image) => formData.append('images', image))
-    return this.apiService.put<number>(`${this.travelUrl}/pass-accommodation-element/${id}`, formData, {
+    return this.apiService.put<PassElementDto>(`${this.travelUrl}/pass-accommodation-element/${id}`, formData, {
       'Content-Type': 'multipart/form-data',
     })
   }

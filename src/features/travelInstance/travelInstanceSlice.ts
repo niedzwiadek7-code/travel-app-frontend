@@ -10,14 +10,15 @@ export const travelInstanceSlice = createSlice({
     setNewTravelInstance: (state, action: PayloadAction<TravelInstance>) => ({
       ...action.payload,
     }),
-    passTravelElementInstance: (state, action: PayloadAction<string>) => {
+    passTravelElementInstance: (state, action: PayloadAction<{ id: string, photos: string[] }>) => {
       const travelElements = state.travelElements.map((elem) => {
-        if (elem.id !== action.payload) {
+        if (elem.id !== action.payload.id) {
           return elem
         }
         return {
           ...elem,
           passed: true,
+          photos: action.payload.photos,
         }
       })
 
@@ -46,14 +47,18 @@ export const travelInstanceSlice = createSlice({
         accommodationElements,
       }
     },
-    passAccommodationElementInstance: (state, action: PayloadAction<string>) => {
+    passAccommodationElementInstance: (
+      state,
+      action: PayloadAction<{ id: string, photos: string[] }>,
+    ) => {
       const accommodationElements = state.accommodationElements.map((elem) => {
-        if (elem.id !== action.payload) {
+        if (elem.id !== action.payload.id) {
           return elem
         }
         return {
           ...elem,
           passed: true,
+          photos: action.payload.photos,
         }
       })
 
