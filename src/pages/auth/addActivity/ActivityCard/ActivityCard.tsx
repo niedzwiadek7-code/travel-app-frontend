@@ -6,7 +6,7 @@ import * as Restaurant from './Restaurant'
 
 type Props = {
   activity: ActivityEntity
-  countDay: string
+  state: { travelRecipe: boolean, countDay: string, travelInstance: string, date: string }
 }
 
 const ActivityCard: React.FC<Props> = (props) => {
@@ -15,21 +15,21 @@ const ActivityCard: React.FC<Props> = (props) => {
       return (
         <Travel.Component
           activity={props.activity}
-          countDay={props.countDay}
+          state={props.state}
         />
       )
     case 'Atrakcja':
       return (
         <Attraction.Component
           activity={props.activity}
-          countDay={props.countDay}
+          state={props.state}
         />
       )
     case 'Restauracja':
       return (
         <Restaurant.Component
           activity={props.activity}
-          countDay={props.countDay}
+          state={props.state}
         />
       )
     default:

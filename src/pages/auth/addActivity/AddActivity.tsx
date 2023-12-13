@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import {
   Button, Stack,
 } from '@mui/material'
@@ -10,7 +10,7 @@ import { Pages } from '../../../pages/pages'
 import * as ActivityCard from './ActivityCard'
 
 const AddActivity: React.FC = () => {
-  const { countDay } = useParams()
+  const { state } = useLocation()
   const { getApiService } = useDependencies()
   const { token } = useAuth()
   const apiService = getApiService()
@@ -23,20 +23,12 @@ const AddActivity: React.FC = () => {
     const fetchData = async () => {
       setLoading(true)
       setActivities(
-        await activityService.getAll(),
+        await activityService.getAll(state.source || 'all'),
       )
       setLoading(false)
     }
     fetchData()
   }, [activityService])
-
-  if (!countDay) {
-    return (
-      <div>
-        Wystąpił nieoczikwany problem
-      </div>
-    )
-  }
 
   if (loading) {
     return (
@@ -54,20 +46,6 @@ const AddActivity: React.FC = () => {
         List dostępnych aktywności
       </h2>
 
-      <Stack>
-        <Button
-          variant="outlined"
-          onClick={() => navigate(Pages.ACTIVITY_CREATE.getRedirectLink(), {
-            state: {
-              travelRecipe: true,
-              countDay,
-            },
-          })}
-        >
-          Dodaj nową aktywność
-        </Button>
-      </Stack>
-
       <Stack
         gap={2}
       >
@@ -75,7 +53,7 @@ const AddActivity: React.FC = () => {
           <ActivityCard.Component
             key={activity.id}
             activity={activity}
-            countDay={countDay}
+            state={state}
           />
         ))}
       </Stack>
@@ -86,9 +64,15 @@ const AddActivity: React.FC = () => {
       >
         <Button
           variant="outlined"
-          onClick={() => navigate(Pages.TRAVEL_DAY.getRedirectLink({
-            countDay,
-          }))}
+          onClick={() => (state?.travelRecipe ? (
+            navigate(Pages.TRAVEL_DAY.getRedirectLink({
+              countDay: state.countDay,
+            }))
+          ) : (
+            navigate(Pages.TAKING_TRIP_DAY.getRedirectLink({
+              date: state.date,
+            }))
+          ))}
         >
           Powrót
         </Button>

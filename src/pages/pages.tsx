@@ -35,7 +35,7 @@ export const Pages: Record<string, Page> = {
     <Auth.TravelDay.Component />,
   ),
   ADD_ACTIVITY: new Page(
-    '/add-activity/:countDay',
+    '/add-activity',
     <Auth.AddActivity.Component />,
   ),
   ADD_ACCOMMODATION: new Page(

@@ -19,8 +19,8 @@ class Activity {
     return this.apiService.get<AccommodationEntity>(`${this.activityUrl}/accommodation/find/${id}`)
   }
 
-  public async getAll(): Promise<ActivityEntity[]> {
-    return this.apiService.get<ActivityEntity[]>(`${this.activityUrl}/all`)
+  public async getAll(source?: 'system' | 'user' | 'all'): Promise<ActivityEntity[]> {
+    return this.apiService.get<ActivityEntity[]>(`${this.activityUrl}/all?source=${source}`)
   }
 
   public async getAllAccommodations(): Promise<AccommodationEntity[]> {

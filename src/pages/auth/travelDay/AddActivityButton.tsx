@@ -4,8 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import { Pages } from '../../../pages/pages'
 
 type Props = {
-  travelInstanceId: string
-  date: string
+  countDay: string
 }
 
 const AddActivityButton: React.FC<Props> = (props) => {
@@ -46,8 +45,8 @@ const AddActivityButton: React.FC<Props> = (props) => {
         <MenuItem
           onClick={() => navigate(Pages.ACTIVITY_CREATE.getRedirectLink(), {
             state: {
-              travelInstance: props.travelInstanceId,
-              date: props.date,
+              travelRecipe: true,
+              countDay: props.countDay,
             },
           })}
         >
@@ -56,8 +55,8 @@ const AddActivityButton: React.FC<Props> = (props) => {
         <MenuItem
           onClick={() => navigate(Pages.ADD_ACTIVITY.getRedirectLink(), {
             state: {
-              travelInstance: props.travelInstanceId,
-              date: props.date,
+              travelRecipe: true,
+              countDay: props.countDay,
               source: 'system',
             },
           })}
@@ -67,8 +66,8 @@ const AddActivityButton: React.FC<Props> = (props) => {
         <MenuItem
           onClick={() => navigate(Pages.ADD_ACTIVITY.getRedirectLink(), {
             state: {
-              travelInstance: props.travelInstanceId,
-              date: props.date,
+              travelRecipe: true,
+              countDay: props.countDay,
               source: 'user',
             },
           })}

@@ -7,6 +7,7 @@ import { Pages } from '../../../pages/pages'
 import * as TravelDayTable from './TravelDayTable'
 import { useAppSelector } from '../../../app/hooks'
 import { RootState } from '../../../app/store'
+import AddActivityButton from './AddActivityButton'
 
 const TravelDay: React.FC = () => {
   const travelRecipe = useAppSelector((state: RootState) => state.travelRecipe)
@@ -53,15 +54,9 @@ const TravelDay: React.FC = () => {
           Powrót
         </Button>
 
-        <Button
-          type="button"
-          variant="contained"
-          onClick={() => navigate(Pages.ADD_ACTIVITY.getRedirectLink({
-            countDay,
-          }))}
-        >
-          Dodaj aktywność
-        </Button>
+        <AddActivityButton
+          countDay={countDay}
+        />
       </Stack>
     </Stack>
   )

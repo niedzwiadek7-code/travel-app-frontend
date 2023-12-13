@@ -2,10 +2,11 @@ import React from 'react'
 import { Stack, useTheme } from '@mui/material'
 import { Activity as ActivityEntity } from '../../../../../model'
 import * as SaveActivityModal from '../../../../../components/SaveActivityModal'
+import * as SaveInstanceActivityModal from '../../../../../components/SaveInstanceActivityModal'
 
 type Props = {
   activity: ActivityEntity
-  countDay: string
+  state: { travelRecipe: boolean, countDay: string, travelInstance: string, date: string }
 }
 
 const Attraction: React.FC<Props> = (props) => {
@@ -57,10 +58,20 @@ const Attraction: React.FC<Props> = (props) => {
           {props.activity.description}
         </Stack>
         <Stack>
-          <SaveActivityModal.Component
-            activity={props.activity}
-            countDay={props.countDay}
-          />
+          {
+            props.state?.travelRecipe ? (
+              <SaveActivityModal.Component
+                activity={props.activity}
+                countDay={props.state.countDay}
+              />
+            ) : (
+              <SaveInstanceActivityModal.Component
+                activity={props.activity}
+                date={props.state.date}
+              />
+            )
+          }
+
         </Stack>
       </Stack>
     </Stack>
