@@ -1,10 +1,18 @@
 import dayjs from 'dayjs'
 import ApiService from '../ApiService'
 import {
-  TravelRecipe, Date as DateEntity, TravelInstance, ElementTravelInstance,
+  TravelRecipe,
+  Date as DateEntity,
+  TravelInstance,
+  ElementTravelInstance,
+  AccommodationElementInstance,
 } from '../../../model'
 import {
-  UserTravelRecipeDto, PlanATravelDto, PassTravelElementDto, AddActivityToTravelInstanceDto,
+  UserTravelRecipeDto,
+  PlanATravelDto,
+  PassTravelElementDto,
+  AddActivityToTravelInstanceDto,
+  AddAccommodationToTravelInstanceDto,
 } from './dto'
 
 class Travel {
@@ -115,6 +123,16 @@ class Travel {
   public async addActivityToTravelInstance(id: string, data: AddActivityToTravelInstanceDto) {
     return this.apiService.post<ElementTravelInstance>(
       `${this.travelUrl}/travel-instance/activity/add/${id}`,
+      data,
+    )
+  }
+
+  public async addAccommodationToTravelInstance(
+    id: string,
+    data: AddAccommodationToTravelInstanceDto,
+  ) {
+    return this.apiService.post<AccommodationElementInstance>(
+      `${this.travelUrl}/travel-instance/accommodation/add/${id}`,
       data,
     )
   }

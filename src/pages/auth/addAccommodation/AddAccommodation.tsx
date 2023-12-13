@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import {
   Button, Stack,
 } from '@mui/material'
@@ -12,7 +12,8 @@ import { useAppSelector } from '../../../app/hooks'
 import { RootState } from '../../../app/store'
 
 const AddAccommodation: React.FC = () => {
-  const travelRecipe = useAppSelector((state: RootState) => state.travelRecipe)
+  const { state } = useLocation()
+  const travelRecipe = useAppSelector((e: RootState) => e.travelRecipe)
   const { getApiService } = useDependencies()
   const { token } = useAuth()
   const apiService = getApiService()
@@ -25,7 +26,7 @@ const AddAccommodation: React.FC = () => {
     const fetchData = async () => {
       setLoading(true)
       setAccommodations(
-        await activityService.getAllAccommodations(),
+        await activityService.getAllAccommodations(state.source),
       )
       setLoading(false)
     }
@@ -48,19 +49,6 @@ const AddAccommodation: React.FC = () => {
         List dostępnych noclegów
       </h2>
 
-      <Stack>
-        <Button
-          variant="outlined"
-          onClick={() => navigate(Pages.ACCOMMODATION_CREATE.getRedirectLink(), {
-            state: {
-              travelRecipe: true,
-            },
-          })}
-        >
-          Dodaj nowy nocleg
-        </Button>
-      </Stack>
-
       <Stack
         gap={2}
       >
@@ -68,7 +56,7 @@ const AddAccommodation: React.FC = () => {
           <AccommodationCard.Component
             key={accommodation.id}
             accommodation={accommodation}
-            countDay=""
+            state={state}
           />
         ))}
       </Stack>
@@ -77,20 +65,34 @@ const AddAccommodation: React.FC = () => {
         direction="row"
         justifyContent="flex-end"
       >
-        <Button
-          variant="outlined"
-          onClick={() => {
-            if (travelRecipe.id) {
-              navigate(Pages.EDIT_TRAVEL.getRedirectLink({
-                id: travelRecipe.id.toString(),
-              }))
-            } else {
-              navigate(Pages.CREATE_TRAVEL.getRedirectLink())
-            }
-          }}
-        >
-          Powrót
-        </Button>
+        {
+          state?.travelRecipe ? (
+            <Button
+              variant="outlined"
+              onClick={() => {
+                if (travelRecipe.id) {
+                  navigate(Pages.EDIT_TRAVEL.getRedirectLink({
+                    id: travelRecipe.id.toString(),
+                  }))
+                } else {
+                  navigate(Pages.CREATE_TRAVEL.getRedirectLink())
+                }
+              }}
+            >
+              Powrót
+            </Button>
+          ) : (
+            <Button
+              type="button"
+              variant="contained"
+              onClick={() => navigate(Pages.TAKING_TRIP.getRedirectLink({
+                id: state.travelInstance,
+              }))}
+            >
+              Powrót
+            </Button>
+          )
+        }
       </Stack>
 
     </Stack>

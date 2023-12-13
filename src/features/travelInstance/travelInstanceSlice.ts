@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { TravelInstance, ElementTravelInstance } from '../../model'
+import { TravelInstance, ElementTravelInstance, AccommodationElementInstance } from '../../model'
 
 const initialState: TravelInstance = new TravelInstance({})
 
@@ -66,6 +66,10 @@ export const travelInstanceSlice = createSlice({
       ...state,
       travelElements: [...state.travelElements, action.payload],
     }),
+    putAccommodationInstance: (state, action: PayloadAction<AccommodationElementInstance>) => ({
+      ...state,
+      accommodationElements: [...state.accommodationElements, action.payload],
+    }),
   },
 })
 
@@ -76,6 +80,7 @@ export const {
   cancelAccommodationElementInstance,
   passAccommodationElementInstance,
   putActivityInstance,
+  putAccommodationInstance,
 } = travelInstanceSlice.actions
 
 export default travelInstanceSlice.reducer

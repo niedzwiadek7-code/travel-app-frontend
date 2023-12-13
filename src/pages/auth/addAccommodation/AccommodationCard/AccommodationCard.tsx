@@ -1,20 +1,59 @@
 import React from 'react'
-import { Stack, useTheme } from '@mui/material'
-import { Accommodation as AccommodationEntity } from '../../../../model'
+import { Button, Stack, useTheme } from '@mui/material'
+import { useNavigate } from 'react-router-dom'
+import { Accommodation as AccommodationEntity, AccommodationElementInstance } from '../../../../model'
 import * as SaveActivityModal from '../../../../components/SaveActivityModal'
+import { putAccommodationInstance } from '../../../../features/travelInstance/travelInstanceSlice'
+import { Pages } from '../../../pages'
+import { useAuth } from '../../../../context/auth'
+import { useDependencies } from '../../../../context/dependencies'
+import { useAppDispatch } from '../../../../app/hooks'
 
 type Props = {
   accommodation: AccommodationEntity
-  countDay: string
+  state: { travelRecipe: boolean, travelInstance: string }
 }
 
 const Accommodation: React.FC<Props> = (props) => {
+  const navigate = useNavigate()
+  const { token } = useAuth()
+  const { getApiService, getToastUtils } = useDependencies()
+  const apiService = getApiService()
+  const travelService = apiService.getTravel(token)
+  const toastUtils = getToastUtils()
   const theme = useTheme()
+  const dispatch = useAppDispatch()
 
   const formatter = Intl.NumberFormat('pl-PL', {
     style: 'currency',
     currency: 'PLN',
   })
+
+  const putAccommodationToTravelInstance = async () => {
+    try {
+      const result = await travelService.addAccommodationToTravelInstance(
+        props.state.travelInstance,
+        {
+          accommodationId: props.accommodation.id.toString(),
+        },
+      )
+      const travelElement = new AccommodationElementInstance({
+        id: result.id,
+        passed: false,
+        photos: [],
+        accommodation: props.accommodation,
+      })
+      dispatch(putAccommodationInstance(travelElement))
+      navigate(Pages.TAKING_TRIP.getRedirectLink({
+        id: props.state.travelInstance,
+      }))
+    } catch (err) {
+      toastUtils.Toast.showToast(
+        toastUtils.types.ERROR,
+        'Wystąpił nieoczekiwany błąd',
+      )
+    }
+  }
 
   return (
     <Stack
@@ -45,10 +84,23 @@ const Accommodation: React.FC<Props> = (props) => {
           {props.accommodation.description}
         </Stack>
         <Stack>
-          <SaveActivityModal.Component
-            activity={props.accommodation}
-            countDay={props.countDay}
-          />
+          {
+            props.state?.travelRecipe ? (
+              <SaveActivityModal.Component
+                activity={props.accommodation}
+                countDay=""
+              />
+            ) : (
+              <Button
+                type="button"
+                variant="contained"
+                onClick={putAccommodationToTravelInstance}
+              >
+                Skorzystaj z oferty
+              </Button>
+            )
+          }
+
         </Stack>
       </Stack>
     </Stack>

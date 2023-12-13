@@ -23,8 +23,10 @@ class Activity {
     return this.apiService.get<ActivityEntity[]>(`${this.activityUrl}/all?source=${source}`)
   }
 
-  public async getAllAccommodations(): Promise<AccommodationEntity[]> {
-    const results = await this.apiService.get<AccommodationEntity[]>(`${this.activityUrl}/accommodation/all`)
+  public async getAllAccommodations(source?: 'system' | 'user' | 'all'): Promise<AccommodationEntity[]> {
+    const results = await this.apiService.get<AccommodationEntity[]>(
+      `${this.activityUrl}/accommodation/all?source=${source}`,
+    )
     return results.map((result) => new AccommodationEntity(result))
   }
 

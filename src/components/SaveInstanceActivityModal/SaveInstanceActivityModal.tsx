@@ -6,7 +6,11 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo'
 import dayjs from 'dayjs'
 import { useNavigate } from 'react-router-dom'
-import { Activity as ActivityEntity, Date as DateEntity, ElementTravelInstance } from '../../model'
+import {
+  Activity as ActivityEntity,
+  Date as DateEntity,
+  ElementTravelInstance,
+} from '../../model'
 import * as Modal from '../UI/Modal'
 import { useDependencies } from '../../context/dependencies'
 import { useAuth } from '../../context/auth'

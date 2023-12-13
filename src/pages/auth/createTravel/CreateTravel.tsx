@@ -15,6 +15,7 @@ import { useAuth } from '../../../context/auth'
 import { Pages } from '../../../pages/pages'
 import * as Loading from '../../../components/UI/Loading'
 import * as TravelAccommodations from './TravelAccommodations'
+import AddAccommodationButton from './AddAccommodationButton'
 
 const CreateTravel: React.FC = () => {
   const { id } = useParams()
@@ -112,15 +113,7 @@ const CreateTravel: React.FC = () => {
 
         <TravelAccommodations.Component />
 
-        <Button
-          type="button"
-          variant="contained"
-          color="success"
-          onClick={() => navigate(Pages.ADD_ACCOMMODATION.getRedirectLink())}
-          style={{ marginTop: '1.5em' }}
-        >
-          Dodaj nocleg
-        </Button>
+        <AddAccommodationButton />
       </Stack>
 
       <Stack>

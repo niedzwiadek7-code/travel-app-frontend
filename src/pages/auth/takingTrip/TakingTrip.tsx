@@ -13,6 +13,7 @@ import * as Header from '../../../components/Header'
 import { Pages } from '../../pages'
 import * as TripTable from './TripTable'
 import * as AccommodationElem from './AccommodationElem'
+import AddAccommodationButton from './AddAccommodationButton'
 
 const TakingTrip: React.FC = () => {
   const { id } = useParams()
@@ -67,8 +68,10 @@ const TakingTrip: React.FC = () => {
         )}
       />
 
-      <Stack>
-        <h2 style={{ marginTop: 0 }}>
+      <Stack
+        gap={2}
+      >
+        <h2 style={{ marginTop: 0, marginBottom: 0 }}>
           Lista noclegów
         </h2>
 
@@ -80,6 +83,8 @@ const TakingTrip: React.FC = () => {
             />
           ))
         }
+
+        <AddAccommodationButton />
       </Stack>
 
       <Stack>

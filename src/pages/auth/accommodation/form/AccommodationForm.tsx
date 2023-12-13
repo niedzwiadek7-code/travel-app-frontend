@@ -2,13 +2,15 @@ import React, { useEffect, useState } from 'react'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { Button, Stack } from '@mui/material'
-import { Accommodation, ActivityTypes } from '../../../../model'
+import { Accommodation, AccommodationElementInstance, ActivityTypes } from '../../../../model'
 import { useDependencies } from '../../../../context/dependencies'
 import { useAuth } from '../../../../context/auth'
 import { Pages } from '../../../pages'
 import * as Loading from '../../../../components/UI/Loading'
 import * as Input from '../../../../components/UI/Input'
 import * as SaveActivityModal from '../../../../components/SaveActivityModal'
+import { putAccommodationInstance } from '../../../../features/travelInstance/travelInstanceSlice'
+import { useAppDispatch } from '../../../../app/hooks'
 
 type Inputs = {
   name: string
@@ -31,7 +33,9 @@ const AccommodationForm: React.FC = () => {
   const apiService = getApiService()
   const { token } = useAuth()
   const activityService = apiService.getActivity(token)
+  const travelService = apiService.getTravel(token)
   const toastUtils = getToastUtils()
+  const dispatch = useAppDispatch()
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     try {
@@ -48,14 +52,40 @@ const AccommodationForm: React.FC = () => {
       navigate(Pages.ACCOMMODATION_EDIT.getRedirectLink({
         id: result.id.toString(),
       }), {
-        state: {
-          travelRecipe: state && state.travelRecipe,
-        },
+        state,
       })
     } catch (err) {
       toastUtils.Toast.showToast(
         toastUtils.types.ERROR,
         'Podczas tworzenia noclegu wystąpił błąd',
+      )
+    }
+  }
+
+  const putAccommodationToTravelInstance = async () => {
+    try {
+      if (accommodation) {
+        const result = await travelService.addAccommodationToTravelInstance(
+          state.travelInstance,
+          {
+            accommodationId: accommodation.id.toString(),
+          },
+        )
+        const travelElement = new AccommodationElementInstance({
+          id: result.id,
+          passed: false,
+          photos: [],
+          accommodation,
+        })
+        dispatch(putAccommodationInstance(travelElement))
+        navigate(Pages.TAKING_TRIP.getRedirectLink({
+          id: state.travelInstance,
+        }))
+      }
+    } catch (err) {
+      toastUtils.Toast.showToast(
+        toastUtils.types.ERROR,
+        'Wystąpił nieoczekiwany błąd',
       )
     }
   }
@@ -149,11 +179,41 @@ const AccommodationForm: React.FC = () => {
       }
 
       {
+        accommodation && state && state.travelInstance && (
+          <Button
+            type="button"
+            variant="contained"
+            onClick={putAccommodationToTravelInstance}
+          >
+            Skorzystaj z oferty
+          </Button>
+        )
+      }
+
+      {
         state && state.travelRecipe && (
           <Button
             type="button"
             variant="contained"
-            onClick={() => navigate(Pages.ADD_ACCOMMODATION.getRedirectLink())}
+            onClick={() => navigate(Pages.ADD_ACCOMMODATION.getRedirectLink(), {
+              state: {
+                travelRecipe: true,
+              },
+            })}
+          >
+            Powrót
+          </Button>
+        )
+      }
+
+      {
+        state && state.travelInstance && (
+          <Button
+            type="button"
+            variant="contained"
+            onClick={() => navigate(Pages.TAKING_TRIP.getRedirectLink({
+              id: state.travelInstance,
+            }))}
           >
             Powrót
           </Button>
