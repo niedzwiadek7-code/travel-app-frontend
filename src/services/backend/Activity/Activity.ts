@@ -44,7 +44,15 @@ class Activity {
   }
 
   public async restoreActivity(id: string): Promise<number> {
-    return this.apiService.delete(`${this.activityUrl}/restore/${id}`)
+    return this.apiService.delete<number>(`${this.activityUrl}/restore/${id}`)
+  }
+
+  public async acceptAccommodation(id: string): Promise<number> {
+    return this.apiService.post<number>(`${this.activityUrl}/accommodation/accept/${id}`)
+  }
+
+  public async restoreAccommodation(id: string): Promise<number> {
+    return this.apiService.delete<number>(`${this.activityUrl}/accommodation/restore/${id}`)
   }
 
   constructor(token: string) {

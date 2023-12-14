@@ -8,10 +8,14 @@ import { Pages } from '../../../pages'
 import { useAuth } from '../../../../context/auth'
 import { useDependencies } from '../../../../context/dependencies'
 import { useAppDispatch } from '../../../../app/hooks'
+import { StateDto } from '../dto/state.dto'
+import AdminButtons from '../AdminButtons'
 
 type Props = {
   accommodation: AccommodationEntity
-  state: { travelRecipe: boolean, travelInstance: string }
+  state: StateDto
+  acceptElement: () => {}
+  deleteElement: () => {}
 }
 
 const Accommodation: React.FC<Props> = (props) => {
@@ -85,12 +89,15 @@ const Accommodation: React.FC<Props> = (props) => {
         </Stack>
         <Stack>
           {
-            props.state?.travelRecipe ? (
+            props.state?.travelRecipe && (
               <SaveActivityModal.Component
                 activity={props.accommodation}
                 countDay=""
               />
-            ) : (
+            )
+          }
+          {
+            props.state?.travelInstance && (
               <Button
                 type="button"
                 variant="contained"
@@ -98,6 +105,15 @@ const Accommodation: React.FC<Props> = (props) => {
               >
                 Skorzystaj z oferty
               </Button>
+            )
+          }
+          {
+            props.state?.admin && (
+              <AdminButtons
+                acceptElement={props.acceptElement}
+                deleteElement={props.deleteElement}
+                accommodationId={props.accommodation.id.toString()}
+              />
             )
           }
 
