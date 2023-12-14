@@ -3,10 +3,14 @@ import { Stack, useTheme } from '@mui/material'
 import { Activity as ActivityEntity } from '../../../../../model'
 import * as SaveActivityModal from '../../../../../components/SaveActivityModal'
 import * as SaveInstanceActivityModal from '../../../../../components/SaveInstanceActivityModal'
+import { StateDto } from '../../dto/state.dto'
+import AdminButtons from '../AdminButtons'
 
 type Props = {
   activity: ActivityEntity
-  state: { travelRecipe: boolean, countDay: string, travelInstance: string, date: string }
+  state: StateDto
+  acceptElement: () => {}
+  deleteElement: () => {}
 }
 
 const Attraction: React.FC<Props> = (props) => {
@@ -59,15 +63,27 @@ const Attraction: React.FC<Props> = (props) => {
         </Stack>
         <Stack>
           {
-            props.state?.travelRecipe ? (
+            props.state?.travelRecipe && (
               <SaveActivityModal.Component
                 activity={props.activity}
                 countDay={props.state.countDay}
               />
-            ) : (
+            )
+          }
+          {
+            props.state?.travelInstance && (
               <SaveInstanceActivityModal.Component
                 activity={props.activity}
                 date={props.state.date}
+              />
+            )
+          }
+          {
+            props.state?.admin && (
+              <AdminButtons
+                acceptElement={props.acceptElement}
+                deleteElement={props.deleteElement}
+                activityId={props.activity.id.toString()}
               />
             )
           }

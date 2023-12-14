@@ -5,6 +5,7 @@ import {
   Accommodation as AccommodationEntity,
 } from '../../../model'
 import { ActivityDto } from './dto'
+import { QueryActivity } from './dto/query-activity'
 
 class Activity {
   private activityUrl = '/activity'
@@ -19,11 +20,11 @@ class Activity {
     return this.apiService.get<AccommodationEntity>(`${this.activityUrl}/accommodation/find/${id}`)
   }
 
-  public async getAll(source?: 'system' | 'user' | 'all'): Promise<ActivityEntity[]> {
+  public async getAll(source?: QueryActivity): Promise<ActivityEntity[]> {
     return this.apiService.get<ActivityEntity[]>(`${this.activityUrl}/all?source=${source}`)
   }
 
-  public async getAllAccommodations(source?: 'system' | 'user' | 'all'): Promise<AccommodationEntity[]> {
+  public async getAllAccommodations(source?: QueryActivity): Promise<AccommodationEntity[]> {
     const results = await this.apiService.get<AccommodationEntity[]>(
       `${this.activityUrl}/accommodation/all?source=${source}`,
     )
@@ -36,6 +37,14 @@ class Activity {
 
   public async putActivity(data: ActivityDto): Promise<ActivityEntity> {
     return this.apiService.post<ActivityEntity>(`${this.activityUrl}`, data)
+  }
+
+  public async acceptActivity(id: string): Promise<number> {
+    return this.apiService.post<number>(`${this.activityUrl}/accept/${id}`)
+  }
+
+  public async restoreActivity(id: string): Promise<number> {
+    return this.apiService.delete(`${this.activityUrl}/restore/${id}`)
   }
 
   constructor(token: string) {
