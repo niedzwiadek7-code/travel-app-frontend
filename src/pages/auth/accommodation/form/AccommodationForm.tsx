@@ -46,20 +46,36 @@ const AccommodationForm: React.FC = () => {
         activityType: ActivityTypes.ACCOMMODATION,
         price: parseInt(data.price, 10),
       }
-      const result = await activityService.putActivity(transformedData)
-      toastUtils.Toast.showToast(
-        toastUtils.types.SUCCESS,
-        'Udało się stworzyć nowy nocleg',
-      )
+
+      let accommodationId: string = ''
+      if (accommodation) {
+        const result = await activityService.putActivity(
+          accommodation.id.toString(),
+          transformedData,
+        )
+        accommodationId = result.id.toString()
+        toastUtils.Toast.showToast(
+          toastUtils.types.INFO,
+          'Edycja noclegu przebiegła pomyślnie',
+        )
+      } else {
+        const result = await activityService.createActivity(transformedData)
+        accommodationId = result.id.toString()
+        toastUtils.Toast.showToast(
+          toastUtils.types.SUCCESS,
+          'Udało się stworzyć nowy nocleg',
+        )
+      }
+
       navigate(Pages.ACCOMMODATION_EDIT.getRedirectLink({
-        id: result.id.toString(),
+        id: accommodationId,
       }), {
         state,
       })
     } catch (err) {
       toastUtils.Toast.showToast(
         toastUtils.types.ERROR,
-        'Podczas tworzenia noclegu wystąpił błąd',
+        'Wystąpił nieoczekiwany błąd',
       )
     }
   }
@@ -83,6 +99,38 @@ const AccommodationForm: React.FC = () => {
         navigate(Pages.TAKING_TRIP.getRedirectLink({
           id: state.travelInstance,
         }))
+      }
+    } catch (err) {
+      toastUtils.Toast.showToast(
+        toastUtils.types.ERROR,
+        'Wystąpił nieoczekiwany błąd',
+      )
+    }
+  }
+
+  const acceptAccommodation = async () => {
+    try {
+      if (accommodation) {
+        await activityService.acceptAccommodation(accommodation.id.toString())
+        navigate(Pages.ADD_ACCOMMODATION.getRedirectLink(), {
+          state,
+        })
+      }
+    } catch (err) {
+      toastUtils.Toast.showToast(
+        toastUtils.types.ERROR,
+        'Wystąpił nieoczekiwany błąd',
+      )
+    }
+  }
+
+  const restoreAccommodation = async () => {
+    try {
+      if (accommodation) {
+        await activityService.restoreActivity(accommodation.id.toString())
+        navigate(Pages.ADD_ACCOMMODATION.getRedirectLink(), {
+          state,
+        })
       }
     } catch (err) {
       toastUtils.Toast.showToast(
@@ -196,10 +244,34 @@ const AccommodationForm: React.FC = () => {
       }
 
       {
+        state.admin && accommodation && (
+          <>
+            <Button
+              type="button"
+              variant="contained"
+              color="success"
+              onClick={() => acceptAccommodation()}
+            >
+              Zaakceptuj
+            </Button>
+
+            <Button
+              type="button"
+              variant="contained"
+              color="error"
+              onClick={() => restoreAccommodation()}
+            >
+              Usuń
+            </Button>
+          </>
+        )
+      }
+
+      {
         state && state.travelRecipe && (
           <Button
             type="button"
-            variant="contained"
+            variant="outlined"
             onClick={() => navigate(Pages.CREATE_TRAVEL.getRedirectLink())}
           >
             Powrót
@@ -211,10 +283,24 @@ const AccommodationForm: React.FC = () => {
         state && state.travelInstance && (
           <Button
             type="button"
-            variant="contained"
+            variant="outlined"
             onClick={() => navigate(Pages.TAKING_TRIP.getRedirectLink({
               id: state.travelInstance,
             }))}
+          >
+            Powrót
+          </Button>
+        )
+      }
+
+      {
+        state?.admin && (
+          <Button
+            type="button"
+            variant="outlined"
+            onClick={() => navigate(Pages.ADD_ACCOMMODATION.getRedirectLink(), {
+              state,
+            })}
           >
             Powrót
           </Button>

@@ -52,20 +52,34 @@ const ActivityForm: React.FC = () => {
         ...data,
         price: parseInt(data.price, 10),
       }
-      const result = await activityService.putActivity(transformedData)
-      toastUtils.Toast.showToast(
-        toastUtils.types.SUCCESS,
-        'Udało się stworzyć nową aktywność',
-      )
+
+      let activityId: string = ''
+
+      if (activity) {
+        const result = await activityService.putActivity(activity.id.toString(), transformedData)
+        activityId = result.id.toString()
+        toastUtils.Toast.showToast(
+          toastUtils.types.INFO,
+          'Edycja aktywności przebiegła pomyślnie',
+        )
+      } else {
+        const result = await activityService.createActivity(transformedData)
+        activityId = result.id.toString()
+        toastUtils.Toast.showToast(
+          toastUtils.types.SUCCESS,
+          'Udało się stworzyć nową aktywność',
+        )
+      }
+
       navigate(Pages.ACTIVITY_EDIT.getRedirectLink({
-        id: result.id.toString(),
+        id: activityId,
       }), {
         state,
       })
     } catch (err) {
       toastUtils.Toast.showToast(
         toastUtils.types.ERROR,
-        'Podczas tworzenia aktywności wystąpił błąd',
+        'Wystąpił nieoczekiwany błąd',
       )
     }
   }
@@ -85,6 +99,38 @@ const ActivityForm: React.FC = () => {
       setLoading(false)
     }
   }, [id])
+
+  const acceptActivity = async () => {
+    try {
+      if (activity) {
+        await activityService.acceptActivity(activity.id.toString())
+        navigate(Pages.ADD_ACTIVITY.getRedirectLink(), {
+          state,
+        })
+      }
+    } catch (err) {
+      toastUtils.Toast.showToast(
+        toastUtils.types.ERROR,
+        'Wystąpił nieoczekiwany błąd',
+      )
+    }
+  }
+
+  const restoreActivity = async () => {
+    try {
+      if (activity) {
+        await activityService.restoreActivity(activity.id.toString())
+        navigate(Pages.ADD_ACTIVITY.getRedirectLink(), {
+          state,
+        })
+      }
+    } catch (err) {
+      toastUtils.Toast.showToast(
+        toastUtils.types.ERROR,
+        'Wystąpił nieoczekiwany błąd',
+      )
+    }
+  }
 
   if (loading) {
     return (
@@ -194,10 +240,34 @@ const ActivityForm: React.FC = () => {
       }
 
       {
+        state.admin && activity && (
+          <>
+            <Button
+              type="button"
+              variant="contained"
+              color="success"
+              onClick={() => acceptActivity()}
+            >
+              Zaakceptuj
+            </Button>
+
+            <Button
+              type="button"
+              variant="contained"
+              color="error"
+              onClick={() => restoreActivity()}
+            >
+              Usuń
+            </Button>
+          </>
+        )
+      }
+
+      {
         state.countDay && (
           <Button
             type="button"
-            variant="contained"
+            variant="outlined"
             onClick={() => navigate(Pages.TRAVEL_DAY.getRedirectLink({
               countDay: state.countDay,
             }))}
@@ -208,13 +278,27 @@ const ActivityForm: React.FC = () => {
       }
 
       {
-        state.travelInstance && (
+        state?.travelInstance && (
           <Button
             type="button"
-            variant="contained"
+            variant="outlined"
             onClick={() => navigate(Pages.TAKING_TRIP_DAY.getRedirectLink({
               date: state.date,
             }))}
+          >
+            Powrót
+          </Button>
+        )
+      }
+
+      {
+        state?.admin && (
+          <Button
+            type="button"
+            variant="outlined"
+            onClick={() => navigate(Pages.ADD_ACTIVITY.getRedirectLink(), {
+              state,
+            })}
           >
             Powrót
           </Button>

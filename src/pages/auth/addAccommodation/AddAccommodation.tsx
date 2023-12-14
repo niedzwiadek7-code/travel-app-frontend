@@ -73,7 +73,7 @@ const AddAccommodation: React.FC = () => {
       gap={2}
     >
       <Header.Component
-        title="Lista dostępnych noclegów"
+        title={state?.admin ? 'Zarządzanie noclegami' : 'Lista dostępnych noclegów'}
         icon={(
           <Apartment
             fontSize="large"
