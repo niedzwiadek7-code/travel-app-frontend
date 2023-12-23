@@ -5,6 +5,8 @@ import {
 import { useNavigate } from 'react-router-dom'
 import Styles from './Cards.module.scss'
 import { Pages } from '../../../pages'
+import { useAuth } from '../../../../context/auth'
+import { Roles } from '../../../../model'
 
 type CardProps = {
   title: string,
@@ -48,6 +50,7 @@ const CardComponent: React.FC<CardProps> = (props) => (
 
 const Cards: React.FC = () => {
   const navigate = useNavigate()
+  const { roles } = useAuth()
 
   return (
     <Stack
@@ -68,26 +71,33 @@ const Cards: React.FC = () => {
         description="Przeglądaj odbyte przez siebie wycieczki"
         link={() => navigate(Pages.REALIZED_TRIPS.getRedirectLink())}
       />
-      <CardComponent
-        title="Zarządzaj aktywnościami"
-        description="Rozwijaj listę aktywności polecanych przez system"
-        link={() => navigate(Pages.ADD_ACTIVITY.getRedirectLink(), {
-          state: {
-            admin: true,
-            source: 'toAccept',
-          },
-        })}
-      />
-      <CardComponent
-        title="Zarządzaj noclegami"
-        description="Rozwijaj listę noclegów polecanych przez system"
-        link={() => navigate(Pages.ADD_ACCOMMODATION.getRedirectLink(), {
-          state: {
-            admin: true,
-            source: 'toAccept',
-          },
-        })}
-      />
+
+      {
+        roles?.includes(Roles.ADMIN) && (
+          <>
+            <CardComponent
+              title="Zarządzaj aktywnościami"
+              description="Rozwijaj listę aktywności polecanych przez system"
+              link={() => navigate(Pages.ADD_ACTIVITY.getRedirectLink(), {
+                state: {
+                  admin: true,
+                  source: 'toAccept',
+                },
+              })}
+            />
+            <CardComponent
+              title="Zarządzaj noclegami"
+              description="Rozwijaj listę noclegów polecanych przez system"
+              link={() => navigate(Pages.ADD_ACCOMMODATION.getRedirectLink(), {
+                state: {
+                  admin: true,
+                  source: 'toAccept',
+                },
+              })}
+            />
+          </>
+        )
+      }
     </Stack>
   )
 }
