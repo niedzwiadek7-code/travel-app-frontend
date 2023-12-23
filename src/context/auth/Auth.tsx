@@ -16,6 +16,11 @@ class AuthClass implements AuthInterface {
   // eslint-disable-next-line no-unused-vars
   setLoggedIn: (loggedIn: boolean) => void
 
+  roles: string[] | null
+
+  // eslint-disable-next-line no-unused-vars
+  setRoles: (roles: string[] | null) => void
+
   constructor(
     token: (string | undefined) = undefined,
     // eslint-disable-next-line no-shadow,no-unused-vars
@@ -23,11 +28,16 @@ class AuthClass implements AuthInterface {
     loggedIn: boolean = false,
     // eslint-disable-next-line no-shadow,no-unused-vars
     setLoggedIn: (loggedIn: boolean) => void = () => false,
+    roles: string[] | null = null,
+    // eslint-disable-next-line no-shadow,no-unused-vars
+    setRoles: (roles: string[] | null) => void = () => null,
   ) {
     this.token = token
     this.setToken = setToken
     this.loggedIn = loggedIn
     this.setLoggedIn = setLoggedIn
+    this.roles = roles
+    this.setRoles = setRoles
   }
 }
 
@@ -38,9 +48,10 @@ type ProviderProps = {
 }
 
 export const AuthProvider: React.FC<ProviderProps> = (props) => {
-  const [cookies, setCookie, removeCookie] = useCookies(['token'])
+  const [cookies, setCookie, removeCookie] = useCookies(['token', 'roles'])
   const [token, setToken] = useState<string | undefined>(cookies.token)
   const [loggedIn, setLoggedIn] = useState<boolean>(Boolean(cookies.token))
+  const [roles, setRoles] = useState<string[]>(cookies.roles || [])
 
   const setTokenFunction = (tokenFn: string | undefined = undefined) => {
     if (tokenFn) {
@@ -51,12 +62,24 @@ export const AuthProvider: React.FC<ProviderProps> = (props) => {
     removeCookie('token')
   }
 
+  const setRolesFunction = (rolesFn: string[] | null = []) => {
+    if (roles) {
+      setCookie('roles', JSON.stringify(rolesFn))
+      setRoles(rolesFn || [])
+      return
+    }
+    removeCookie('roles')
+    setRoles([])
+  }
+
   const value = useMemo(() => new AuthClass(
     token,
     setTokenFunction,
     loggedIn,
     setLoggedIn,
-  ), [token, loggedIn])
+    roles,
+    setRolesFunction,
+  ), [token, loggedIn, roles])
 
   return (
     <AuthContext.Provider

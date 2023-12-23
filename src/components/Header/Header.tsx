@@ -13,11 +13,13 @@ type Props = {
 
 const Header: React.FC<Props> = (props) => {
   const theme = useTheme()
-  const { setToken } = useAuth()
+  const { setToken, setLoggedIn, setRoles } = useAuth()
   const navigate = useNavigate()
 
   const logout = () => {
+    setLoggedIn(false)
     setToken(undefined)
+    setRoles([])
     navigate(Pages.LOGIN.getRedirectLink())
   }
 

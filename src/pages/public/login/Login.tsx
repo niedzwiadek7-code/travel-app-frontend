@@ -21,7 +21,7 @@ const Login: React.FC = () => {
   const theme = useTheme()
   const { getApiService, getToastUtils } = useDependencies()
   const apiService = getApiService()
-  const { setToken } = useAuth()
+  const { setToken, setLoggedIn, setRoles } = useAuth()
   const navigate = useNavigate()
 
   const {
@@ -33,7 +33,12 @@ const Login: React.FC = () => {
     try {
       const authService = apiService.getAuth()
       const token = await authService.login(data)
+      setLoggedIn(true)
       setToken(token)
+
+      const userService = apiService.getUser(token)
+      const user = await userService.get()
+      setRoles(user.roles)
       navigate(Pages.DASHBOARD.getRedirectLink())
     } catch (err) {
       toastUtils.Toast.showToast(

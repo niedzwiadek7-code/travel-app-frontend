@@ -1,12 +1,13 @@
 import ApiService from '../ApiService'
+import { User as UserEntity } from '../../../model'
 
 class User {
   private authUrl = '/user'
 
   private apiService: ApiService
 
-  public async get(): Promise<User> {
-    return this.apiService.post<User>(`${this.authUrl}`)
+  public async get(): Promise<UserEntity> {
+    return this.apiService.get<UserEntity>(`${this.authUrl}`)
   }
 
   constructor(token: string) {

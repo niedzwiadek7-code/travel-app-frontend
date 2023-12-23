@@ -11,6 +11,7 @@ import ElementTravelInstance from './ElementTravelInstance'
 import AccommodationElementInstance from './AccommodationElementInstance'
 
 export * from './ActivityTypes'
+export * from './Roles'
 
 export {
   User,
