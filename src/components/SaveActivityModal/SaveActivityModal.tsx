@@ -34,7 +34,7 @@ type Inputs = {
   times: string
   numberOfDays: number
   numberOfPeople: number
-  price: number
+  price: string
   description: string
 }
 
@@ -57,7 +57,7 @@ const SaveActivityModal: React.FC<Props> = (props) => {
       if (props.activity.priceType && props.activity.priceType === 'per_hour') {
         return
       }
-      setValue('price', props.activity.price)
+      setValue('price', props.activity.price.toString())
     }
   }, [])
 
@@ -72,7 +72,8 @@ const SaveActivityModal: React.FC<Props> = (props) => {
         const numberOfPeople = watch('numberOfPeople') > 1 ? watch('numberOfPeople') : 1
         setValue(
           'price',
-          Math.ceil(Date.timeDiff(dateStart, dateEnd) / 60) * props.activity.price * numberOfPeople,
+          (Math.ceil(Date.timeDiff(dateStart, dateEnd) / 60)
+            * props.activity.price * numberOfPeople).toString(),
         )
       }
     }
@@ -85,13 +86,13 @@ const SaveActivityModal: React.FC<Props> = (props) => {
 
     const numberOfPeople = watch('numberOfPeople')
     if (numberOfPeople > 1) {
-      setValue('price', props.activity.price * numberOfPeople)
+      setValue('price', (props.activity.price * numberOfPeople).toString())
     }
   }
 
   const calculatePriceForAccommodation = (numberOfDays: number) => {
     if (numberOfDays > 1) {
-      setValue('price', numberOfDays * props.activity.price)
+      setValue('price', (numberOfDays * props.activity.price).toString())
     }
   }
 
@@ -135,7 +136,7 @@ const SaveActivityModal: React.FC<Props> = (props) => {
           id: uuidv4(),
           numberOfDays: data.numberOfDays,
           description: data.description,
-          price: data.price,
+          price: parseInt(data.price, 10),
           accommodation: props.activity,
         })))
         if (travelRecipe.id) {
@@ -153,7 +154,7 @@ const SaveActivityModal: React.FC<Props> = (props) => {
           from: dateStart,
           to: dateEnd,
           activity: props.activity,
-          price: data.price,
+          price: parseInt(data.price, 10),
           numberOfPeople: data.numberOfPeople || undefined,
           description: data.description,
           numberOfDays: data.numberOfDays,
