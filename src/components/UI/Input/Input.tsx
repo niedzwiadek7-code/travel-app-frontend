@@ -21,6 +21,7 @@ type Props = {
   // eslint-disable-next-line no-unused-vars
   onChange?: (e: any) => void,
   error?: string,
+  rows?: number,
 }
 
 const InputComponent: React.FC<Props> = (props) => {
@@ -60,6 +61,8 @@ const InputComponent: React.FC<Props> = (props) => {
       <InputComp
         id={uuid}
         type={props.type}
+        multiline={props.rows && props.rows > 1}
+        rows={props.rows || 1}
         startAdornment={(
           <InputAdornment position="start">
             {props.icon}
@@ -84,6 +87,7 @@ InputComponent.defaultProps = {
   error: '',
   default: '',
   data: {},
+  rows: 1,
 }
 
 export default InputComponent
