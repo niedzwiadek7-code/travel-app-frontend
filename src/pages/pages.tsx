@@ -6,7 +6,7 @@ import * as Auth from './auth'
 
 export const Pages: Record<string, Page> = {
   WELCOME: new Page(
-    '/welcome',
+    '/',
     <Public.Welcome.Component />,
   ),
   LOGIN: new Page(
