@@ -10,6 +10,7 @@ import { useDependencies } from '../../../../context/dependencies'
 import { useAuth } from '../../../../context/auth'
 import { cancelAccommodationElementInstance } from '../../../../features/travelInstance/travelInstanceSlice'
 import PassAccommodationTravelModal from './PassAccommodationTravelModal'
+import RateAccommodation from './RateAccommodation'
 
 type Props = {
   accommodationElement: AccommodationElementInstance,
@@ -111,20 +112,19 @@ const AccommodationElem: React.FC<Props> = (props) => {
         {
           props.accommodationElement.passed ? (
             <>
-              <Button
-                type="button"
-                variant="contained"
-                color="primary"
-                onClick={() => {}}
-              >
-                Oceń aktywność
-              </Button>
+              <RateAccommodation
+                elemId={props.accommodationElement.id}
+                name={props.accommodationElement.accommodation.name}
+              />
 
               <Button
                 type="button"
                 variant="contained"
                 color="primary"
-                onClick={() => {}}
+                onClick={() => toastUtils.Toast.showToast(
+                  toastUtils.types.INFO,
+                  'Ta funkcja nie jest obecnie dostępna',
+                )}
               >
                 Odpowiedz na pytania
               </Button>

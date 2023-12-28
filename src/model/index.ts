@@ -9,6 +9,8 @@ import AccommodationElement from './AccommodationElement'
 import TravelInstance from './TravelInstance'
 import ElementTravelInstance from './ElementTravelInstance'
 import AccommodationElementInstance from './AccommodationElementInstance'
+import Rating from './Rating'
+import AccommodationRating from './AccommodationRating'
 
 export * from './ActivityTypes'
 export * from './Roles'
@@ -25,4 +27,6 @@ export {
   TravelInstance,
   ElementTravelInstance,
   AccommodationElementInstance,
+  Rating,
+  AccommodationRating,
 }

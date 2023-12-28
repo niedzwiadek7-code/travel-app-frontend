@@ -27,6 +27,15 @@ const TakingTrip: React.FC = () => {
   const travelInstance = useAppSelector((state: RootState) => state.travelInstance)
   const dispatch = useAppDispatch()
 
+  const accommodationElements = travelInstance.accommodationElements
+    .filter((e) => e)
+    .sort((a, b) => {
+      if (a.passed && !b.passed) {
+        return 1
+      }
+      return -1
+    })
+
   useEffect(() => {
     const fetchData = async () => {
       if (id) {
@@ -76,7 +85,7 @@ const TakingTrip: React.FC = () => {
         </h2>
 
         {
-          travelInstance.accommodationElements.map((elem) => (
+          accommodationElements.map((elem) => (
             <AccommodationElem.Component
               key={elem.id}
               accommodationElement={elem}
