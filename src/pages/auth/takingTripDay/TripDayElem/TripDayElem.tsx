@@ -15,6 +15,7 @@ import { useAppDispatch } from '../../../../app/hooks'
 import { cancelTravelElementInstance } from '../../../../features/travelInstance/travelInstanceSlice'
 import { useDependencies } from '../../../../context/dependencies'
 import { useAuth } from '../../../../context/auth'
+import RateActivity from './RateActivity'
 
 type Props = {
   travelElement: ElementTravelInstance
@@ -128,14 +129,11 @@ const TripDayElem: React.FC<Props> = (props) => {
         {
           props.travelElement.passed ? (
             <>
-              <Button
-                type="button"
-                variant="contained"
-                color="primary"
-                onClick={() => {}}
-              >
-                Oceń aktywność
-              </Button>
+              <RateActivity
+                elemId={props.travelElement.id}
+                name={props.travelElement.activity.name}
+                activityType={props.travelElement.activity.activityType}
+              />
 
               <Button
                 type="button"

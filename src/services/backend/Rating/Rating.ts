@@ -19,6 +19,10 @@ class RatingService {
     return this.apiService.get(`${this.ratingUrl}/find/accommodation/${id}`)
   }
 
+  public async getRating(id: string): Promise<Rating | undefined> {
+    return this.apiService.get(`${this.ratingUrl}/find/${id}`)
+  }
+
   constructor(token: string) {
     this.apiService = new ApiService(token)
   }

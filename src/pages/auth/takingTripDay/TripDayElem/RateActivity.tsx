@@ -7,12 +7,12 @@ import { useDependencies } from '../../../../context/dependencies'
 import { useAuth } from '../../../../context/auth'
 import * as Modal from '../../../../components/UI/Modal'
 import * as Input from '../../../../components/UI/Input'
-import { ActivityTypes } from '../../../../model'
-import AccommodationRating from '../../../../model/AccommodationRating'
+import { Rating } from '../../../../model'
 
 type Props = {
   elemId: string
   name: string
+  activityType: string
 }
 
 type Inputs = {
@@ -20,13 +20,13 @@ type Inputs = {
   sharePhotos: boolean,
 }
 
-const RateAccommodation: React.FC<Props> = (props) => {
+const RateActivity: React.FC<Props> = (props) => {
   const { getApiService, getToastUtils } = useDependencies()
   const { token } = useAuth()
   const toastUtils = getToastUtils()
   const apiService = getApiService()
   const ratingService = apiService.getRating(token)
-  const [rating, setRating] = useState<AccommodationRating | undefined>(undefined)
+  const [rating, setRating] = useState<Rating | undefined>(undefined)
 
   const {
     register, handleSubmit,
@@ -36,7 +36,7 @@ const RateAccommodation: React.FC<Props> = (props) => {
     const fetchData = async () => {
       try {
         setRating(
-          await ratingService.getAccommodationRating(props.elemId),
+          await ratingService.getRating(props.elemId),
         )
       } catch (err) {
         console.log(err)
@@ -47,8 +47,8 @@ const RateAccommodation: React.FC<Props> = (props) => {
 
   const onSubmit = async (data: Inputs) => {
     try {
-      await ratingService.putAccommodationRating({
-        activityType: ActivityTypes.ACCOMMODATION,
+      await ratingService.putRating({
+        activityType: props.activityType,
         text: data.text,
         sharePhotos: data.sharePhotos,
         elementTravelId: props.elemId.toString(),
@@ -108,4 +108,4 @@ const RateAccommodation: React.FC<Props> = (props) => {
   )
 }
 
-export default RateAccommodation
+export default RateActivity
