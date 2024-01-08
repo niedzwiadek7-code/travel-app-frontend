@@ -1,5 +1,7 @@
 import React from 'react'
-import { Button, Stack, useTheme } from '@mui/material'
+import {
+  Button, Grid, Stack, Typography, useTheme,
+} from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import { Accommodation as AccommodationEntity, AccommodationElementInstance } from '../../../../model'
 import * as SaveActivityModal from '../../../../components/SaveActivityModal'
@@ -87,6 +89,71 @@ const Accommodation: React.FC<Props> = (props) => {
         <Stack>
           {props.accommodation.description}
         </Stack>
+
+        {
+          props.accommodation.ratings.length > 0 && (
+            <Stack>
+              <h3
+                style={{ margin: 0 }}
+              >
+                Opinie
+              </h3>
+
+              {
+                props.accommodation.ratings.map((rating) => (
+                  <Stack
+                    key={rating.text}
+                    style={{
+                      marginTop: '.8em',
+                      marginBottom: '.8em',
+                      backgroundColor: theme.palette.grey['50'],
+                      padding: '.5em',
+                      borderRadius: '5px',
+                    }}
+                    gap={1}
+                  >
+                    <h4
+                      style={{ margin: 0 }}
+                    >
+                      { rating.author.firstName } { rating.author.lastName }
+                    </h4>
+
+                    <Typography>
+                      { rating.text }
+                    </Typography>
+
+                    <Grid
+                      container
+                      spacing={2}
+                    >
+                      {
+                        rating.photos.map((url) => (
+                          <Grid
+                            item
+                            key={url}
+                            xs={2}
+                          >
+                            <img
+                              src={`http://localhost:3000/uploads/${url}`}
+                              style={{
+                                width: '100%',
+                                height: '100%',
+                                objectFit: 'cover',
+                                borderRadius: '5px',
+                              }}
+                              alt=""
+                            />
+                          </Grid>
+                        ))
+                      }
+                    </Grid>
+                  </Stack>
+                ))
+              }
+            </Stack>
+          )
+        }
+
         <Stack>
           {
             props.state?.travelRecipe && (

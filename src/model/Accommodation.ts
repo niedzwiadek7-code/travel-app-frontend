@@ -1,5 +1,12 @@
 import { Activity } from './index'
 import { ActivityTypes } from './ActivityTypes'
+import User from './User'
+
+interface Rating {
+  text: string
+  photos: string[]
+  author: User
+}
 
 class Accommodation extends Activity {
   id: number
@@ -14,6 +21,10 @@ class Accommodation extends Activity {
 
   place: string
 
+  ratings: Array<Rating>
+
+  author: User
+
   constructor(obj: any) {
     super(obj)
 
@@ -24,6 +35,8 @@ class Accommodation extends Activity {
     this.description = obj.description
     this.price = obj.price
     this.place = obj.place
+    this.ratings = obj.ratings
+    this.author = obj.author
   }
 }
 
