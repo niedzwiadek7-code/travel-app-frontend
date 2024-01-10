@@ -5,6 +5,7 @@ import * as SaveActivityModal from '../../../../../components/SaveActivityModal'
 import * as SaveInstanceActivityModal from '../../../../../components/SaveInstanceActivityModal'
 import { StateDto } from '../../dto/state.dto'
 import AdminButtons from '../AdminButtons'
+import * as Rating from '../../../../../components/Rating'
 
 type Props = {
   activity: ActivityEntity
@@ -61,6 +62,29 @@ const Attraction: React.FC<Props> = (props) => {
         <Stack>
           {props.activity.description}
         </Stack>
+
+        {
+          props.activity.ratings.length > 0 && (
+
+            <Stack>
+              <h3
+                style={{ margin: 0 }}
+              >
+                Opinie
+              </h3>
+
+              {
+                props.activity.ratings.map((rating) => (
+                  <Rating.Component
+                    key={rating.text}
+                    {...rating}
+                  />
+                ))
+              }
+            </Stack>
+          )
+        }
+
         <Stack>
           {
             props.state?.travelRecipe && (

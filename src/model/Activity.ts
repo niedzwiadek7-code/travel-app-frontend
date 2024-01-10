@@ -1,3 +1,11 @@
+import User from './User'
+
+interface Rating {
+  text: string
+  photos: string[]
+  author: User
+}
+
 class Activity {
   id: number
 
@@ -19,6 +27,8 @@ class Activity {
 
   priceType: string
 
+  ratings: Array<Rating>
+
   constructor(obj: any) {
     this.id = obj.id
     this.accepted = obj.accepted
@@ -31,6 +41,7 @@ class Activity {
     this.to = obj.to
     this.place = obj.place
     this.priceType = obj.priceType
+    this.ratings = obj.ratings
   }
 }
 

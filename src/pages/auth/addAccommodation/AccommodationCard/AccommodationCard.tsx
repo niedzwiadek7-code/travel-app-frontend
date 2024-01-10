@@ -1,6 +1,6 @@
 import React from 'react'
 import {
-  Button, Grid, Stack, Typography, useTheme,
+  Button, Stack, useTheme,
 } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import { Accommodation as AccommodationEntity, AccommodationElementInstance } from '../../../../model'
@@ -8,6 +8,7 @@ import * as SaveActivityModal from '../../../../components/SaveActivityModal'
 import { putAccommodationInstance } from '../../../../features/travelInstance/travelInstanceSlice'
 import { Pages } from '../../../pages'
 import { useAuth } from '../../../../context/auth'
+import * as Rating from '../../../../components/Rating'
 import { useDependencies } from '../../../../context/dependencies'
 import { useAppDispatch } from '../../../../app/hooks'
 import { StateDto } from '../dto/state.dto'
@@ -92,6 +93,7 @@ const Accommodation: React.FC<Props> = (props) => {
 
         {
           props.accommodation.ratings.length > 0 && (
+
             <Stack>
               <h3
                 style={{ margin: 0 }}
@@ -101,53 +103,10 @@ const Accommodation: React.FC<Props> = (props) => {
 
               {
                 props.accommodation.ratings.map((rating) => (
-                  <Stack
+                  <Rating.Component
                     key={rating.text}
-                    style={{
-                      marginTop: '.8em',
-                      marginBottom: '.8em',
-                      backgroundColor: theme.palette.grey['50'],
-                      padding: '.5em',
-                      borderRadius: '5px',
-                    }}
-                    gap={1}
-                  >
-                    <h4
-                      style={{ margin: 0 }}
-                    >
-                      { rating.author.firstName } { rating.author.lastName }
-                    </h4>
-
-                    <Typography>
-                      { rating.text }
-                    </Typography>
-
-                    <Grid
-                      container
-                      spacing={2}
-                    >
-                      {
-                        rating.photos.map((url) => (
-                          <Grid
-                            item
-                            key={url}
-                            xs={2}
-                          >
-                            <img
-                              src={`http://localhost:3000/uploads/${url}`}
-                              style={{
-                                width: '100%',
-                                height: '100%',
-                                objectFit: 'cover',
-                                borderRadius: '5px',
-                              }}
-                              alt=""
-                            />
-                          </Grid>
-                        ))
-                      }
-                    </Grid>
-                  </Stack>
+                    {...rating}
+                  />
                 ))
               }
             </Stack>
