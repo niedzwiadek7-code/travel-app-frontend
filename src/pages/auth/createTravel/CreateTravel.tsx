@@ -7,7 +7,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { Create as CreateIcon } from '@mui/icons-material'
 import { useAppDispatch, useAppSelector } from '../../../app/hooks'
 import * as Input from '../../../components/UI/Input'
-import { setName, setNewTravelRecipe } from '../../../features/travelRecipe/travelRecipeSlice'
+import { setName, setNewTravelRecipe, reset } from '../../../features/travelRecipe/travelRecipeSlice'
 import { RootState } from '../../../app/store'
 import * as TravelDaysTable from './TravelDaysTable'
 import * as TravelSummaryTable from './TravelSummaryTable'
@@ -41,6 +41,8 @@ const CreateTravel: React.FC = () => {
           dispatch(setNewTravelRecipe(travelRecipeTemp))
           setLoading(false)
         }
+      } else if (travelRecipe.id) {
+        dispatch(reset())
       }
     }
     fetchData()
@@ -137,25 +139,42 @@ const CreateTravel: React.FC = () => {
         <TravelDaysTable.Component />
       </Stack>
 
-      <Button
-        type="button"
-        variant="contained"
-        onClick={putTravel}
+      <Stack
+        gap={1}
       >
-        {
-          travelRecipe.id
-            ? 'Edytuj plan wycieczki'
-            : 'Zapisz plan wycieczki'
-        }
-      </Button>
+        <Button
+          type="button"
+          variant="contained"
+          onClick={putTravel}
+        >
+          {
+            travelRecipe.id
+              ? 'Edytuj plan wycieczki'
+              : 'Zapisz plan wycieczki'
+          }
+        </Button>
 
-      <Button
-        type="button"
-        variant="outlined"
-        onClick={() => navigate(Pages.DASHBOARD.getRedirectLink())}
-      >
-        Powrót na stronę główną
-      </Button>
+        {
+          !travelRecipe.id && (
+            <Button
+              type="button"
+              color="error"
+              variant="contained"
+              onClick={() => dispatch(reset())}
+            >
+              Resetuj wycieczkę
+            </Button>
+          )
+        }
+
+        <Button
+          type="button"
+          variant="outlined"
+          onClick={() => navigate(Pages.DASHBOARD.getRedirectLink())}
+        >
+          Powrót na stronę główną
+        </Button>
+      </Stack>
     </Stack>
   )
 }
