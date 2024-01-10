@@ -20,7 +20,13 @@ const PublicLayout: React.FC<Props> = (props) => (
         className={Styles.img}
       />
     </Grid>
-    <Grid item xs={12} lg={6} sx={{ padding: '1rem' }}>
+    <Grid
+      item
+      xs={12}
+      lg={6}
+      sx={{ padding: '1rem' }}
+      className={Styles.localContainer}
+    >
       {props.children}
     </Grid>
   </Grid>
