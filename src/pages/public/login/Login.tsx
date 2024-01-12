@@ -29,6 +29,7 @@ const Login: React.FC = () => {
   } = useForm<Inputs>()
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    console.log(data)
     const toastUtils = getToastUtils()
     try {
       const authService = apiService.getAuth()
@@ -83,7 +84,9 @@ const Login: React.FC = () => {
             icon={
               <Email />
             }
-            data={register('email')}
+            register={register}
+            name="email"
+            validation={['required']}
             error={errors?.email?.message || ''}
           />
 
@@ -94,7 +97,9 @@ const Login: React.FC = () => {
             icon={
               <Key />
             }
-            data={register('password', { required: { value: true, message: 'To pole jest wymagane' } })}
+            register={register}
+            name="password"
+            validation={['required']}
             error={errors?.password?.message || ''}
           />
         </Stack>

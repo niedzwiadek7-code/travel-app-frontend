@@ -70,7 +70,8 @@ const SignUpForTrip: React.FC<Props> = (props) => {
             variant={Input.Variant.OUTLINED}
             type={Input.Type.DATE}
             label="Podaj datę początkową"
-            data={register('startDate')}
+            register={register}
+            name="startDate"
           />
         )}
         actions={[

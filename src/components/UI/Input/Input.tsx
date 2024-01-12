@@ -8,6 +8,7 @@ import {
   InputAdornment, FormHelperText,
 } from '@mui/material'
 import { v4 as uuidv4 } from 'uuid'
+import { Errors } from './Errors'
 import { Variant } from './Variant'
 import { Type } from './Type'
 
@@ -16,12 +17,16 @@ type Props = {
   type: Type,
   label: string,
   icon?: ReactNode,
-  data?: any,
+
+  register?: any,
+  name: string,
+
   default?: (string | number),
   // eslint-disable-next-line no-unused-vars
   onChange?: (e: any) => void,
   error?: string,
   rows?: number,
+  validation?: string[],
 }
 
 const InputComponent: React.FC<Props> = (props) => {
@@ -36,12 +41,25 @@ const InputComponent: React.FC<Props> = (props) => {
     }
   }
 
-  const errObj: Record<string, any> = {}
+  let errObj: Record<string, any> = {};
 
-  if (props.error) {
-    errObj.error = true
-    errObj.helperText = props.error
-  }
+  (props.validation || []).forEach((err) => {
+    const [errName, value] = err.split(':')
+
+    if (Errors[errName]) {
+      if (value) {
+        errObj = {
+          ...errObj,
+          ...Errors[errName](value),
+        }
+      } else {
+        errObj = {
+          ...errObj,
+          ...Errors[errName](),
+        }
+      }
+    }
+  })
 
   const InputComp = getInputComponent()
   const uuid = uuidv4()
@@ -70,7 +88,10 @@ const InputComponent: React.FC<Props> = (props) => {
         )}
         defaultValue={props.default}
         label={props.label}
-        {...props.data}
+        {...props.register(props.name, {
+          onChange: props.onChange,
+          ...errObj,
+        })}
       />
       {props.error && (
         <FormHelperText id={uuid}>
@@ -86,8 +107,9 @@ InputComponent.defaultProps = {
   onChange: () => {},
   error: '',
   default: '',
-  data: {},
+  register: () => {},
   rows: 1,
+  validation: [],
 }
 
 export default InputComponent

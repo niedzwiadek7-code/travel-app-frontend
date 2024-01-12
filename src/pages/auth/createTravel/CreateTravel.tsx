@@ -101,6 +101,7 @@ const CreateTravel: React.FC = () => {
           type={Input.Type.TEXT}
           label="Nazwij swoją wycieczkę"
           default={travelRecipe.name}
+          name="name"
           onChange={(value: string) => {
             dispatch(setName(value))
           }}

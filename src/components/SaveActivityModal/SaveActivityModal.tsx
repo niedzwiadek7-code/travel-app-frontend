@@ -175,7 +175,7 @@ const SaveActivityModal: React.FC<Props> = (props) => {
             variant="contained"
             sx={{ width: '100%' }}
           >
-            Skorzystaj z oferty
+            Dodaj do wycieczki
           </Button>
         )}
         title={props.activity.name}
@@ -190,7 +190,9 @@ const SaveActivityModal: React.FC<Props> = (props) => {
                   variant={Input.Variant.OUTLINED}
                   type={Input.Type.NUMBER}
                   label="Ilość dni"
-                  data={register('numberOfDays')}
+                  register={register}
+                  name="numberOfDays"
+                  validation={['required']}
                   onChange={calculatePriceForAccommodation}
                 />
               ) : (
@@ -215,7 +217,9 @@ const SaveActivityModal: React.FC<Props> = (props) => {
                   variant={Input.Variant.OUTLINED}
                   type={Input.Type.NUMBER}
                   label="Ilość osób"
-                  data={register('numberOfPeople')}
+                  register={register}
+                  name="numberOfPeople"
+                  validation={['required']}
                   onChange={calculatePriceForActivityButAfterNumberOfPeopleChange}
                 />
               )
@@ -225,14 +229,18 @@ const SaveActivityModal: React.FC<Props> = (props) => {
               variant={Input.Variant.OUTLINED}
               type={Input.Type.TEXT}
               label="Dodatkowe informacje"
-              data={register('description')}
+              rows={4}
+              register={register}
+              name="description"
             />
 
             <Input.Component
               variant={Input.Variant.OUTLINED}
               type={Input.Type.NUMBER}
               label="Cena całkowita"
-              data={register('price')}
+              register={register}
+              name="price"
+              validation={['required']}
             />
           </Stack>
         )}

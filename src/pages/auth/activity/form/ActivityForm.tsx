@@ -180,8 +180,11 @@ const ActivityForm: React.FC = () => {
                     variant={Input.Variant.OUTLINED}
                     type={Input.Type.TEXT}
                     label={input.label}
-                    data={register(input.name)}
+                    register={register}
+                    name={input.name}
+                    validation={['min:3', 'max:50']}
                     default={(activity && activity[input.name]) || ''}
+                    rows={input.rows}
                   />
                 )
               case 'price':
@@ -191,7 +194,8 @@ const ActivityForm: React.FC = () => {
                     variant={Input.Variant.OUTLINED}
                     type={Input.Type.NUMBER}
                     label={input.label}
-                    data={register(input.name)}
+                    register={register}
+                    name={input.name}
                     default={(activity && activity[input.name]) || ''}
                   />
                 )

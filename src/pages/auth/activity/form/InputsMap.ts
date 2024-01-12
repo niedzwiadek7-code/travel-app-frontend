@@ -21,7 +21,8 @@ enum InputType {
 type InputDefinition = {
   name: InputName,
   label: string
-  type: InputType
+  type: InputType,
+  rows?: number,
   options?: Record<string, string>
 }
 
@@ -36,6 +37,7 @@ export default {
       name: 'description',
       label: 'Opis',
       type: 'text',
+      rows: 4,
     },
     {
       name: 'place',
@@ -53,6 +55,7 @@ export default {
       name: 'description',
       label: 'Opis',
       type: 'text',
+      rows: 4,
     },
     {
       name: 'place',
@@ -84,6 +87,7 @@ export default {
       name: 'description',
       label: 'Opis',
       type: 'text',
+      rows: 4,
     },
     {
       name: 'from',

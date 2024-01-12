@@ -85,7 +85,9 @@ const RateAccommodation: React.FC<Props> = (props) => {
               type={Input.Type.TEXT}
               label="Twoja opinia"
               rows={4}
-              data={register('text')}
+              register={register}
+              name="text"
+              validation={['min:3', 'max:1000']}
               default={rating && rating.text}
             />
 

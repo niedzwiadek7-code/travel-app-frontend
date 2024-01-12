@@ -92,8 +92,10 @@ const Register: React.FC = () => {
             icon={
               <Badge />
             }
-            data={register('name')}
+            register={register}
+            name="name"
             error={errors?.name?.message || ''}
+            validation={['required', 'min:3']}
           />
 
           <Input.Component
@@ -103,7 +105,9 @@ const Register: React.FC = () => {
             icon={
               <Email />
             }
-            data={register('email')}
+            register={register}
+            name="email"
+            validation={['required']}
             error={errors?.email?.message || ''}
           />
 
@@ -114,26 +118,10 @@ const Register: React.FC = () => {
             icon={
               <Key />
             }
-            data={register('password', { required: { value: true, message: 'To pole jest wymagane' } })}
+            register={register}
+            name="password"
+            validation={['required', 'password']}
             error={errors?.password?.message || ''}
-          />
-
-          <Input.Component
-            variant={Input.Variant.OUTLINED}
-            type={Input.Type.PASSWORD}
-            label="Powtórz hasło"
-            icon={
-              <Key />
-            }
-            data={
-              register(
-                'confirmPassword',
-                {
-                  validate: (value) => value === password.current || 'Hasła nie pasują do siebie',
-                },
-              )
-            }
-            error={errors?.confirmPassword?.message || ''}
           />
         </Stack>
 

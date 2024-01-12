@@ -57,7 +57,10 @@ export const travelRecipeSlice = createSlice({
         accommodations: newAccommodations,
       }
     },
-    reset: () => new TravelRecipe({}),
+    reset: () => new TravelRecipe({
+      name: 'Wycieczka',
+      countDays: 0,
+    }),
     setNewTravelRecipe: (state, action: PayloadAction<TravelRecipe>) => ({
       ...action.payload,
     }),

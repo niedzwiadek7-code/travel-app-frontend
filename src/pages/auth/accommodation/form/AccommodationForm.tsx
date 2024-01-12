@@ -185,7 +185,8 @@ const AccommodationForm: React.FC = () => {
             variant={Input.Variant.OUTLINED}
             type={Input.Type.TEXT}
             label="Nazwa"
-            data={register('name')}
+            register={register}
+            name="name"
             default={(accommodation && accommodation.name)}
           />
 
@@ -193,7 +194,9 @@ const AccommodationForm: React.FC = () => {
             variant={Input.Variant.OUTLINED}
             type={Input.Type.TEXT}
             label="Opis"
-            data={register('description')}
+            rows={4}
+            register={register}
+            name="description"
             default={(accommodation && accommodation.description)}
           />
 
@@ -201,7 +204,8 @@ const AccommodationForm: React.FC = () => {
             variant={Input.Variant.OUTLINED}
             type={Input.Type.TEXT}
             label="Miejsce"
-            data={register('place')}
+            register={register}
+            name="place"
             default={(accommodation && accommodation.place)}
           />
 
@@ -209,7 +213,8 @@ const AccommodationForm: React.FC = () => {
             variant={Input.Variant.OUTLINED}
             type={Input.Type.NUMBER}
             label="Cena (za dzień)"
-            data={register('price')}
+            register={register}
+            name="price"
             default={(accommodation && accommodation.price)}
           />
 
