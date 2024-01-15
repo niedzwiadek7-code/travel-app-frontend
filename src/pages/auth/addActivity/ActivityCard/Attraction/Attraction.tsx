@@ -60,11 +60,17 @@ const Attraction: React.FC<Props> = (props) => {
         gap={2}
       >
         <Stack>
-          {props.activity.description}
+          {props.activity.description.split('\n').map((line, index) => (
+            // eslint-disable-next-line react/no-array-index-key
+            <React.Fragment key={index}>
+              {line}
+              <br />
+            </React.Fragment>
+          ))}
         </Stack>
 
         {
-          props.activity.ratings.length > 0 && (
+          props.activity.ratings.length > 0 && !props.state.admin && (
 
             <Stack>
               <h3

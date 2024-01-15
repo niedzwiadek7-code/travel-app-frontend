@@ -24,6 +24,12 @@ const Restaurant: React.FC<Props> = (props) => {
     currency: 'PLN',
   })
 
+  const dateToStr = (obj: { hour: number, minute: number }) => {
+    const hour = obj.hour >= 10 ? `${obj.hour}` : `0${obj.hour}`
+    const minute = obj.minute >= 10 ? `${obj.minute}` : `0${obj.minute}`
+    return `${hour}:${minute}`
+  }
+
   return (
     <TableRow key={`${props.travelElement.from}-${props.travelElement.to}`}>
       <TableCell>
@@ -32,7 +38,7 @@ const Restaurant: React.FC<Props> = (props) => {
         />
       </TableCell>
       <TableCell>
-        {props.travelElement.from.toString()} - {props.travelElement.to.toString()}
+        {dateToStr(props.travelElement.from)} - {dateToStr(props.travelElement.to)}
       </TableCell>
       <TableCell> {props.travelElement.activity.name} </TableCell>
       <TableCell>

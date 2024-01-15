@@ -88,11 +88,17 @@ const Accommodation: React.FC<Props> = (props) => {
         gap={2}
       >
         <Stack>
-          {props.accommodation.description}
+          {props.accommodation.description.split('\n').map((line, index) => (
+            // eslint-disable-next-line react/no-array-index-key
+            <React.Fragment key={index}>
+              {line}
+              <br />
+            </React.Fragment>
+          ))}
         </Stack>
 
         {
-          props.accommodation.ratings.length > 0 && (
+          props.accommodation.ratings.length > 0 && !props.state.admin && (
 
             <Stack>
               <h3

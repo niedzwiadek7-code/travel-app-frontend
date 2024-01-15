@@ -28,8 +28,8 @@ class DateModel {
   }
 
   toString() {
-    const hour = this.hour > 10 ? `${this.hour}` : `0${this.hour}`
-    const minute = this.minute > 10 ? `${this.minute}` : `0${this.minute}`
+    const hour = this.hour >= 10 ? `${this.hour}` : `0${this.hour}`
+    const minute = this.minute >= 10 ? `${this.minute}` : `0${this.minute}`
     return `${hour}:${minute}`
   }
 }

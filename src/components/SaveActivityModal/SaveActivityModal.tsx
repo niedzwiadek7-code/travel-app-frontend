@@ -210,7 +210,7 @@ const SaveActivityModal: React.FC<Props> = (props) => {
             }
 
             {
-              props.activity.price
+              (props.activity.price || props.activity.price === 0)
               && props.activity.activityType !== ActivityTypes.ACCOMMODATION
               && (
                 <Input.Component

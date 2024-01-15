@@ -34,6 +34,7 @@ const ActivityForm: React.FC = () => {
     handleSubmit,
     watch,
     setValue,
+    formState: { errors },
   } = useForm<Inputs>()
   const [activity, setActivity] = useState<undefined | Activity>(undefined)
   const [loading, setLoading] = useState<boolean>(true)
@@ -174,6 +175,14 @@ const ActivityForm: React.FC = () => {
           {(InputsMap[activityType] || []).map((input) => {
             switch (input.type) {
               case 'text':
+                // eslint-disable-next-line no-case-declarations
+                const validation = ['min:3']
+                if (!input.rows) {
+                  validation.push('required')
+                  validation.push('max:50')
+                } else {
+                  validation.push('max:1000')
+                }
                 return (
                   <Input.Component
                     key={input.name}
@@ -182,9 +191,10 @@ const ActivityForm: React.FC = () => {
                     label={input.label}
                     register={register}
                     name={input.name}
-                    validation={['min:3', 'max:50']}
+                    validation={validation}
                     default={(activity && activity[input.name]) || ''}
                     rows={input.rows}
+                    error={errors?.[input.name]?.message || ''}
                   />
                 )
               case 'price':
@@ -197,6 +207,8 @@ const ActivityForm: React.FC = () => {
                     register={register}
                     name={input.name}
                     default={(activity && activity[input.name]) || ''}
+                    validation={['required']}
+                    error={errors?.[input.name]?.message || ''}
                   />
                 )
               case 'select':

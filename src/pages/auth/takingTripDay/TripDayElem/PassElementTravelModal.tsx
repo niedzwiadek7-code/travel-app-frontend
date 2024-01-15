@@ -40,6 +40,7 @@ const PassElementTravelModal: React.FC<Props> = (props) => {
         photos: result.urls,
       }))
     } catch (err) {
+      console.log(err)
       toastUtils.Toast.showToast(
         toastUtils.types.ERROR,
         'Wystpił nieoczekiwany błąd',
@@ -64,35 +65,39 @@ const PassElementTravelModal: React.FC<Props> = (props) => {
           <Stack
             gap={2}
           >
-            <Grid
-              container
-              spacing={2}
-              style={{
-                padding: '1em',
-                backgroundColor: theme.palette.grey[200],
-              }}
-            >
-              {
-                urls.map((url) => (
-                  <Grid
-                    item
-                    key={url}
-                    xs={4}
-                  >
-                    <img
-                      src={url}
-                      style={{
-                        width: '100%',
-                        height: '100%',
-                        objectFit: 'cover',
-                        borderRadius: '5px',
-                      }}
-                      alt=""
-                    />
-                  </Grid>
-                ))
-              }
-            </Grid>
+            {
+              urls.length > 0 && (
+                <Grid
+                  container
+                  spacing={2}
+                  style={{
+                    padding: '1em',
+                    backgroundColor: theme.palette.grey[200],
+                  }}
+                >
+                  {
+                    urls.map((url) => (
+                      <Grid
+                        item
+                        key={url}
+                        xs={4}
+                      >
+                        <img
+                          src={url}
+                          style={{
+                            width: '100%',
+                            height: '100%',
+                            objectFit: 'cover',
+                            borderRadius: '5px',
+                          }}
+                          alt=""
+                        />
+                      </Grid>
+                    ))
+                  }
+                </Grid>
+              )
+            }
             <Button
               variant="contained"
               component="label"

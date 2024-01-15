@@ -80,7 +80,7 @@ const InputComponent: React.FC<Props> = (props) => {
         id={uuid}
         type={props.type}
         multiline={props.rows && props.rows > 1}
-        rows={props.rows || 1}
+        maxRows={props.rows || 1}
         startAdornment={(
           <InputAdornment position="start">
             {props.icon}

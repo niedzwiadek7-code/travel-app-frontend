@@ -194,7 +194,7 @@ const AccommodationForm: React.FC = () => {
             variant={Input.Variant.OUTLINED}
             type={Input.Type.TEXT}
             label="Opis"
-            rows={4}
+            rows={Infinity}
             register={register}
             name="description"
             default={(accommodation && accommodation.description)}

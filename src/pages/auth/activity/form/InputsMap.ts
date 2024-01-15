@@ -37,7 +37,7 @@ export default {
       name: 'description',
       label: 'Opis',
       type: 'text',
-      rows: 4,
+      rows: Infinity,
     },
     {
       name: 'place',
@@ -55,7 +55,7 @@ export default {
       name: 'description',
       label: 'Opis',
       type: 'text',
-      rows: 4,
+      rows: Infinity,
     },
     {
       name: 'place',
@@ -87,7 +87,7 @@ export default {
       name: 'description',
       label: 'Opis',
       type: 'text',
-      rows: 4,
+      rows: Infinity,
     },
     {
       name: 'from',

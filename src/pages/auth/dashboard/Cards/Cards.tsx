@@ -86,7 +86,7 @@ const Cards: React.FC = () => {
       />
       <CardComponent
         image={RealizedTravels}
-        title="Zrealizowane wycieczki"
+        title="Realizowane wycieczki"
         description="Przeglądaj odbyte przez siebie wycieczki"
         link={() => navigate(Pages.REALIZED_TRIPS.getRedirectLink())}
       />

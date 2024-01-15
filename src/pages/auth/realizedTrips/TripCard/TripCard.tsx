@@ -92,7 +92,7 @@ const TripCard: React.FC<Props> = (props) => {
             <Typography variant="body1">
               Zrealizowano:
               <b> { realizationTrip.passed } / {realizationTrip.all} </b>
-              (<b> {(realizationTrip.passed / realizationTrip.all) * 100}% </b>)
+              (<b> {((realizationTrip.passed / realizationTrip.all) * 100).toFixed(2)}% </b>)
             </Typography>
           </Stack>
 
