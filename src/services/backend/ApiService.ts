@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios, { AxiosError } from 'axios'
 
 class ApiService {
   private baseUrl = 'http://localhost:3000'
@@ -34,8 +34,9 @@ class ApiService {
       const response = await axios.post<T>(url, data, header)
       return response.data
     } catch (err) {
-      console.log(err)
-      throw new Error()
+      const error = err as unknown as AxiosError
+      console.log(error)
+      throw new Error(JSON.stringify(error))
     }
   }
 

@@ -6,6 +6,7 @@ import {
 import { useNavigate } from 'react-router-dom'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { Email, Key, Badge } from '@mui/icons-material'
+import { AxiosError } from 'axios'
 import Styles from './Register.module.scss'
 import * as Input from '../../../components/UI/Input'
 import { useDependencies } from '../../../context/dependencies'
@@ -51,6 +52,18 @@ const Register: React.FC = () => {
       setToken(token)
       navigate(Pages.DASHBOARD.getRedirectLink())
     } catch (err) {
+      const error = err as unknown as AxiosError
+      if (error) {
+        const errorAxios = JSON.parse(error.message)
+        if (errorAxios.status === 409) {
+          toastUtils.Toast.showToast(
+            toastUtils.types.ERROR,
+            'Użytkownik z podanym mailem już istnieje',
+          )
+          return
+        }
+      }
+
       toastUtils.Toast.showToast(
         toastUtils.types.ERROR,
         'Niepoprawne dane logowania',
