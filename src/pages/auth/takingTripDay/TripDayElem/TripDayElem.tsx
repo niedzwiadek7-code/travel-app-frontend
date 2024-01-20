@@ -17,6 +17,7 @@ import { cancelTravelElementInstance } from '../../../../features/travelInstance
 import { useDependencies } from '../../../../context/dependencies'
 import { useAuth } from '../../../../context/auth'
 import RateActivity from './RateActivity'
+import * as Slider from '../../../../components/UI/Slider'
 
 dayjs.extend(utc)
 
@@ -102,21 +103,40 @@ const TripDayElem: React.FC<Props> = (props) => {
             container
             spacing={2}
           >
-            {props.travelElement.photos.map((photo) => (
+            {props.travelElement.photos.map((photo, index) => (
               <Grid
                 item
                 key={photo}
                 xs={2}
               >
-                <img
-                  src={`http://localhost:3000/${photo}`}
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'cover',
-                    borderRadius: '5px',
-                  }}
-                  alt=""
+                <Slider.Component
+                  buttonComponent={(
+                    <button
+                      type="button"
+                      style={{
+                        margin: 0,
+                        padding: 0,
+                        border: 0,
+                        width: '100%',
+                        height: '100%',
+                        cursor: 'pointer',
+                        background: 'none',
+                      }}
+                    >
+                      <img
+                        src={`http://localhost:3000/${photo}`}
+                        style={{
+                          width: '100%',
+                          height: '100%',
+                          objectFit: 'cover',
+                          borderRadius: '5px',
+                        }}
+                        alt=""
+                      />
+                    </button>
+                  )}
+                  images={props.travelElement.photos.map((photoTmp) => `http://localhost:3000/${photoTmp}`)}
+                  startIndex={index}
                 />
               </Grid>
             ))}

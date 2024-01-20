@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom'
 import { TravelInstance } from '../../../../model'
 import MenuComponent from './Menu'
 import { Pages } from '../../../pages'
+import * as Slider from '../../../../components/UI/Slider'
 
 type Props = {
   travelInstance: TravelInstance
@@ -56,7 +57,10 @@ const TripCard: React.FC<Props> = (props) => {
 
   const realizationTrip = calculateRealizationTrip()
 
-  const allPhotos = props.travelInstance.travelElements.map(
+  const allPhotos = ([
+    ...props.travelInstance.travelElements,
+    ...props.travelInstance.accommodationElements,
+  ]).map(
     (elem) => elem.photos,
   ).flat()
 
@@ -101,21 +105,40 @@ const TripCard: React.FC<Props> = (props) => {
             spacing={2}
           >
             {
-              allPhotos.map((photo) => (
+              allPhotos.map((photo, index) => (
                 <Grid
                   item
                   key={photo}
                   xs={2}
                 >
-                  <img
-                    src={`http://localhost:3000/${photo}`}
-                    style={{
-                      width: '100%',
-                      height: '100%',
-                      objectFit: 'cover',
-                      borderRadius: '5px',
-                    }}
-                    alt=""
+                  <Slider.Component
+                    buttonComponent={(
+                      <button
+                        type="button"
+                        style={{
+                          margin: 0,
+                          padding: 0,
+                          border: 0,
+                          width: '100%',
+                          height: '100%',
+                          cursor: 'pointer',
+                          background: 'none',
+                        }}
+                      >
+                        <img
+                          src={`http://localhost:3000/${photo}`}
+                          style={{
+                            width: '100%',
+                            height: '100%',
+                            objectFit: 'cover',
+                            borderRadius: '5px',
+                          }}
+                          alt=""
+                        />
+                      </button>
+                    )}
+                    startIndex={index}
+                    images={allPhotos.map((photoTmp) => `http://localhost:3000/${photoTmp}`)}
                   />
                 </Grid>
               ))

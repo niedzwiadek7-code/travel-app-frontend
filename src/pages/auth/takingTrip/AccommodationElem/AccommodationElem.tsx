@@ -11,6 +11,7 @@ import { useAuth } from '../../../../context/auth'
 import { cancelAccommodationElementInstance } from '../../../../features/travelInstance/travelInstanceSlice'
 import PassAccommodationTravelModal from './PassAccommodationTravelModal'
 import RateAccommodation from './RateAccommodation'
+import * as Slider from '../../../../components/UI/Slider'
 
 type Props = {
   accommodationElement: AccommodationElementInstance,
@@ -82,21 +83,43 @@ const AccommodationElem: React.FC<Props> = (props) => {
             container
             spacing={2}
           >
-            {props.accommodationElement.photos.map((photo) => (
+            {props.accommodationElement.photos.map((photo, index) => (
               <Grid
                 item
                 key={photo}
                 xs={2}
               >
-                <img
-                  src={`http://localhost:3000/${photo}`}
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'cover',
-                    borderRadius: '5px',
-                  }}
-                  alt=""
+                <Slider.Component
+                  buttonComponent={(
+                    <button
+                      type="button"
+                      style={{
+                        margin: 0,
+                        padding: 0,
+                        border: 0,
+                        width: '100%',
+                        height: '100%',
+                        cursor: 'pointer',
+                        background: 'none',
+                      }}
+                    >
+                      <img
+                        src={`http://localhost:3000/${photo}`}
+                        style={{
+                          width: '100%',
+                          height: '100%',
+                          objectFit: 'cover',
+                          borderRadius: '5px',
+                        }}
+                        alt=""
+                      />
+                    </button>
+                  )}
+                  images={
+                    props.accommodationElement.photos
+                      .map((photoTmp) => `http://localhost:3000/${photoTmp}`)
+                  }
+                  startIndex={index}
                 />
               </Grid>
             ))}
