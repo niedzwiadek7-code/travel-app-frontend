@@ -86,7 +86,7 @@ const Login: React.FC = () => {
             }
             register={register}
             name="email"
-            validation={['required']}
+            validation={['required', 'email']}
             error={errors?.email?.message || ''}
           />
 
