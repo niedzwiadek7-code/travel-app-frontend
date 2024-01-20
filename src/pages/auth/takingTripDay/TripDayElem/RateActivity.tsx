@@ -84,7 +84,7 @@ const RateActivity: React.FC<Props> = (props) => {
               variant={Input.Variant.OUTLINED}
               type={Input.Type.TEXT}
               label="Twoja opinia"
-              rows={4}
+              rows={10}
               register={register}
               name="text"
               validation={['min:3', 'max:1000']}

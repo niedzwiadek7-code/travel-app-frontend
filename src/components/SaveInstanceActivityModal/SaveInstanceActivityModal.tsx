@@ -5,6 +5,7 @@ import { LocalizationProvider, SingleInputTimeRangeField } from '@mui/x-date-pic
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo'
 import dayjs from 'dayjs'
+import utc from 'dayjs/plugin/utc'
 import { useNavigate } from 'react-router-dom'
 import {
   Activity as ActivityEntity,
@@ -18,6 +19,8 @@ import { useAppDispatch, useAppSelector } from '../../app/hooks'
 import { RootState } from '../../app/store'
 import { putActivityInstance } from '../../features/travelInstance/travelInstanceSlice'
 import { Pages } from '../../pages/pages'
+
+dayjs.extend(utc)
 
 type Props = {
   activity: ActivityEntity
@@ -54,9 +57,9 @@ const SaveInstanceActivityModal: React.FC<Props> = (props) => {
 
     const createDateStr = (date: string) => {
       const [hours, minutes] = date.split(':')
-      return dayjs(props.date)
+      return dayjs(dayjs.utc(props.date)
         .set('hour', parseInt(hours, 10))
-        .set('minute', parseInt(minutes, 10))
+        .set('minute', parseInt(minutes, 10))).utc()
     }
 
     const dates = data.times.split(' – ')

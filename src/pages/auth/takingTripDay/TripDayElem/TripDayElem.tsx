@@ -4,6 +4,7 @@ import {
 } from '@mui/material'
 import { green } from '@mui/material/colors'
 import dayjs from 'dayjs'
+import utc from 'dayjs/plugin/utc'
 import {
   Restaurant as RestaurantIcon,
   Attractions as AttractionIcon,
@@ -16,6 +17,8 @@ import { cancelTravelElementInstance } from '../../../../features/travelInstance
 import { useDependencies } from '../../../../context/dependencies'
 import { useAuth } from '../../../../context/auth'
 import RateActivity from './RateActivity'
+
+dayjs.extend(utc)
 
 type Props = {
   travelElement: ElementTravelInstance
@@ -81,7 +84,7 @@ const TripDayElem: React.FC<Props> = (props) => {
         </Stack>
 
         <Typography sx={{ fontWeight: 'bold', fontSize: '1.2em' }}>
-          {dayjs(props.travelElement.from).format('HH:mm')} - {dayjs(props.travelElement.to).format('HH:mm')}
+          {dayjs(props.travelElement.from).utc().format('HH:mm')} - {dayjs(props.travelElement.to).utc().format('HH:mm')}
         </Typography>
       </Stack>
 

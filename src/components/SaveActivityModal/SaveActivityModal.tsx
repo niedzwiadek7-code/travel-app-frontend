@@ -229,7 +229,7 @@ const SaveActivityModal: React.FC<Props> = (props) => {
               variant={Input.Variant.OUTLINED}
               type={Input.Type.TEXT}
               label="Dodatkowe informacje"
-              rows={4}
+              rows={10}
               register={register}
               name="description"
             />

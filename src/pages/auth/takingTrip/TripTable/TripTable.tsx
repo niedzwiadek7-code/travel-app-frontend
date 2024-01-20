@@ -9,10 +9,13 @@ import {
   TableRow,
 } from '@mui/material'
 import dayjs from 'dayjs'
+import isSameOrBefore from 'dayjs/plugin/isSameOrBefore'
 import { useNavigate } from 'react-router-dom'
 import { useAppSelector } from '../../../../app/hooks'
 import { RootState } from '../../../../app/store'
 import { Pages } from '../../../pages'
+
+dayjs.extend(isSameOrBefore)
 
 const TripTable: React.FC = () => {
   const navigate = useNavigate()
@@ -34,6 +37,8 @@ const TripTable: React.FC = () => {
     travelElements[dateString].count += 1
   })
 
+  const dates = Object.keys(travelElements).sort((a, b) => (dayjs(a).isSameOrBefore(b) ? -1 : 1))
+
   return (
     <TableContainer>
       <Table>
@@ -47,11 +52,13 @@ const TripTable: React.FC = () => {
 
         <TableBody>
           {
-            Object.entries(travelElements).map(([date, dateObj]) => (
+            dates.map((date) => (
               <TableRow key={date}>
                 <TableCell> {date} </TableCell>
                 <TableCell>
-                  {dateObj.passed} / {dateObj.count} ({ (dateObj.passed / dateObj.count) * 100 }%)
+                  {travelElements[date].passed} / {travelElements[date].count}
+                  ({ ((travelElements[date].passed / travelElements[date].count) * 100)
+                    .toFixed(2) }%)
                 </TableCell>
                 <TableCell>
                   <Button
