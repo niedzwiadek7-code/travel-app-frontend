@@ -46,7 +46,7 @@ const Rating: React.FC<Props> = (props) => {
               xs={2}
             >
               <img
-                src={`http://localhost:3000/uploads/${url}`}
+                src={`${process.env.REACT}/uploads/${url}`}
                 style={{
                   width: '100%',
                   height: '100%',

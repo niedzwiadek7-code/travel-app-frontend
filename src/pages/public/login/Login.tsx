@@ -29,7 +29,6 @@ const Login: React.FC = () => {
   } = useForm<Inputs>()
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    console.log(data)
     const toastUtils = getToastUtils()
     try {
       const authService = apiService.getAuth()

@@ -104,7 +104,7 @@ const AccommodationElem: React.FC<Props> = (props) => {
                       }}
                     >
                       <img
-                        src={`http://localhost:3000/${photo}`}
+                        src={`${process.env.REACT_APP_BACKEND_URL}/${photo}`}
                         style={{
                           width: '100%',
                           height: '100%',
@@ -117,7 +117,7 @@ const AccommodationElem: React.FC<Props> = (props) => {
                   )}
                   images={
                     props.accommodationElement.photos
-                      .map((photoTmp) => `http://localhost:3000/${photoTmp}`)
+                      .map((photoTmp) => `${process.env.REACT_APP_BACKEND_URL}/${photoTmp}`)
                   }
                   startIndex={index}
                 />

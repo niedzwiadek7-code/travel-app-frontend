@@ -1,7 +1,7 @@
 import axios, { AxiosError } from 'axios'
 
 class ApiService {
-  private baseUrl = 'http://localhost:3000'
+  private baseUrl = process.env.REACT_APP_BACKEND_URL
 
   token: string
 
@@ -9,9 +9,16 @@ class ApiService {
     const header: Record<string, any> = {
       headers,
     }
+
+    header.headers = {
+      'Content-Type': 'application/json',
+    }
+    header.withCredentials = true
+
     if (this.token) {
       header.headers.Authorization = `Bearer ${this.token}`
     }
+
     return header
   }
 
@@ -30,7 +37,7 @@ class ApiService {
   public async post<T>(endpoint: string, data?: any): Promise<T> {
     try {
       const url = `${this.baseUrl}${endpoint}`
-      const header = this.getHeader()
+      const header = this.getHeader({})
       const response = await axios.post<T>(url, data, header)
       return response.data
     } catch (err) {
