@@ -9,9 +9,7 @@
   width: 100%;
 
   .img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+    display: none;
   }
 
   .localContainer {
@@ -24,6 +22,13 @@
 
 @media (min-width: 1200px) {
   .container {
+    .img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
     .content {
       height: 100vh;
     }

@@ -1,6 +1,6 @@
 import React from 'react'
 import {
-  Button,
+  Button, Grid,
   Stack, useTheme,
 } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
@@ -72,36 +72,48 @@ const Login: React.FC = () => {
       </Stack>
 
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Stack
+        <Grid
+          container
           spacing={2}
-          direction="row"
         >
-          <Input.Component
-            variant={Input.Variant.OUTLINED}
-            type={Input.Type.EMAIL}
-            label="Email"
-            icon={
-              <Email />
-            }
-            register={register}
-            name="email"
-            validation={['required', 'email']}
-            error={errors?.email?.message || ''}
-          />
+          <Grid
+            item
+            xs={12}
+            lg={6}
+          >
+            <Input.Component
+              variant={Input.Variant.OUTLINED}
+              type={Input.Type.EMAIL}
+              label="Email"
+              icon={
+                <Email />
+              }
+              register={register}
+              name="email"
+              validation={['required', 'email']}
+              error={errors?.email?.message || ''}
+            />
+          </Grid>
 
-          <Input.Component
-            variant={Input.Variant.OUTLINED}
-            type={Input.Type.PASSWORD}
-            label="Hasło"
-            icon={
-              <Key />
-            }
-            register={register}
-            name="password"
-            validation={['required']}
-            error={errors?.password?.message || ''}
-          />
-        </Stack>
+          <Grid
+            item
+            xs={12}
+            lg={6}
+          >
+            <Input.Component
+              variant={Input.Variant.OUTLINED}
+              type={Input.Type.PASSWORD}
+              label="Hasło"
+              icon={
+                <Key />
+              }
+              register={register}
+              name="password"
+              validation={['required']}
+              error={errors?.password?.message || ''}
+            />
+          </Grid>
+        </Grid>
 
         <Stack
           marginTop={1}
