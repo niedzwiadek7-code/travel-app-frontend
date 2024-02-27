@@ -13,7 +13,10 @@ class ApiService {
     header.headers = {
       'Content-Type': 'application/json',
     }
-    header.withCredentials = true
+
+    if (process.env.NODE_ENV !== 'development') {
+      header.withCredentials = true
+    }
 
     if (this.token) {
       header.headers.Authorization = `Bearer ${this.token}`
