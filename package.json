@@ -51,7 +51,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "lint": "eslint \"{src,apps,libs,test}/**/*{.js,.ts,.jsx,.tsx}\" --fix"
+    "lint": "eslint \"{src,apps,libs,test}/**/*{.js,.ts,.jsx,.tsx}\" --fix",
+    "vercel:env:get": "vercel env pull ignoreme/prod/.env"
   },
   "eslintConfig": {
     "extends": [
