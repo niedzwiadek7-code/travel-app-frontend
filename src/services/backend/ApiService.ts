@@ -10,8 +10,8 @@ class ApiService {
       headers,
     }
 
-    header.headers = {
-      'Content-Type': 'application/json',
+    if (!header.headers['Content-Type']) {
+      header.headers['Content-Type'] = 'application/json'
     }
 
     if (process.env.NODE_ENV !== 'development') {
