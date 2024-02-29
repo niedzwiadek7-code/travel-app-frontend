@@ -3,6 +3,7 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { Button, Stack } from '@mui/material'
 import { Apartment } from '@mui/icons-material'
+import { LoadingButton } from '@mui/lab'
 import { Accommodation, AccommodationElementInstance, ActivityTypes } from '../../../../model'
 import { useDependencies } from '../../../../context/dependencies'
 import { useAuth } from '../../../../context/auth'
@@ -38,9 +39,11 @@ const AccommodationForm: React.FC = () => {
   const travelService = apiService.getTravel(token)
   const toastUtils = getToastUtils()
   const dispatch = useAppDispatch()
+  const [btnLoading, setBtnLoading] = useState<boolean>(false)
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     try {
+      setBtnLoading(true)
       const transformedData = {
         ...data,
         activityType: ActivityTypes.ACCOMMODATION,
@@ -72,7 +75,10 @@ const AccommodationForm: React.FC = () => {
       }), {
         state,
       })
+
+      setBtnLoading(false)
     } catch (err) {
+      setBtnLoading(false)
       toastUtils.Toast.showToast(
         toastUtils.types.ERROR,
         'Wystąpił nieoczekiwany błąd',
@@ -218,12 +224,13 @@ const AccommodationForm: React.FC = () => {
             default={(accommodation && accommodation.price)}
           />
 
-          <Button
+          <LoadingButton
             type="submit"
             variant="contained"
+            loading={btnLoading}
           >
             { accommodation ? 'Edytuj nocleg' : 'Dodaj nocleg' }
-          </Button>
+          </LoadingButton>
         </Stack>
       </form>
 

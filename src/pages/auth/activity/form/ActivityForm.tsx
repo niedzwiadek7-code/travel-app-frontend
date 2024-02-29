@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Stack } from '@mui/material'
+import {
+  Button, Stack,
+} from '@mui/material'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { DownhillSkiing } from '@mui/icons-material'
+import { LoadingButton } from '@mui/lab'
 import * as Select from '../../../../components/UI/Select'
 import InputsMap from './InputsMap'
 import * as Input from '../../../../components/UI/Input'
@@ -38,6 +41,7 @@ const ActivityForm: React.FC = () => {
   } = useForm<Inputs>()
   const [activity, setActivity] = useState<undefined | Activity>(undefined)
   const [loading, setLoading] = useState<boolean>(true)
+  const [btnLoading, setBtnLoading] = useState<boolean>(false)
   const activityType = watch('activityType')
   const navigate = useNavigate()
 
@@ -49,6 +53,7 @@ const ActivityForm: React.FC = () => {
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     try {
+      setBtnLoading(true)
       const transformedData = {
         ...data,
         price: parseInt(data.price, 10),
@@ -72,12 +77,14 @@ const ActivityForm: React.FC = () => {
         )
       }
 
+      setBtnLoading(false)
       navigate(Pages.ACTIVITY_EDIT.getRedirectLink({
         id: activityId,
       }), {
         state,
       })
     } catch (err) {
+      setBtnLoading(false)
       toastUtils.Toast.showToast(
         toastUtils.types.ERROR,
         'Wystąpił nieoczekiwany błąd',
@@ -228,12 +235,14 @@ const ActivityForm: React.FC = () => {
             }
           })}
 
-          <Button
+          <LoadingButton
             type="submit"
             variant="contained"
+            loading={btnLoading}
           >
             { activity ? 'Edytuj aktywność' : 'Dodaj aktywność' }
-          </Button>
+          </LoadingButton>
+
         </Stack>
       </form>
 

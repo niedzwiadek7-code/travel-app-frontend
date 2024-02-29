@@ -56,7 +56,8 @@
     "no-await-in-loop": "off",
     "class-methods-use-this": "off",
     "import/prefer-default-export": "off",
-    "react/jsx-one-expression-per-line": "off"
+    "react/jsx-one-expression-per-line": "off",
+    "react/require-default-props": "off"
   },
   "globals": {
     "JSX": true

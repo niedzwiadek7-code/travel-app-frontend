@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
   Button, Grid,
   Stack, useTheme,
@@ -6,6 +6,7 @@ import {
 import { useNavigate } from 'react-router-dom'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { Email, Key } from '@mui/icons-material'
+import { LoadingButton } from '@mui/lab'
 import Styles from './Login.module.scss'
 import * as Input from '../../../components/UI/Input'
 import { useDependencies } from '../../../context/dependencies'
@@ -23,6 +24,7 @@ const Login: React.FC = () => {
   const apiService = getApiService()
   const { setToken, setLoggedIn, setRoles } = useAuth()
   const navigate = useNavigate()
+  const [btnLoading, setBtnLoading] = useState<boolean>(false)
 
   const {
     register, handleSubmit, formState: { errors },
@@ -30,6 +32,8 @@ const Login: React.FC = () => {
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     const toastUtils = getToastUtils()
+    setBtnLoading(true)
+
     try {
       const authService = apiService.getAuth()
       const token = await authService.login(data)
@@ -41,6 +45,7 @@ const Login: React.FC = () => {
       setRoles(user.roles)
       navigate(Pages.DASHBOARD.getRedirectLink())
     } catch (err) {
+      setBtnLoading(false)
       toastUtils.Toast.showToast(
         toastUtils.types.ERROR,
         'Niepoprawne dane logowania',
@@ -116,7 +121,7 @@ const Login: React.FC = () => {
         </Grid>
 
         <Stack
-          marginTop={1}
+          marginTop={2}
           direction="row"
           gap={1}
           justifyContent="end"
@@ -130,13 +135,14 @@ const Login: React.FC = () => {
             Powrót
           </Button>
 
-          <Button
+          <LoadingButton
             type="submit"
             variant="contained"
             className={Styles.button}
+            loading={btnLoading}
           >
             Zaloguj się
-          </Button>
+          </LoadingButton>
         </Stack>
       </form>
 

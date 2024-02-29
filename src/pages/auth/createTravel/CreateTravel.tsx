@@ -5,6 +5,7 @@ import {
 } from '@mui/material'
 import { useNavigate, useParams } from 'react-router-dom'
 import { Create as CreateIcon } from '@mui/icons-material'
+import { LoadingButton } from '@mui/lab'
 import { useAppDispatch, useAppSelector } from '../../../app/hooks'
 import * as Input from '../../../components/UI/Input'
 import { setName, setNewTravelRecipe, reset } from '../../../features/travelRecipe/travelRecipeSlice'
@@ -22,6 +23,7 @@ import * as Header from '../../../components/Header'
 const CreateTravel: React.FC = () => {
   const { id } = useParams()
   const [loading, setLoading] = useState<boolean>(false)
+  const [btnLoading, setBtnLoading] = useState<boolean>(false)
 
   const travelRecipe = useAppSelector((state: RootState) => state.travelRecipe)
   const dispatch = useAppDispatch()
@@ -50,6 +52,7 @@ const CreateTravel: React.FC = () => {
 
   const putTravel = async () => {
     try {
+      setBtnLoading(true)
       if (travelRecipe.id) {
         await travelService.putTravelRecipe(travelRecipe)
         toastUtils.Toast.showToast(
@@ -65,7 +68,9 @@ const CreateTravel: React.FC = () => {
         )
         navigate(Pages.DASHBOARD.getRedirectLink())
       }
+      setBtnLoading(false)
     } catch (err) {
+      setBtnLoading(false)
       toastUtils.Toast.showToast(
         toastUtils.types.ERROR,
         'Podczas tworzenia wycieczki wystąpił nieoczekiwany błąd',
@@ -143,17 +148,18 @@ const CreateTravel: React.FC = () => {
       <Stack
         gap={1}
       >
-        <Button
+        <LoadingButton
           type="button"
           variant="contained"
           onClick={putTravel}
+          loading={btnLoading}
         >
           {
             travelRecipe.id
               ? 'Edytuj plan wycieczki'
               : 'Zapisz plan wycieczki'
           }
-        </Button>
+        </LoadingButton>
 
         {
           !travelRecipe.id && (

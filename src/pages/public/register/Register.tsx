@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useRef, useState } from 'react'
 import {
   Button,
   Stack, useTheme,
@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { Email, Key, Badge } from '@mui/icons-material'
 import { AxiosError } from 'axios'
+import { LoadingButton } from '@mui/lab'
 import Styles from './Register.module.scss'
 import * as Input from '../../../components/UI/Input'
 import { useDependencies } from '../../../context/dependencies'
@@ -26,6 +27,7 @@ const Register: React.FC = () => {
   const apiService = getApiService()
   const { setToken } = useAuth()
   const navigate = useNavigate()
+  const [btnLoading, setBtnLoading] = useState<boolean>(false)
 
   const {
     register, handleSubmit, formState: { errors }, watch,
@@ -36,6 +38,7 @@ const Register: React.FC = () => {
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     const toastUtils = getToastUtils()
+    setBtnLoading(true)
     try {
       const authService = apiService.getAuth()
 
@@ -52,6 +55,7 @@ const Register: React.FC = () => {
       setToken(token)
       navigate(Pages.DASHBOARD.getRedirectLink())
     } catch (err) {
+      setBtnLoading(false)
       const error = err as unknown as AxiosError
       if (error) {
         const errorAxios = JSON.parse(error.message)
@@ -66,7 +70,7 @@ const Register: React.FC = () => {
 
       toastUtils.Toast.showToast(
         toastUtils.types.ERROR,
-        'Niepoprawne dane logowania',
+        'Niepoprawne dane do rejestracji',
       )
     }
   }
@@ -153,13 +157,14 @@ const Register: React.FC = () => {
             Powrót
           </Button>
 
-          <Button
+          <LoadingButton
             type="submit"
             variant="contained"
             className={Styles.button}
+            loading={btnLoading}
           >
             Zarejestruj się
-          </Button>
+          </LoadingButton>
         </Stack>
       </form>
 
