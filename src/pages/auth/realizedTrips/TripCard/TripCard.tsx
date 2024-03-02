@@ -126,7 +126,7 @@ const TripCard: React.FC<Props> = (props) => {
                         }}
                       >
                         <img
-                          src={`${process.env.REACT_APP_BACKEND_URL}/${photo}`}
+                          src={photo}
                           style={{
                             width: '100%',
                             height: '100%',
@@ -138,7 +138,7 @@ const TripCard: React.FC<Props> = (props) => {
                       </button>
                     )}
                     startIndex={index}
-                    images={allPhotos.map((photoTmp) => `${process.env.REACT_APP_BACKEND_URL}/${photoTmp}`)}
+                    images={allPhotos}
                   />
                 </Grid>
               ))

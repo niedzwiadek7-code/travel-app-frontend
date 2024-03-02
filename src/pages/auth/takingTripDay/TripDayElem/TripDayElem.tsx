@@ -124,7 +124,7 @@ const TripDayElem: React.FC<Props> = (props) => {
                       }}
                     >
                       <img
-                        src={`${process.env.REACT_APP_BACKEND_URL}/${photo}`}
+                        src={photo}
                         style={{
                           width: '100%',
                           height: '100%',
@@ -135,7 +135,7 @@ const TripDayElem: React.FC<Props> = (props) => {
                       />
                     </button>
                   )}
-                  images={props.travelElement.photos.map((photoTmp) => `${process.env.REACT_APP_BACKEND_URL}/${photoTmp}`)}
+                  images={props.travelElement.photos}
                   startIndex={index}
                 />
               </Grid>
