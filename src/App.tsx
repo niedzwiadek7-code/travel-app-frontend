@@ -9,6 +9,7 @@ import {
 import Content from './pages'
 import { AuthProvider } from './context/auth'
 import { DependenciesProvider } from './context/dependencies'
+import { LogProvider } from './context/log/Log'
 import 'react-toastify/dist/ReactToastify.css'
 
 declare module '@mui/material/styles' {
@@ -39,26 +40,28 @@ const App = () => {
   return (
     <div className="App">
       <DependenciesProvider>
-        <AuthProvider>
-          <BrowserRouter>
-            <ThemeProvider theme={extendedTheme}>
-              <Content />
+        <LogProvider>
+          <AuthProvider>
+            <BrowserRouter>
+              <ThemeProvider theme={extendedTheme}>
+                <Content />
 
-              <ToastContainer
-                position="bottom-right"
-                autoClose={5000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-                theme="light"
-              />
-            </ThemeProvider>
-          </BrowserRouter>
-        </AuthProvider>
+                <ToastContainer
+                  position="bottom-right"
+                  autoClose={5000}
+                  hideProgressBar={false}
+                  newestOnTop={false}
+                  closeOnClick
+                  rtl={false}
+                  pauseOnFocusLoss
+                  draggable
+                  pauseOnHover
+                  theme="light"
+                />
+              </ThemeProvider>
+            </BrowserRouter>
+          </AuthProvider>
+        </LogProvider>
       </DependenciesProvider>
     </div>
   )
