@@ -111,7 +111,7 @@ const ActivityForm: React.FC = () => {
   const acceptActivity = async () => {
     try {
       if (activity) {
-        await activityService.acceptActivity(activity.id.toString())
+        await activityService.acceptActivity(activity.id)
         navigate(Pages.ADD_ACTIVITY.getRedirectLink(), {
           state,
         })
@@ -127,7 +127,7 @@ const ActivityForm: React.FC = () => {
   const restoreActivity = async () => {
     try {
       if (activity) {
-        await activityService.restoreActivity(activity.id.toString())
+        await activityService.restoreActivity(activity.id)
         navigate(Pages.ADD_ACTIVITY.getRedirectLink(), {
           state,
         })

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import {
   Button, Stack,
@@ -10,6 +10,7 @@ import { Activity } from '../../../model'
 import { Pages } from '../../../pages/pages'
 import * as ActivityCard from './ActivityCard'
 import * as Header from '../../../components/Header'
+import usePagination from '../../../hooks/usePagination/usePagination'
 
 const AddActivity: React.FC = () => {
   const { state } = useLocation()
@@ -17,16 +18,38 @@ const AddActivity: React.FC = () => {
   const toastUtils = getToastUtils()
   const { token } = useAuth()
   const apiService = getApiService()
-  const [loading, setLoading] = useState<boolean>(true)
   const [activityService] = useState(apiService.getActivity(token))
-  const [activities, setActivities] = useState<Activity[]>([])
   const navigate = useNavigate()
 
-  const acceptElement = async (id: string) => {
+  const fetchData = async (page: number, pageSize: number): Promise<Activity[]> => {
+    try {
+      const result = await activityService.getAll(state.source || 'all', page, pageSize)
+      return result.data
+    } catch (err) {
+      toastUtils.Toast.showToast(
+        toastUtils.types.ERROR,
+        'Wystąpił nieoczekiwany błąd',
+      )
+      return []
+    }
+  }
+
+  const {
+    data,
+    setData,
+    // currentPage,
+    // totalPages,
+    // pageSize,
+    loading,
+    // goToPage,
+    // setPageSize,
+  } = usePagination<Activity>({ fetchData, initialPage: 1, initialPageSize: 10 })
+
+  const acceptElement = async (id: number) => {
     try {
       await activityService.acceptActivity(id)
-      const activitiesTemp = activities.filter((elem) => elem.id.toString() !== id)
-      setActivities(activitiesTemp)
+      const activitiesTemp = data.filter((elem) => elem.id !== id)
+      setData(activitiesTemp)
     } catch (err) {
       toastUtils.Toast.showToast(
         toastUtils.types.ERROR,
@@ -35,11 +58,11 @@ const AddActivity: React.FC = () => {
     }
   }
 
-  const deleteElement = async (id: string) => {
+  const deleteElement = async (id: number) => {
     try {
       await activityService.restoreActivity(id)
-      const activitiesTemp = activities.filter((elem) => elem.id.toString() !== id)
-      setActivities(activitiesTemp)
+      const activitiesTemp = data.filter((elem) => elem.id !== id)
+      setData(activitiesTemp)
     } catch (err) {
       toastUtils.Toast.showToast(
         toastUtils.types.ERROR,
@@ -47,17 +70,6 @@ const AddActivity: React.FC = () => {
       )
     }
   }
-
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true)
-      setActivities(
-        await activityService.getAll(state.source || 'all'),
-      )
-      setLoading(false)
-    }
-    fetchData()
-  }, [activityService])
 
   if (loading) {
     return (
@@ -121,13 +133,13 @@ const AddActivity: React.FC = () => {
       <Stack
         gap={2}
       >
-        {activities.map((activity) => (
+        {data.map((activity) => (
           <ActivityCard.Component
             key={activity.id}
             activity={activity}
             state={state}
-            acceptElement={() => acceptElement(activity.id.toString())}
-            deleteElement={() => deleteElement(activity.id.toString())}
+            acceptElement={() => acceptElement(activity.id)}
+            deleteElement={() => deleteElement(activity.id)}
           />
         ))}
       </Stack>

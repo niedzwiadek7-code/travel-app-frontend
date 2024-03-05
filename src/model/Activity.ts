@@ -19,6 +19,8 @@ class Activity {
 
   price: number
 
+  ratings: Array<Rating>
+
   from: string
 
   to: string
@@ -27,8 +29,6 @@ class Activity {
 
   priceType: string
 
-  ratings: Array<Rating>
-
   constructor(obj: any) {
     this.id = obj.id
     this.accepted = obj.accepted
@@ -36,12 +36,12 @@ class Activity {
     this.description = obj.description
     this.activityType = obj.activityType
     this.price = obj.number
+    this.ratings = obj.ratings
 
     this.from = obj.from
     this.to = obj.to
     this.place = obj.place
     this.priceType = obj.priceType
-    this.ratings = obj.ratings
   }
 }
 

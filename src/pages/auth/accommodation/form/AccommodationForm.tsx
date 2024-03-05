@@ -133,7 +133,7 @@ const AccommodationForm: React.FC = () => {
   const restoreAccommodation = async () => {
     try {
       if (accommodation) {
-        await activityService.restoreActivity(accommodation.id.toString())
+        await activityService.restoreActivity(accommodation.id)
         navigate(Pages.ADD_ACCOMMODATION.getRedirectLink(), {
           state,
         })
