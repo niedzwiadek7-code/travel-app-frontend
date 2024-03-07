@@ -14,6 +14,7 @@ import AccommodationRating from './AccommodationRating'
 
 export * from './ActivityTypes'
 export * from './Roles'
+export * from './Pagination'
 
 export {
   User,

@@ -1,32 +1,66 @@
-import React, { useEffect, useState } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
+import React, { useState } from 'react'
 import {
-  Button, Stack,
+  Button, Pagination, Stack,
 } from '@mui/material'
 import { DownhillSkiing } from '@mui/icons-material'
-import { useDependencies } from '../../../context/dependencies'
-import { useAuth } from '../../../context/auth'
-import { Activity } from '../../../model'
-import { Pages } from '../../../pages/pages'
+import { useDependencies, useAuth } from '../../../context'
+import { Activity, Paginate } from '../../../model'
+import { Pages } from '../../pages'
 import * as ActivityCard from './ActivityCard'
 import * as Header from '../../../components/Header'
+import { usePagination, useRouter } from '../../../hooks'
+import { StateDto } from './dto/state.dto'
+
+type QueryParams = {
+  page?: string,
+}
 
 const AddActivity: React.FC = () => {
-  const { state } = useLocation()
+  const {
+    state,
+    query,
+    navigate,
+  } = useRouter<StateDto, QueryParams>()
+
   const { getApiService, getToastUtils } = useDependencies()
   const toastUtils = getToastUtils()
   const { token } = useAuth()
   const apiService = getApiService()
-  const [loading, setLoading] = useState<boolean>(true)
   const [activityService] = useState(apiService.getActivity(token))
-  const [activities, setActivities] = useState<Activity[]>([])
-  const navigate = useNavigate()
 
-  const acceptElement = async (id: string) => {
+  const fetchData = async (page: number, pageSize: number): Promise<Paginate<Activity>> => {
+    try {
+      return activityService.getAll(state.source || 'all', page, pageSize)
+    } catch (err) {
+      toastUtils.Toast.showToast(
+        toastUtils.types.ERROR,
+        'Wystąpił nieoczekiwany błąd',
+      )
+      return {
+        data: [],
+        total: 0,
+      }
+    }
+  }
+
+  const {
+    data,
+    setData,
+    currentPage,
+    totalPages,
+    loading,
+    goToPage,
+  } = usePagination<Activity>({
+    fetchData,
+    initialPage: query.page ? parseInt(query.page, 10) : 1,
+    initialPageSize: 10,
+  })
+
+  const acceptElement = async (id: number) => {
     try {
       await activityService.acceptActivity(id)
-      const activitiesTemp = activities.filter((elem) => elem.id.toString() !== id)
-      setActivities(activitiesTemp)
+      const activitiesTemp = data.filter((elem) => elem.id !== id)
+      setData(activitiesTemp)
     } catch (err) {
       toastUtils.Toast.showToast(
         toastUtils.types.ERROR,
@@ -35,11 +69,11 @@ const AddActivity: React.FC = () => {
     }
   }
 
-  const deleteElement = async (id: string) => {
+  const deleteElement = async (id: number) => {
     try {
       await activityService.restoreActivity(id)
-      const activitiesTemp = activities.filter((elem) => elem.id.toString() !== id)
-      setActivities(activitiesTemp)
+      const activitiesTemp = data.filter((elem) => elem.id !== id)
+      setData(activitiesTemp)
     } catch (err) {
       toastUtils.Toast.showToast(
         toastUtils.types.ERROR,
@@ -47,21 +81,22 @@ const AddActivity: React.FC = () => {
       )
     }
   }
-
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true)
-      setActivities(
-        await activityService.getAll(state.source || 'all'),
-      )
-      setLoading(false)
-    }
-    fetchData()
-  }, [activityService])
 
   if (loading) {
     return (
       <div> Loading... </div>
+    )
+  }
+
+  const goToPageLocally = (page: number) => {
+    goToPage(page)
+    navigate(
+      `${Pages.ADD_ACTIVITY.getRedirectLink()}?page=${page}`,
+      {
+        state: {
+          source: state.source,
+        },
+      },
     )
   }
 
@@ -121,15 +156,31 @@ const AddActivity: React.FC = () => {
       <Stack
         gap={2}
       >
-        {activities.map((activity) => (
+        {data.map((activity) => (
           <ActivityCard.Component
             key={activity.id}
             activity={activity}
             state={state}
-            acceptElement={() => acceptElement(activity.id.toString())}
-            deleteElement={() => deleteElement(activity.id.toString())}
+            acceptElement={() => acceptElement(activity.id)}
+            deleteElement={() => deleteElement(activity.id)}
           />
         ))}
+      </Stack>
+
+      <Stack
+        direction="row"
+        justifyContent="center"
+        sx={{
+          marginTop: 1,
+          marginBottom: 1,
+        }}
+      >
+        <Pagination
+          count={totalPages}
+          color="primary"
+          onChange={(event, page) => goToPageLocally(page)}
+          page={currentPage}
+        />
       </Stack>
     </Stack>
   )
