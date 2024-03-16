@@ -5,16 +5,16 @@ import {
   Accommodation as AccommodationEntity,
   Paginate,
 } from '../../../model'
-import { ActivityDto } from './dto'
-import { QueryActivity } from './dto/query-activity'
+import { ActivityDto, QueryActivityDto } from './dto'
+import { ActivityFormat, ActivityType, ExtendedActivityFormat } from './types'
 
 class Activity {
   private activityUrl = '/activity'
 
   private apiService: ApiService
 
-  public async get(id: string): Promise<ActivityEntity> {
-    return this.apiService.get<ActivityEntity>(`${this.activityUrl}/find/${id}`)
+  public async get<T extends ActivityFormat = ActivityFormat>(id: string): Promise<T> {
+    return this.apiService.get<T>(`${this.activityUrl}/find/${id}`)
   }
 
   public async getAccommodation(id: string): Promise<AccommodationEntity> {
@@ -22,26 +22,29 @@ class Activity {
   }
 
   public async getAll(
-    source?: QueryActivity,
+    source?: QueryActivityDto,
     page: number = 1,
     pageSize: number = 10,
-  ): Promise<Paginate<ActivityEntity>> {
+    types: ActivityType[] = [],
+  ): Promise<Paginate<ExtendedActivityFormat>> {
     const queryParams = new URLSearchParams({
       source: source || 'all',
       skip: `${page * pageSize - pageSize}`,
       take: pageSize.toString(),
     })
 
+    types.forEach((type) => queryParams.append('types', type))
+
     const { data, total } = await this.apiService
-      .get<Paginate<ActivityEntity>>(`${this.activityUrl}/all?${queryParams.toString()}`)
+      .get<Paginate<ExtendedActivityFormat>>(`${this.activityUrl}/all?${queryParams.toString()}`)
 
     return {
-      data: data.map((result) => new ActivityEntity(result)),
+      data,
       total,
     }
   }
 
-  public async getAllAccommodations(source?: QueryActivity): Promise<AccommodationEntity[]> {
+  public async getAllAccommodations(source?: QueryActivityDto): Promise<AccommodationEntity[]> {
     const results = await this.apiService.get<AccommodationEntity[]>(
       `${this.activityUrl}/accommodation/all?source=${source}`,
     )

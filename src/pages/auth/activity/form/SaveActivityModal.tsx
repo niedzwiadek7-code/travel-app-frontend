@@ -1,9 +1,9 @@
 import React from 'react'
-import { Activity } from '../../../../model'
 import * as SaveActivityModal from '../../../../components/SaveActivityModal'
+import { ExtendedActivityFormat } from '../../../../services/backend/Activity/types'
 
 type Props = {
-  activity: Activity,
+  activity: ExtendedActivityFormat,
   countDay: string
 }
 

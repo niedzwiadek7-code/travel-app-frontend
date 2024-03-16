@@ -1,12 +1,13 @@
 import React from 'react'
-import { Activity as ActivityEntity } from '../../../../model'
 import * as Travel from './Travel'
 import * as Attraction from './Attraction'
 import * as Restaurant from './Restaurant'
+import * as Accommodation from './Accommodation'
 import { StateDto } from '../dto/state.dto'
+import { ExtendedActivityFormat } from '../../../../services/backend/Activity/types'
 
 type Props = {
-  activity: ActivityEntity
+  activity: ExtendedActivityFormat
   state: StateDto
   acceptElement: () => any
   deleteElement: () => any
@@ -14,7 +15,7 @@ type Props = {
 
 const ActivityCard: React.FC<Props> = (props) => {
   switch (props.activity.activityType) {
-    case 'Podróż':
+    case 'Trip':
       return (
         <Travel.Component
           activity={props.activity}
@@ -23,7 +24,7 @@ const ActivityCard: React.FC<Props> = (props) => {
           deleteElement={props.deleteElement}
         />
       )
-    case 'Atrakcja':
+    case 'Attraction':
       return (
         <Attraction.Component
           activity={props.activity}
@@ -32,9 +33,18 @@ const ActivityCard: React.FC<Props> = (props) => {
           deleteElement={props.deleteElement}
         />
       )
-    case 'Restauracja':
+    case 'Restaurant':
       return (
         <Restaurant.Component
+          activity={props.activity}
+          state={props.state}
+          acceptElement={props.acceptElement}
+          deleteElement={props.deleteElement}
+        />
+      )
+    case 'Accommodation':
+      return (
+        <Accommodation.Component
           activity={props.activity}
           state={props.state}
           acceptElement={props.acceptElement}

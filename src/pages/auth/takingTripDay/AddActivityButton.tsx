@@ -54,7 +54,7 @@ const AddActivityButton: React.FC<Props> = (props) => {
           Stwórz i dodaj nową aktywność
         </MenuItem>
         <MenuItem
-          onClick={() => navigate(Pages.ADD_ACTIVITY.getRedirectLink(), {
+          onClick={() => navigate(Pages.LIST_ACTIVITY.getRedirectLink(), {
             state: {
               travelInstance: props.travelInstanceId,
               date: props.date,
@@ -65,7 +65,7 @@ const AddActivityButton: React.FC<Props> = (props) => {
           Wybierz z dostepnych aktywności
         </MenuItem>
         <MenuItem
-          onClick={() => navigate(Pages.ADD_ACTIVITY.getRedirectLink(), {
+          onClick={() => navigate(Pages.LIST_ACTIVITY.getRedirectLink(), {
             state: {
               travelInstance: props.travelInstanceId,
               date: props.date,

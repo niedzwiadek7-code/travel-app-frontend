@@ -1,4 +1,4 @@
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { useQuery } from '.'
 
 // Should move to src/context ?
@@ -8,19 +8,23 @@ import { useQuery } from '.'
 
 interface RouterHookResult<
   State = Record<string, any>,
-  Query = Record<string, any>
+  Query = Record<string, any>,
+  Params = Record<string, any>,
 > {
   state: State
   query: Query
+  params: Params
   navigate: ReturnType<typeof useNavigate>
 }
 
-const useRouter = <State, Query>(): RouterHookResult<State, Query> => {
+const useRouter = <State, Query, Params>(): RouterHookResult<State, Query, Params> => {
   const { state, search } = useLocation()
   const navigate = useNavigate()
+  const params = useParams() as Params
   const query = useQuery<Query>(search)
 
   return {
+    params,
     state,
     query,
     navigate,

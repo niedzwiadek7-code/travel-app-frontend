@@ -4,7 +4,8 @@ import {
 } from '@mui/material'
 import { DownhillSkiing } from '@mui/icons-material'
 import { useDependencies, useAuth } from '../../../context'
-import { Activity, Paginate } from '../../../model'
+import { Paginate } from '../../../model'
+import { ExtendedActivityFormat } from '../../../services/backend/Activity/types'
 import { Pages } from '../../pages'
 import * as ActivityCard from './ActivityCard'
 import * as Header from '../../../components/Header'
@@ -15,12 +16,12 @@ type QueryParams = {
   page?: string,
 }
 
-const AddActivity: React.FC = () => {
+const ListActivity: React.FC = () => {
   const {
     state,
     query,
     navigate,
-  } = useRouter<StateDto, QueryParams>()
+  } = useRouter<StateDto, QueryParams, Record<string, any>>()
 
   const { getApiService, getToastUtils } = useDependencies()
   const toastUtils = getToastUtils()
@@ -28,7 +29,10 @@ const AddActivity: React.FC = () => {
   const apiService = getApiService()
   const [activityService] = useState(apiService.getActivity(token))
 
-  const fetchData = async (page: number, pageSize: number): Promise<Paginate<Activity>> => {
+  const fetchData = async (
+    page: number,
+    pageSize: number,
+  ): Promise<Paginate<ExtendedActivityFormat>> => {
     try {
       return activityService.getAll(state.source || 'all', page, pageSize)
     } catch (err) {
@@ -50,7 +54,7 @@ const AddActivity: React.FC = () => {
     totalPages,
     loading,
     goToPage,
-  } = usePagination<Activity>({
+  } = usePagination<ExtendedActivityFormat>({
     fetchData,
     initialPage: query.page ? parseInt(query.page, 10) : 1,
     initialPageSize: 10,
@@ -91,10 +95,11 @@ const AddActivity: React.FC = () => {
   const goToPageLocally = (page: number) => {
     goToPage(page)
     navigate(
-      `${Pages.ADD_ACTIVITY.getRedirectLink()}?page=${page}`,
+      `${Pages.LIST_ACTIVITY.getRedirectLink()}?page=${page}`,
       {
         state: {
           source: state.source,
+          types: ['Attraction', 'Restaurant', 'Trip'],
         },
       },
     )
@@ -186,4 +191,4 @@ const AddActivity: React.FC = () => {
   )
 }
 
-export default AddActivity
+export default ListActivity

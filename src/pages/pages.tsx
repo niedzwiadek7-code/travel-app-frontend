@@ -34,13 +34,9 @@ export const Pages: Record<string, Page> = {
     '/travel-day/:countDay',
     <Auth.TravelDay.Component />,
   ),
-  ADD_ACTIVITY: new Page(
+  LIST_ACTIVITY: new Page(
     '/add-activity',
-    <Auth.AddActivity.Component />,
-  ),
-  ADD_ACCOMMODATION: new Page(
-    '/add-accommodation',
-    <Auth.AddAccommodation.Component />,
+    <Auth.ListActivity.Component />,
   ),
 
   ACTIVITY_CREATE: new Page(
@@ -50,15 +46,6 @@ export const Pages: Record<string, Page> = {
   ACTIVITY_EDIT: new Page(
     '/activity/edit/:id',
     <Auth.ActivityForm.Component />,
-  ),
-
-  ACCOMMODATION_CREATE: new Page(
-    '/accommodation/add',
-    <Auth.AccommodationForm.Component />,
-  ),
-  ACCOMMODATION_EDIT: new Page(
-    '/accommodation/edit/:id',
-    <Auth.AccommodationForm.Component />,
   ),
 
   TRAVEL_RECIPES_STORE: new Page(

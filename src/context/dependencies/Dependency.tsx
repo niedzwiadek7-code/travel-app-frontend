@@ -5,6 +5,8 @@ import Backend from '../../services/backend'
 import { DependencyInterface } from './DependencyInterface'
 import { Toast, Types } from '../../utils/Toast'
 
+// TODO: should be split into separate context
+
 export class Dependency {
   getApiService() {
     return new Backend()

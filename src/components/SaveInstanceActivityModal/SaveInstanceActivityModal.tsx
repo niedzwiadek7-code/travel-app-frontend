@@ -8,22 +8,21 @@ import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
 import { useNavigate } from 'react-router-dom'
 import {
-  Activity as ActivityEntity,
   Date as DateEntity,
   ElementTravelInstance,
 } from '../../model'
 import * as Modal from '../UI/Modal'
-import { useDependencies } from '../../context/dependencies'
-import { useAuth } from '../../context/auth'
+import { useDependencies, useAuth } from '../../context'
 import { useAppDispatch, useAppSelector } from '../../app/hooks'
 import { RootState } from '../../app/store'
 import { putActivityInstance } from '../../features/travelInstance/travelInstanceSlice'
 import { Pages } from '../../pages/pages'
+import { ExtendedActivityFormat } from '../../services/backend/Activity/types'
 
 dayjs.extend(utc)
 
 type Props = {
-  activity: ActivityEntity
+  activity: ExtendedActivityFormat
   date: string
 }
 

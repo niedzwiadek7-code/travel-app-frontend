@@ -98,10 +98,11 @@ const Cards: React.FC = () => {
               image={Manage}
               title="Zarządzaj aktywnościami"
               description="Rozwijaj listę aktywności polecanych przez system"
-              link={() => navigate(Pages.ADD_ACTIVITY.getRedirectLink(), {
+              link={() => navigate(Pages.LIST_ACTIVITY.getRedirectLink(), {
                 state: {
                   admin: true,
                   source: 'toAccept',
+                  types: ['Attraction', 'Restaurant', 'Trip'],
                 },
               })}
             />
@@ -109,10 +110,11 @@ const Cards: React.FC = () => {
               image={Manage}
               title="Zarządzaj noclegami"
               description="Rozwijaj listę noclegów polecanych przez system"
-              link={() => navigate(Pages.ADD_ACCOMMODATION.getRedirectLink(), {
+              link={() => navigate(Pages.LIST_ACTIVITY.getRedirectLink(), {
                 state: {
                   admin: true,
                   source: 'toAccept',
+                  types: ['Accommodation'],
                 },
               })}
             />

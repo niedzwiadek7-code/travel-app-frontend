@@ -12,21 +12,20 @@ import dayjs from 'dayjs'
 import * as Modal from '../UI/Modal'
 import * as Input from '../UI/Input'
 import {
-  Activity as ActivityEntity,
   Date,
   Date as DateEntity,
   TravelElement,
-  ActivityTypes,
   AccommodationElement,
 } from '../../model'
-import { useDependencies } from '../../context/dependencies'
+import { useDependencies } from '../../context'
 import { useAppDispatch, useAppSelector } from '../../app/hooks'
 import { putAccommodation, putActivity } from '../../features/travelRecipe/travelRecipeSlice'
 import { Pages } from '../../pages/pages'
 import { RootState } from '../../app/store'
+import { ExtendedActivityFormat } from '../../services/backend/Activity/types'
 
 type Props = {
-  activity: ActivityEntity
+  activity: ExtendedActivityFormat
   countDay: string
 }
 
@@ -65,6 +64,7 @@ const SaveActivityModal: React.FC<Props> = (props) => {
     if (
       datesRange[0] && datesRange[1]
       && props.activity.priceType && props.activity.priceType === 'per_hour'
+      && props.activity.price
     ) {
       const dateStart = new DateEntity(datesRange[0]?.toString())
       const dateEnd = new DateEntity(datesRange[1]?.toString())
@@ -85,13 +85,13 @@ const SaveActivityModal: React.FC<Props> = (props) => {
     }
 
     const numberOfPeople = watch('numberOfPeople')
-    if (numberOfPeople > 1) {
+    if (numberOfPeople > 1 && props.activity.price) {
       setValue('price', (props.activity.price * numberOfPeople).toString())
     }
   }
 
   const calculatePriceForAccommodation = (numberOfDays: number) => {
-    if (numberOfDays > 1) {
+    if (numberOfDays > 1 && props.activity.price) {
       setValue('price', (numberOfDays * props.activity.price).toString())
     }
   }
@@ -131,7 +131,7 @@ const SaveActivityModal: React.FC<Props> = (props) => {
     }
 
     switch (props.activity.activityType) {
-      case ActivityTypes.ACCOMMODATION:
+      case 'Accommodation':
         dispatch(putAccommodation(new AccommodationElement({
           id: uuidv4(),
           numberOfDays: data.numberOfDays,
@@ -185,7 +185,7 @@ const SaveActivityModal: React.FC<Props> = (props) => {
           >
 
             {
-              props.activity.activityType === ActivityTypes.ACCOMMODATION ? (
+              props.activity.activityType === 'Accommodation' ? (
                 <Input.Component
                   variant={Input.Variant.OUTLINED}
                   type={Input.Type.NUMBER}
@@ -211,7 +211,7 @@ const SaveActivityModal: React.FC<Props> = (props) => {
 
             {
               (props.activity.price || props.activity.price === 0)
-              && props.activity.activityType !== ActivityTypes.ACCOMMODATION
+              && props.activity.activityType !== 'Accommodation'
               && (
                 <Input.Component
                   variant={Input.Variant.OUTLINED}

@@ -1,6 +1,8 @@
 /* eslint-disable no-shadow */
 /* eslint-disable no-unused-vars */
 
+import { ActivityType } from '../../../../model/ActivityType'
+
 enum InputName {
   name = 'name',
   description = 'description',
@@ -26,83 +28,108 @@ type InputDefinition = {
   options?: Record<string, string>
 }
 
-export default {
-  Restauracja: [
+const InputsMap: Record<ActivityType, InputDefinition[]> = {
+  Restaurant: [
     {
-      name: 'name',
+      name: InputName.name,
       label: 'Nazwa',
-      type: 'text',
+      type: InputType.text,
     },
     {
-      name: 'description',
+      name: InputName.description,
       label: 'Opis',
-      type: 'text',
+      type: InputType.text,
       rows: Infinity,
     },
     {
-      name: 'place',
+      name: InputName.place,
       label: 'Miejsce',
-      type: 'text',
+      type: InputType.text,
     },
   ],
-  Atrakcja: [
+  Attraction: [
     {
-      name: 'name',
+      name: InputName.name,
       label: 'Nazwa',
-      type: 'text',
+      type: InputType.text,
     },
     {
-      name: 'description',
+      name: InputName.description,
       label: 'Opis',
-      type: 'text',
+      type: InputType.text,
       rows: Infinity,
     },
     {
-      name: 'place',
+      name: InputName.place,
       label: 'Miejsce',
-      type: 'text',
+      type: InputType.text,
     },
     {
-      name: 'price',
+      name: InputName.price,
       label: 'Cena (w zł)',
-      type: 'price',
+      type: InputType.price,
     },
     {
-      name: 'priceType',
+      name: InputName.priceType,
       label: 'Rodzaj płatności',
-      type: 'select',
+      type: InputType.select,
       options: {
         per_entry: 'Za wejście',
         per_hour: 'Za godzinę',
       },
     },
   ],
-  Podróż: [
+  Trip: [
     {
-      name: 'name',
+      name: InputName.name,
       label: 'Nazwa',
-      type: 'text',
+      type: InputType.text,
     },
     {
-      name: 'description',
+      name: InputName.description,
       label: 'Opis',
-      type: 'text',
+      type: InputType.text,
       rows: Infinity,
     },
     {
-      name: 'from',
+      name: InputName.from,
       label: 'Punkt startowy',
-      type: 'text',
+      type: InputType.text,
     },
     {
-      name: 'to',
+      name: InputName.to,
       label: 'Punkt końcowy',
-      type: 'text',
+      type: InputType.text,
     },
     {
-      name: 'price',
+      name: InputName.price,
       label: 'Cena (w zł)',
-      type: 'price',
+      type: InputType.price,
     },
   ],
-} as Record<string, Array<InputDefinition>>
+  Accommodation: [
+    {
+      name: InputName.name,
+      label: 'Nazwa',
+      type: InputType.text,
+    },
+    {
+      name: InputName.description,
+      label: 'Opis',
+      type: InputType.text,
+      rows: Infinity,
+    },
+    {
+      name: InputName.place,
+      label: 'Miejsce',
+      type: InputType.text,
+    },
+    {
+      name: InputName.price,
+      label: 'Cena (w zł)',
+      type: InputType.price,
+    },
+  ],
+}
+
+export default InputsMap

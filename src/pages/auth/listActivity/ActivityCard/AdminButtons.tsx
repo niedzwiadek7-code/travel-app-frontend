@@ -1,12 +1,12 @@
 import React from 'react'
 import { Button, Stack } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
-import { Pages } from '../../pages'
+import { Pages } from '../../../pages'
 
 type Props = {
   acceptElement: () => {},
   deleteElement: () => {}
-  accommodationId: string
+  activityId: string
 }
 
 const AdminButtons: React.FC<Props> = (props) => {
@@ -31,12 +31,13 @@ const AdminButtons: React.FC<Props> = (props) => {
         type="button"
         variant="contained"
         color="primary"
-        onClick={() => navigate(Pages.ACCOMMODATION_EDIT.getRedirectLink({
-          id: props.accommodationId,
+        onClick={() => navigate(Pages.ACTIVITY_EDIT.getRedirectLink({
+          id: props.activityId,
         }), {
           state: {
             admin: true,
             source: 'toAccept',
+            types: ['Attraction', 'Restaurant', 'Trip'],
           },
         })}
       >

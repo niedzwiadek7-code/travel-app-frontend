@@ -1,25 +1,29 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import {
   Button, Stack,
 } from '@mui/material'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { DownhillSkiing } from '@mui/icons-material'
 import { LoadingButton } from '@mui/lab'
 import * as Select from '../../../../components/UI/Select'
 import InputsMap from './InputsMap'
 import * as Input from '../../../../components/UI/Input'
-import { useDependencies } from '../../../../context/dependencies'
-import { useAuth } from '../../../../context/auth'
-import { Activity } from '../../../../model'
-import { Pages } from '../../../../pages/pages'
+import { useDependencies, useAuth } from '../../../../context'
+import { Pages } from '../../../pages'
 import * as Loading from '../../../../components/UI/Loading'
 import SaveActivityModal from './SaveActivityModal'
 import * as SaveInstanceActivityModal from '../../../../components/SaveInstanceActivityModal'
 import * as Header from '../../../../components/Header'
+import { ActivityType } from '../../../../model/ActivityType'
+import {
+  ExtendedActivityFormat,
+} from '../../../../services/backend/Activity/types'
+import { useFetch } from '../../../../hooks/useFetch'
+import { StateDto } from './dto/state.dto'
+import { useRouter } from '../../../../hooks'
 
 type Inputs = {
-  activityType: string
+  activityType: ActivityType
   name: string
   description: string
   place: string
@@ -29,27 +33,48 @@ type Inputs = {
   to: string
 }
 
+interface Params {
+  id: string | undefined
+}
+
 const ActivityForm: React.FC = () => {
-  const { id } = useParams()
-  const { state } = useLocation()
+  const {
+    state,
+    params: { id },
+    navigate,
+  } = useRouter<StateDto, Record<string, any>, Params>()
+
   const {
     register,
     handleSubmit,
     watch,
-    setValue,
     formState: { errors },
   } = useForm<Inputs>()
-  const [activity, setActivity] = useState<undefined | Activity>(undefined)
-  const [loading, setLoading] = useState<boolean>(true)
+
+  // TODO: improve button loading logic
   const [btnLoading, setBtnLoading] = useState<boolean>(false)
   const activityType = watch('activityType')
-  const navigate = useNavigate()
 
   const { getApiService, getToastUtils } = useDependencies()
   const apiService = getApiService()
   const { token } = useAuth()
   const activityService = apiService.getActivity(token)
   const toastUtils = getToastUtils()
+
+  const fetchData = async (): Promise<ExtendedActivityFormat | undefined> => {
+    if (id) {
+      return activityService.get<ExtendedActivityFormat>(id)
+    }
+    return undefined
+  }
+
+  const {
+    data: activity,
+    loading,
+  } = useFetch<ExtendedActivityFormat>({
+    fetchData,
+    defaultData: undefined,
+  }, [id])
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     try {
@@ -92,27 +117,11 @@ const ActivityForm: React.FC = () => {
     }
   }
 
-  useEffect(() => {
-    if (id) {
-      const fetchData = async () => {
-        setLoading(true)
-        const activityTemp = await activityService.get(id)
-        setActivity(activityTemp)
-        setValue('activityType', activityTemp.activityType)
-        setLoading(false)
-      }
-      fetchData()
-    } else {
-      setActivity(undefined)
-      setLoading(false)
-    }
-  }, [id])
-
   const acceptActivity = async () => {
     try {
       if (activity) {
         await activityService.acceptActivity(activity.id)
-        navigate(Pages.ADD_ACTIVITY.getRedirectLink(), {
+        navigate(Pages.LIST_ACTIVITY.getRedirectLink(), {
           state,
         })
       }
@@ -128,7 +137,7 @@ const ActivityForm: React.FC = () => {
     try {
       if (activity) {
         await activityService.restoreActivity(activity.id)
-        navigate(Pages.ADD_ACTIVITY.getRedirectLink(), {
+        navigate(Pages.LIST_ACTIVITY.getRedirectLink(), {
           state,
         })
       }
@@ -144,6 +153,22 @@ const ActivityForm: React.FC = () => {
     return (
       <Loading.Component />
     )
+  }
+
+  const options: Record<ActivityType, string> = {
+    Attraction: 'Atrakcja',
+    Restaurant: 'Restauracja',
+    Trip: 'Podróż',
+    Accommodation: 'Zakwaterowanie',
+  }
+
+  if (state?.availableTypes) {
+    Object.keys(options).forEach((nonTypeKey) => {
+      const key = nonTypeKey as ActivityType
+      if (!state.availableTypes.includes(key)) {
+        delete options[key]
+      }
+    })
   }
 
   return (
@@ -168,11 +193,7 @@ const ActivityForm: React.FC = () => {
           <Select.Component
             variant={Select.Variant.OUTLINED}
             label="Wybierz typ aktywności"
-            options={{
-              Restauracja: 'Restauracja',
-              Podróż: 'Podróż',
-              Atrakcja: 'Atrakcja',
-            }}
+            options={options}
             name="activityType"
             register={register}
             default={activity && activity.activityType}
@@ -321,7 +342,7 @@ const ActivityForm: React.FC = () => {
           <Button
             type="button"
             variant="outlined"
-            onClick={() => navigate(Pages.ADD_ACTIVITY.getRedirectLink(), {
+            onClick={() => navigate(Pages.LIST_ACTIVITY.getRedirectLink(), {
               state,
             })}
           >

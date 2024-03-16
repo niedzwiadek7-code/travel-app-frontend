@@ -49,7 +49,7 @@
   "scripts": {
     "start": "set PORT=8080 && react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "react-scripts src/test --watchAll --coverage",
     "eject": "react-scripts eject",
     "lint": "eslint \"{src,apps,libs,test}/**/*{.js,.ts,.jsx,.tsx}\" --fix",
     "vercel:env:get": "vercel env pull ignoreme/prod/.env"

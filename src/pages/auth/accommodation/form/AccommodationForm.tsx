@@ -118,7 +118,7 @@ const AccommodationForm: React.FC = () => {
     try {
       if (accommodation) {
         await activityService.acceptAccommodation(accommodation.id.toString())
-        navigate(Pages.ADD_ACCOMMODATION.getRedirectLink(), {
+        navigate(Pages.ADD_ACTIVITY.getRedirectLink(), {
           state,
         })
       }
@@ -134,7 +134,7 @@ const AccommodationForm: React.FC = () => {
     try {
       if (accommodation) {
         await activityService.restoreActivity(accommodation.id)
-        navigate(Pages.ADD_ACCOMMODATION.getRedirectLink(), {
+        navigate(Pages.ADD_ACTIVITY.getRedirectLink(), {
           state,
         })
       }
@@ -310,7 +310,7 @@ const AccommodationForm: React.FC = () => {
           <Button
             type="button"
             variant="outlined"
-            onClick={() => navigate(Pages.ADD_ACCOMMODATION.getRedirectLink(), {
+            onClick={() => navigate(Pages.ADD_ACTIVITY.getRedirectLink(), {
               state,
             })}
           >
