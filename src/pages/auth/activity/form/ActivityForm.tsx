@@ -14,12 +14,12 @@ import * as Loading from '../../../../components/UI/Loading'
 import SaveActivityModal from './SaveActivityModal'
 import * as SaveInstanceActivityModal from '../../../../components/SaveInstanceActivityModal'
 import * as Header from '../../../../components/Header'
-import { ActivityType } from '../../../../model/ActivityType'
+import { ActivityType } from '../../../../model'
 import {
   ExtendedActivityFormat,
 } from '../../../../services/backend/Activity/types'
 import { useFetch } from '../../../../hooks/useFetch'
-import { StateDto } from './dto/state.dto'
+import { StateDto } from './dto'
 import { useRouter } from '../../../../hooks'
 
 type Inputs = {
@@ -86,21 +86,13 @@ const ActivityForm: React.FC = () => {
 
       let activityId: string = ''
 
-      if (activity) {
-        const result = await activityService.putActivity(activity.id.toString(), transformedData)
-        activityId = result.id.toString()
-        toastUtils.Toast.showToast(
-          toastUtils.types.INFO,
-          'Edycja aktywności przebiegła pomyślnie',
-        )
-      } else {
-        const result = await activityService.createActivity(transformedData)
-        activityId = result.id.toString()
-        toastUtils.Toast.showToast(
-          toastUtils.types.SUCCESS,
-          'Udało się stworzyć nową aktywność',
-        )
-      }
+      const result = await activityService.putActivity(transformedData, id)
+      activityId = result.id.toString()
+
+      toastUtils.Toast.showToast(
+        toastUtils.types.SUCCESS,
+        id ? 'Edycja aktywności przebiegła pomyślnie' : 'Udało się stworzyć nową aktywność',
+      )
 
       setBtnLoading(false)
       navigate(Pages.ACTIVITY_EDIT.getRedirectLink({

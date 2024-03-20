@@ -1,14 +1,14 @@
 import React from 'react'
 import { Stack, useTheme } from '@mui/material'
-import { Activity as ActivityEntity } from '../../../../../model'
 import * as SaveActivityModal from '../../../../../components/SaveActivityModal'
 import * as SaveInstanceActivityModal from '../../../../../components/SaveInstanceActivityModal'
 import { StateDto } from '../../dto/state.dto'
 import AdminButtons from '../AdminButtons'
 import * as Rating from '../../../../../components/Rating'
+import { ExtendedActivityFormat } from '../../../../../services/backend/Activity/types'
 
 type Props = {
-  activity: ActivityEntity
+  activity: ExtendedActivityFormat
   state: StateDto
   acceptElement: () => {}
   deleteElement: () => {}

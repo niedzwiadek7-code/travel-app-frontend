@@ -10,14 +10,14 @@ import {
   AirplanemodeActive as TravelIcon,
 } from '@mui/icons-material'
 import { useNavigate } from 'react-router-dom'
-import { UserTravelRecipeDto } from '../../../../../services/backend/Travel/dto'
+import { ActivityType, TravelRecipe } from '../../../../../model'
 import MenuComponent from './Menu'
 import { Pages } from '../../../../pages'
 import * as SignUpForTrip from '../../../../../components/SignUpForTrip'
 import * as CopyToClipboard from '../../../../../components/UI/CopyToClipboard'
 
 type Props = {
-  userTravelRecipe: UserTravelRecipeDto
+  userTravelRecipe: TravelRecipe
 }
 
 const TravelRecipeCard: React.FC<Props> = (props) => {
@@ -29,7 +29,7 @@ const TravelRecipeCard: React.FC<Props> = (props) => {
   })
 
   const calculateTotalPrice = () => {
-    const activityPrice = props.userTravelRecipe.elements.reduce(
+    const activityPrice = props.userTravelRecipe.travelElements.reduce(
       (acc, elem) => acc + elem.price,
       0,
     )
@@ -42,13 +42,13 @@ const TravelRecipeCard: React.FC<Props> = (props) => {
     return formatter.format(activityPrice + accommodationPrice)
   }
 
-  const getIcon = (type: string) => {
+  const getIcon = (type: ActivityType) => {
     switch (type) {
-      case 'Atrakcja':
+      case 'Attraction':
         return <AttractionIcon style={{ color: theme.palette.primary.main }} />
-      case 'Podróż':
+      case 'Trip':
         return <TravelIcon style={{ color: theme.palette.primary.main }} />
-      case 'Restauracja':
+      case 'Restaurant':
         return <RestaurantIcon style={{ color: theme.palette.primary.main }} />
       default:
         return <> </>
@@ -102,15 +102,15 @@ const TravelRecipeCard: React.FC<Props> = (props) => {
 
           <List>
             {
-              props.userTravelRecipe.elements.map((elem) => (
+              props.userTravelRecipe.travelElements.map((elem) => (
                 <ListItem
-                  key={elem.name}
+                  key={elem.activity.name}
                   style={{ margin: 0, padding: 0 }}
                 >
                   <ListItemIcon>
-                    { getIcon(elem.activityType) }
+                    { getIcon(elem.activity.activityType) }
                   </ListItemIcon>
-                  <ListItemText> {elem.name} </ListItemText>
+                  <ListItemText> {elem.activity.name} </ListItemText>
                 </ListItem>
               ))
             }
@@ -129,7 +129,7 @@ const TravelRecipeCard: React.FC<Props> = (props) => {
           </Button>
 
           <SignUpForTrip.Component
-            id={props.userTravelRecipe.id.toString()}
+            id={props.userTravelRecipe.id}
             name={props.userTravelRecipe.name}
           />
 

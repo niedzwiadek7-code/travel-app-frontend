@@ -1,6 +1,5 @@
 export interface PutRatingDto {
   text: string
-  elementTravelId: string
+  elementTravelId: number
   sharePhotos: boolean
-  activityType: string
 }

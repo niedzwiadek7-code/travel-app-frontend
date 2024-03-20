@@ -57,12 +57,9 @@ const TripCard: React.FC<Props> = (props) => {
 
   const realizationTrip = calculateRealizationTrip()
 
-  const allPhotos = ([
-    ...props.travelInstance.travelElements,
-    ...props.travelInstance.accommodationElements,
-  ]).map(
-    (elem) => elem.photos,
-  ).flat()
+  const allPhotos = props.travelInstance.travelElements
+    .map((elem) => elem.photos)
+    .flat()
 
   return (
     <Card>
@@ -88,6 +85,7 @@ const TripCard: React.FC<Props> = (props) => {
         <Stack gap={2}>
           <Stack>
             <Typography variant="body1">
+              {/* TODO: Add date format */}
               Termin wycieczki
               <b> {props.travelInstance.from} </b> -
               <b> {props.travelInstance.to} </b>

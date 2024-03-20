@@ -20,7 +20,7 @@ const AccommodationTable: React.FC = () => {
           <TableRow>
             <TableCell> Nazwa </TableCell>
             <TableCell> Miejsce </TableCell>
-            <TableCell> Ilość dni </TableCell>
+            <TableCell> Zakres dni </TableCell>
             <TableCell> Cena </TableCell>
           </TableRow>
         </TableHead>
@@ -29,9 +29,11 @@ const AccommodationTable: React.FC = () => {
           {
             accommodations.map((accommodationElement) => (
               <TableRow key={accommodationElement.id}>
-                <TableCell> {accommodationElement.accommodation.name} </TableCell>
-                <TableCell> {accommodationElement.accommodation.place} </TableCell>
-                <TableCell> {accommodationElement.numberOfDays} </TableCell>
+                <TableCell> {accommodationElement.activity.name} </TableCell>
+                <TableCell> {accommodationElement.activity.place} </TableCell>
+                <TableCell>
+                  {accommodationElement.from} - {accommodationElement.to}
+                </TableCell>
                 <TableCell> {formatter.format(accommodationElement.price)} </TableCell>
               </TableRow>
             ))

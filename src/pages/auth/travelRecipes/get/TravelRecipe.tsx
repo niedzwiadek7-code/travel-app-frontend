@@ -130,7 +130,7 @@ const TravelRecipe: React.FC = () => {
       </Stack>
 
       <SignUpForTrip.Component
-        id={travelRecipe.id.toString()}
+        id={travelRecipe.id}
         name={travelRecipe.name}
       />
 

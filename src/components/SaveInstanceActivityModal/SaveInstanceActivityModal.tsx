@@ -19,6 +19,8 @@ import { putActivityInstance } from '../../features/travelInstance/travelInstanc
 import { Pages } from '../../pages/pages'
 import { ExtendedActivityFormat } from '../../services/backend/Activity/types'
 
+// TODO: handle accommodations here
+
 dayjs.extend(utc)
 
 type Props = {
@@ -78,7 +80,7 @@ const SaveInstanceActivityModal: React.FC<Props> = (props) => {
       const result = await travelService.addActivityToTravelInstance(
         travelInstance.id.toString(),
         {
-          activityId: props.activity.id.toString(),
+          activityId: props.activity.id,
           from: dateStartObj.toISOString(),
           to: dateEndObj.toISOString(),
         },

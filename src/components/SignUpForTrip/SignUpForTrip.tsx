@@ -14,7 +14,7 @@ type ModalInputs = {
 }
 
 type Props = {
-  id: string
+  id: number
   name: string
 }
 

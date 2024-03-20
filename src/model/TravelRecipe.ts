@@ -1,23 +1,27 @@
-import TravelElement from './TravelElement'
-import Accommodation from './Accommodation'
-import AccommodationElement from './AccommodationElement'
+import LocallyTravelElement from './LocallyTravelElement'
+import { GloballyTravelElement } from './GloballyTravelElement'
 
 class TravelRecipe {
   id: number
 
   name: string
 
-  travelElements: TravelElement[]
+  travelElements: LocallyTravelElement[]
 
-  accommodations: AccommodationElement[]
+  accommodations: GloballyTravelElement[]
 
   countDays: number
 
   constructor(obj: any) {
     this.id = obj.id
     this.name = obj.name || ''
-    this.travelElements = (obj.travelElements || []).map((elem: any) => new TravelElement(elem))
-    this.accommodations = (obj.accommodations || []).map((elem: any) => new Accommodation(elem))
+
+    this.travelElements = (obj.travelElements || [])
+      .map((elem: any) => new LocallyTravelElement(elem))
+
+    this.accommodations = (obj.accommodations || [])
+      .map((elem: any) => new GloballyTravelElement(elem))
+
     this.countDays = obj.countDays
   }
 }

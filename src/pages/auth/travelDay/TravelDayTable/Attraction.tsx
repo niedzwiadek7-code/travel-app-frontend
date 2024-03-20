@@ -3,12 +3,12 @@ import {
   Button, Stack, TableCell, TableRow, useTheme,
 } from '@mui/material'
 import { Attractions } from '@mui/icons-material'
-import { TravelElement } from '../../../../model'
+import { LocallyTravelElement } from '../../../../model'
 import { deleteActivityFromTravel } from '../../../../features/travelRecipe/travelRecipeSlice'
 import { useAppDispatch } from '../../../../app/hooks'
 
 type Props = {
-  travelElement: TravelElement
+  travelElement: LocallyTravelElement
 }
 
 const Attraction: React.FC<Props> = (props) => {

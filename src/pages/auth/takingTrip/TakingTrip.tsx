@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { Map } from '@mui/icons-material'
-import { Button, Stack } from '@mui/material'
-import { useDependencies } from '../../../context/dependencies'
-import { useAuth } from '../../../context/auth'
+import { Button, Stack, Typography } from '@mui/material'
+import { useDependencies, useAuth } from '../../../context'
 import * as Loading from '../../../components/UI/Loading'
 import { useAppDispatch, useAppSelector } from '../../../app/hooks'
 import { RootState } from '../../../app/store'
@@ -12,8 +11,7 @@ import * as UnexpectedError from '../../../components/UI/UnexpectedError'
 import * as Header from '../../../components/Header'
 import { Pages } from '../../pages'
 import * as TripTable from './TripTable'
-import * as AccommodationElem from './AccommodationElem'
-import AddAccommodationButton from './AddAccommodationButton'
+import * as GloballySection from './GloballySection'
 
 const TakingTrip: React.FC = () => {
   const { id } = useParams()
@@ -26,15 +24,6 @@ const TakingTrip: React.FC = () => {
 
   const travelInstance = useAppSelector((state: RootState) => state.travelInstance)
   const dispatch = useAppDispatch()
-
-  const accommodationElements = travelInstance.accommodationElements
-    .filter((e) => e)
-    .sort((a, b) => {
-      if (a.passed && !b.passed) {
-        return 1
-      }
-      return -1
-    })
 
   useEffect(() => {
     const fetchData = async () => {
@@ -77,29 +66,15 @@ const TakingTrip: React.FC = () => {
         )}
       />
 
-      <Stack
-        gap={2}
-      >
-        <h2 style={{ marginTop: 0, marginBottom: 0 }}>
-          Lista noclegów
-        </h2>
-
-        {
-          accommodationElements.map((elem) => (
-            <AccommodationElem.Component
-              key={elem.id}
-              accommodationElement={elem}
-            />
-          ))
-        }
-
-        <AddAccommodationButton />
-      </Stack>
+      <GloballySection.Component
+        title="Dodaj nocleg"
+        activityType="Accommodation"
+      />
 
       <Stack>
-        <h2 style={{ marginTop: 0 }}>
+        <Typography variant="h5" component="h5">
           Przeglądaj wycieczkę
-        </h2>
+        </Typography>
 
         <TripTable.Component />
       </Stack>

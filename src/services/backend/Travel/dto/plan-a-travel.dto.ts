@@ -1,4 +1,4 @@
 export interface PlanATravelDto {
-  travelRecipeId: string
+  travelRecipeId: number
   startDate: Date
 }

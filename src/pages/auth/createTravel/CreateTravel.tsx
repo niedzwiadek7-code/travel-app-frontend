@@ -2,23 +2,24 @@ import React, { useEffect, useState } from 'react'
 import {
   Button,
   Stack,
+  Typography,
 } from '@mui/material'
 import { useNavigate, useParams } from 'react-router-dom'
 import { Create as CreateIcon } from '@mui/icons-material'
 import { LoadingButton } from '@mui/lab'
 import { useAppDispatch, useAppSelector } from '../../../app/hooks'
 import * as Input from '../../../components/UI/Input'
-import { setName, setNewTravelRecipe, reset } from '../../../features/travelRecipe/travelRecipeSlice'
+import {
+  setName, setNewTravelRecipe, reset, deleteAccommodationFromTravel,
+} from '../../../features/travelRecipe/travelRecipeSlice'
 import { RootState } from '../../../app/store'
 import * as TravelDaysTable from './TravelDaysTable'
 import * as TravelSummaryTable from './TravelSummaryTable'
-import { useDependencies } from '../../../context/dependencies'
-import { useAuth } from '../../../context/auth'
-import { Pages } from '../../../pages/pages'
+import { useDependencies, useAuth } from '../../../context'
+import { Pages } from '../../pages'
 import * as Loading from '../../../components/UI/Loading'
-import * as TravelAccommodations from './TravelAccommodations'
-import AddAccommodationButton from './AddAccommodationButton'
 import * as Header from '../../../components/Header'
+import * as TravelGloballyElem from './TravelGloballyElem'
 
 const CreateTravel: React.FC = () => {
   const { id } = useParams()
@@ -114,33 +115,30 @@ const CreateTravel: React.FC = () => {
       </Stack>
 
       <Stack>
-        <h2
-          style={{ marginTop: 0 }}
+        <Typography
+          variant="h5"
+          component="h5"
         >
           Podsumowanie
-        </h2>
+        </Typography>
 
         <TravelSummaryTable.Component />
       </Stack>
 
-      <Stack>
-        <h2
-          style={{ marginTop: 0 }}
-        >
-          Noclegi
-        </h2>
-
-        <TravelAccommodations.Component />
-
-        <AddAccommodationButton />
-      </Stack>
+      <TravelGloballyElem.Component
+        title="Noclegi"
+        travelElements={travelRecipe.accommodations}
+        deleteTravelElement={(elemId: string) => dispatch(deleteAccommodationFromTravel(elemId))}
+        activityType="Accommodation"
+      />
 
       <Stack>
-        <h2
-          style={{ marginTop: 0 }}
+        <Typography
+          variant="h5"
+          component="h5"
         >
           Przeglądaj poszczególne dni swojej wycieczki
-        </h2>
+        </Typography>
 
         <TravelDaysTable.Component />
       </Stack>

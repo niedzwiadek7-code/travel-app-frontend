@@ -2,7 +2,7 @@
 
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import {
-  TravelRecipe, TravelElement, AccommodationElement,
+  TravelRecipe, LocallyTravelElement, GloballyTravelElement,
 } from '../../model'
 
 const initialState: TravelRecipe = new TravelRecipe({
@@ -22,14 +22,20 @@ export const travelRecipeSlice = createSlice({
       ...state,
       countDays: state.countDays + action.payload,
     }),
-    putActivity: (state, action: PayloadAction<TravelElement>) => ({
-      ...state,
-      travelElements: [...state.travelElements, action.payload],
-    }),
-    putAccommodation: (state, action: PayloadAction<AccommodationElement>) => ({
-      ...state,
-      accommodations: [...state.accommodations, action.payload],
-    }),
+    putActivity: (state, action: PayloadAction<LocallyTravelElement | GloballyTravelElement>) => {
+      switch (action.payload.activity.activityType) {
+        case 'Accommodation':
+          return {
+            ...state,
+            accommodations: [...state.accommodations, new GloballyTravelElement(action.payload)],
+          }
+        default:
+          return {
+            ...state,
+            travelElements: [...state.travelElements, new LocallyTravelElement(action.payload)],
+          }
+      }
+    },
     deleteDayFromTravel: (state, action: PayloadAction<number>) => {
       const newTravelElements = state.travelElements.filter(
         (elem) => elem.dayCount !== action.payload,
@@ -73,7 +79,6 @@ export const {
   deleteDayFromTravel,
   addCountDays,
   putActivity,
-  putAccommodation,
   deleteActivityFromTravel,
   deleteAccommodationFromTravel,
   setNewTravelRecipe,

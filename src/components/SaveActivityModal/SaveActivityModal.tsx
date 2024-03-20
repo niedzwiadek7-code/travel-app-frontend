@@ -14,12 +14,12 @@ import * as Input from '../UI/Input'
 import {
   Date,
   Date as DateEntity,
-  TravelElement,
-  AccommodationElement,
+  LocallyTravelElement,
+  GloballyTravelElement,
 } from '../../model'
 import { useDependencies } from '../../context'
 import { useAppDispatch, useAppSelector } from '../../app/hooks'
-import { putAccommodation, putActivity } from '../../features/travelRecipe/travelRecipeSlice'
+import { putActivity } from '../../features/travelRecipe/travelRecipeSlice'
 import { Pages } from '../../pages/pages'
 import { RootState } from '../../app/store'
 import { ExtendedActivityFormat } from '../../services/backend/Activity/types'
@@ -132,13 +132,19 @@ const SaveActivityModal: React.FC<Props> = (props) => {
 
     switch (props.activity.activityType) {
       case 'Accommodation':
-        dispatch(putAccommodation(new AccommodationElement({
-          id: uuidv4(),
-          numberOfDays: data.numberOfDays,
-          description: data.description,
-          price: parseInt(data.price, 10),
-          accommodation: props.activity,
-        })))
+        dispatch(putActivity(
+          new GloballyTravelElement({
+            id: uuidv4(),
+            // TODO: improve this - user should pick from and to day number and number of people
+            from: 1,
+            to: 1,
+            numberOfPeople: 1,
+            price: parseInt(data.price, 10),
+            description: data.description,
+            photos: [],
+            activity: props.activity,
+          }),
+        ))
         if (travelRecipe.id) {
           navigate(Pages.EDIT_TRAVEL.getRedirectLink({
             id: travelRecipe.id.toString(),
@@ -148,7 +154,7 @@ const SaveActivityModal: React.FC<Props> = (props) => {
         }
         break
       default:
-        dispatch(putActivity(new TravelElement({
+        dispatch(putActivity(new LocallyTravelElement({
           id: uuidv4(),
           dayCount: parseInt(props.countDay, 10),
           from: dateStart,

@@ -10,14 +10,13 @@ import {
   Attractions as AttractionIcon,
   AirplanemodeActive as TravelIcon,
 } from '@mui/icons-material'
-import { ElementTravelInstance } from '../../../../model'
-import PassElementTravelModal from './PassElementTravelModal'
+import { ActivityType, ElementTravelInstance } from '../../../../model'
 import { useAppDispatch } from '../../../../app/hooks'
 import { cancelTravelElementInstance } from '../../../../features/travelInstance/travelInstanceSlice'
-import { useDependencies } from '../../../../context/dependencies'
-import { useAuth } from '../../../../context/auth'
-import RateActivity from './RateActivity'
+import { useDependencies, useAuth } from '../../../../context'
 import * as Slider from '../../../../components/UI/Slider'
+import * as PassActivity from '../../../../components/Activity/PassActivity'
+import * as RateActivity from '../../../../components/Activity/RateActivity'
 
 dayjs.extend(utc)
 
@@ -35,13 +34,13 @@ const TripDayElem: React.FC<Props> = (props) => {
   const { token } = useAuth()
   const travelService = apiService.getTravel(token)
 
-  const getIcon = (type: string) => {
+  const getIcon = (type: ActivityType) => {
     switch (type) {
-      case 'Atrakcja':
+      case 'Attraction':
         return <AttractionIcon style={{ color: theme.palette.primary.main }} />
-      case 'Podróż':
+      case 'Trip':
         return <TravelIcon style={{ color: theme.palette.primary.main }} />
-      case 'Restauracja':
+      case 'Restaurant':
         return <RestaurantIcon style={{ color: theme.palette.primary.main }} />
       default:
         return <> </>
@@ -152,10 +151,9 @@ const TripDayElem: React.FC<Props> = (props) => {
         {
           props.travelElement.passed ? (
             <>
-              <RateActivity
+              <RateActivity.Component
                 elemId={props.travelElement.id}
                 name={props.travelElement.activity.name}
-                activityType={props.travelElement.activity.activityType}
               />
 
               <Button
@@ -169,7 +167,7 @@ const TripDayElem: React.FC<Props> = (props) => {
             </>
           ) : (
             <>
-              <PassElementTravelModal
+              <PassActivity.Component
                 travelElement={props.travelElement}
               />
 

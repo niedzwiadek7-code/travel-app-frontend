@@ -4,20 +4,21 @@ import {
   Grid, Stack, Typography, useTheme,
 } from '@mui/material'
 import { green } from '@mui/material/colors'
-import { AccommodationElementInstance } from '../../../../model'
+import { ElementTravelInstance } from '../../../../model'
 import { useAppDispatch } from '../../../../app/hooks'
-import { useDependencies } from '../../../../context/dependencies'
-import { useAuth } from '../../../../context/auth'
-import { cancelAccommodationElementInstance } from '../../../../features/travelInstance/travelInstanceSlice'
-import PassAccommodationTravelModal from './PassAccommodationTravelModal'
-import RateAccommodation from './RateAccommodation'
+import { useDependencies, useAuth } from '../../../../context'
+import * as PassActivity from '../../../../components/Activity/PassActivity'
+import * as RateActivity from '../../../../components/Activity/RateActivity'
 import * as Slider from '../../../../components/UI/Slider'
+import {
+  cancelTravelElementInstance,
+} from '../../../../features/travelInstance/travelInstanceSlice'
 
 type Props = {
-  accommodationElement: AccommodationElementInstance,
+  elem: ElementTravelInstance,
 }
 
-const AccommodationElem: React.FC<Props> = (props) => {
+const GloballyElem: React.FC<Props> = (props) => {
   const { getApiService, getToastUtils } = useDependencies()
   const apiService = getApiService()
   const toastUtils = getToastUtils()
@@ -29,10 +30,10 @@ const AccommodationElem: React.FC<Props> = (props) => {
 
   const cancelAccommodationElementInstanceFn = async () => {
     try {
-      await travelService.cancelAccommodationElementInstance(
-        props.accommodationElement.id.toString(),
+      await travelService.cancelTravelElementInstance(
+        props.elem.id,
       )
-      dispatch(cancelAccommodationElementInstance(props.accommodationElement.id.toString()))
+      dispatch(cancelTravelElementInstance(props.elem.id))
     } catch (err) {
       toastUtils.Toast.showToast(
         toastUtils.types.ERROR,
@@ -47,7 +48,7 @@ const AccommodationElem: React.FC<Props> = (props) => {
       gap={1}
       style={{
         padding: '.8em',
-        backgroundColor: props.accommodationElement.passed ? green[50] : theme.palette.grey[200],
+        backgroundColor: props.elem.passed ? green[50] : theme.palette.grey[200],
         borderRadius: '.8em',
       }}
     >
@@ -61,29 +62,29 @@ const AccommodationElem: React.FC<Props> = (props) => {
           gap={1}
           sx={{ fontWeight: 'bold', fontSize: '1.2em' }}
         >
-          {props.accommodationElement.accommodation.name}
+          {props.elem.activity.name}
         </Stack>
 
         <Typography sx={{ fontWeight: 'bold', fontSize: '1.2em' }}>
-          {props.accommodationElement.accommodation.place}
+          {props.elem.activity.place}
         </Typography>
       </Stack>
 
       {
-        props.accommodationElement.elementTravel && (
+        props.elem.elementTravel && (
           <Typography>
-            {props.accommodationElement.elementTravel.description}
+            {props.elem.elementTravel.description}
           </Typography>
         )
       }
 
       {
-        props.accommodationElement.passed && (
+        props.elem.passed && (
           <Grid
             container
             spacing={2}
           >
-            {props.accommodationElement.photos.map((photo, index) => (
+            {props.elem.photos.map((photo, index) => (
               <Grid
                 item
                 key={photo}
@@ -115,7 +116,7 @@ const AccommodationElem: React.FC<Props> = (props) => {
                       />
                     </button>
                   )}
-                  images={props.accommodationElement.photos}
+                  images={props.elem.photos}
                   startIndex={index}
                 />
               </Grid>
@@ -130,11 +131,11 @@ const AccommodationElem: React.FC<Props> = (props) => {
         gap={1}
       >
         {
-          props.accommodationElement.passed ? (
+          props.elem.passed ? (
             <>
-              <RateAccommodation
-                elemId={props.accommodationElement.id}
-                name={props.accommodationElement.accommodation.name}
+              <RateActivity.Component
+                elemId={props.elem.id}
+                name={props.elem.activity.name}
               />
 
               <Button
@@ -151,8 +152,8 @@ const AccommodationElem: React.FC<Props> = (props) => {
             </>
           ) : (
             <>
-              <PassAccommodationTravelModal
-                accommodationElement={props.accommodationElement}
+              <PassActivity.Component
+                travelElement={props.elem}
               />
 
               <Button
@@ -172,4 +173,4 @@ const AccommodationElem: React.FC<Props> = (props) => {
   )
 }
 
-export default AccommodationElem
+export default GloballyElem

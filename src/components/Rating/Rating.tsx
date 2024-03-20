@@ -2,12 +2,15 @@ import React from 'react'
 import {
   Grid, Stack, Typography, useTheme,
 } from '@mui/material'
-import { User } from '../../model'
 
 type Props = {
   text: string
   photos: string[]
-  author: User
+  author: {
+    firstName: string
+    lastName: string
+    email: string
+  }
 }
 
 const Rating: React.FC<Props> = (props) => {

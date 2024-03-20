@@ -1,14 +1,11 @@
 import Activity from './Activity'
-import Date from './Date'
 
-class TravelElement {
+export class GloballyTravelElement {
   id: string
 
-  dayCount: number
+  from: number
 
-  from: Date
-
-  to: Date
+  to: number
 
   activity: Activity
 
@@ -22,7 +19,6 @@ class TravelElement {
 
   constructor(obj: any) {
     this.id = obj.id
-    this.dayCount = obj.dayCount
     this.from = obj.from
     this.to = obj.to
     this.activity = obj.activity
@@ -32,5 +28,3 @@ class TravelElement {
     this.photos = obj.photos
   }
 }
-
-export default TravelElement

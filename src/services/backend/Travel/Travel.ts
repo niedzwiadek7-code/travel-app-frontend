@@ -1,94 +1,105 @@
-import dayjs from 'dayjs'
 import ApiService from '../ApiService'
 import {
   TravelRecipe,
-  Date as DateEntity,
   TravelInstance,
   ElementTravelInstance,
-  AccommodationElementInstance,
+  LocallyTravelElement,
+  GloballyTravelElement,
 } from '../../../model'
 import {
-  UserTravelRecipeDto,
   PlanATravelDto,
-  PassTravelElementDto,
   AddActivityToTravelInstanceDto,
-  AddAccommodationToTravelInstanceDto, PassElementDto,
+  PassElementDto, TravelDto, PassTravelElementDto,
 } from './dto'
+import { TravelFormat } from './types'
 
 class Travel {
   private travelUrl = '/travel'
 
   private apiService: ApiService
 
-  public async get(id: string): Promise<TravelRecipe> {
-    const result = await this.apiService.get<TravelRecipe>(`${this.travelUrl}/find/${id}`)
-    result.travelElements = result.travelElements.map((elem) => {
-      const transformTimeToDate = (time: string) => {
-        const timeValues = time.split(':')
-        const timeStr = dayjs()
-          .set('hour', parseInt(timeValues[0], 10))
-          .set('minute', parseInt(timeValues[1], 10))
-          .toString()
-
-        return new DateEntity(timeStr)
-      }
-
-      const from = transformTimeToDate(elem.from as unknown as string)
-      const to = transformTimeToDate(elem.to as unknown as string)
-
-      return {
-        ...elem,
-        from,
-        to,
-      }
+  transformTravelFormatToTravelRecipe(result: TravelFormat): TravelRecipe {
+    return new TravelRecipe({
+      id: result.id,
+      name: result.name,
+      countDays: result.countDays,
+      travelElements: result.travelElementsLocally
+        .map((e) => new LocallyTravelElement(e)),
+      accommodations: result.travelElementsGlobally
+        .filter((e) => e.activity.activityType === 'Accommodation')
+        .map((e) => new GloballyTravelElement(e)),
     })
-
-    return result
   }
 
-  public async getUserTravels(): Promise<UserTravelRecipeDto[]> {
-    return this.apiService.get<UserTravelRecipeDto[]>(`${this.travelUrl}/user-list`)
-  }
-
-  public async createTravelRecipe(data: TravelRecipe) {
-    const transformedData = {
-      ...data,
-      travelElements: data.travelElements.map((travelElement) => ({
-        ...travelElement,
-        activityId: travelElement.activity.id,
-      })),
-      accommodations: data.accommodations.map((accommodationElement) => ({
-        ...accommodationElement,
-        accommodationId: accommodationElement.accommodation.id,
-      })),
+  transformTravelRecipeToTravelDto(data: TravelRecipe): TravelDto {
+    return {
+      name: data.name,
+      countDays: data.countDays,
+      travelElements: [
+        ...data.travelElements.map((elem) => ({
+          activityId: elem.activity.id,
+          price: elem.price,
+          numberOfPeople: elem.numberOfPeople,
+          description: elem.description,
+          travelElementLocally: {
+            dayCount: elem.dayCount,
+            from: {
+              hour: elem.from.hour,
+              minute: elem.from.minute,
+            },
+            to: {
+              hour: elem.to.hour,
+              minute: elem.to.minute,
+            },
+          },
+        })),
+        ...data.accommodations.map((elem) => ({
+          activityId: elem.activity.id,
+          price: elem.price,
+          numberOfPeople: elem.numberOfPeople,
+          description: elem.description,
+          travelElementGlobally: {
+            from: elem.from,
+            to: elem.to,
+          },
+        })),
+      ],
     }
-    return this.apiService.post<TravelRecipe>(this.travelUrl, transformedData)
   }
 
-  public async putTravelRecipe(data: TravelRecipe) {
-    const transformedData = {
-      ...data,
-      travelElements: data.travelElements.map((travelElement) => ({
-        ...travelElement,
-        activityId: travelElement.activity.id,
-      })),
-      accommodations: data.accommodations.map((accommodationElement) => ({
-        ...accommodationElement,
-        accommodationId: accommodationElement.accommodation.id,
-      })),
-    }
-    return this.apiService.put<TravelRecipe>(`${this.travelUrl}/${data.id}`, transformedData)
+  public async get(id: string): Promise<TravelRecipe> {
+    const result = await this.apiService.get<TravelFormat>(`${this.travelUrl}/find/${id}`)
+
+    return this.transformTravelFormatToTravelRecipe(result)
   }
 
-  public async createATravelInstance(data: PlanATravelDto) {
+  public async getUserTravels(): Promise<TravelRecipe[]> {
+    const results = await this.apiService.get<TravelFormat[]>(`${this.travelUrl}/user-list`)
+
+    return results.map(this.transformTravelFormatToTravelRecipe)
+  }
+
+  public async createTravelRecipe(data: TravelRecipe): Promise<TravelRecipe> {
+    const transformedData = this.transformTravelRecipeToTravelDto(data)
+    const result = await this.apiService.post<TravelFormat>(this.travelUrl, transformedData)
+    return this.transformTravelFormatToTravelRecipe(result)
+  }
+
+  public async putTravelRecipe(data: TravelRecipe): Promise<TravelRecipe> {
+    const transformedData = this.transformTravelRecipeToTravelDto(data)
+    const result = await this.apiService.put<TravelFormat>(`${this.travelUrl}/${data.id}`, transformedData)
+    return this.transformTravelFormatToTravelRecipe(result)
+  }
+
+  public async createATravelInstance(data: PlanATravelDto): Promise<TravelInstance> {
     return this.apiService.post<TravelInstance>(`${this.travelUrl}/plan-a-travel`, data)
   }
 
-  public async getTravelInstance(id: string) {
+  public async getTravelInstance(id: string): Promise<TravelInstance> {
     return this.apiService.get<TravelInstance>(`${this.travelUrl}/find/instance/${id}`)
   }
 
-  public async passTravelElement(id: string, data: PassTravelElementDto) {
+  public async passTravelElement(id: number, data: PassTravelElementDto) {
     const formData = new FormData()
     Array.from(data.images).forEach((image) => formData.append('images', image))
     return this.apiService.put<PassElementDto>(`${this.travelUrl}/pass-travel-element/${id}`, formData, {
@@ -96,7 +107,7 @@ class Travel {
     })
   }
 
-  public async cancelTravelElementInstance(id: string) {
+  public async cancelTravelElementInstance(id: number) {
     return this.apiService.post<number>(`${this.travelUrl}/travel-instance/element/cancel/${id}`)
   }
 
@@ -108,31 +119,9 @@ class Travel {
     return this.apiService.delete<number>(`${this.travelUrl}/instance/delete/${id}`)
   }
 
-  public async cancelAccommodationElementInstance(id: string) {
-    return this.apiService.post<number>(`${this.travelUrl}/travel-instance/accommodation/cancel/${id}`)
-  }
-
-  public async passAccommodationElement(id: string, data: PassTravelElementDto) {
-    const formData = new FormData()
-    Array.from(data.images).forEach((image) => formData.append('images', image))
-    return this.apiService.put<PassElementDto>(`${this.travelUrl}/pass-accommodation-element/${id}`, formData, {
-      'Content-Type': 'multipart/form-data',
-    })
-  }
-
   public async addActivityToTravelInstance(id: string, data: AddActivityToTravelInstanceDto) {
     return this.apiService.post<ElementTravelInstance>(
       `${this.travelUrl}/travel-instance/activity/add/${id}`,
-      data,
-    )
-  }
-
-  public async addAccommodationToTravelInstance(
-    id: string,
-    data: AddAccommodationToTravelInstanceDto,
-  ) {
-    return this.apiService.post<AccommodationElementInstance>(
-      `${this.travelUrl}/travel-instance/accommodation/add/${id}`,
       data,
     )
   }

@@ -1,12 +1,18 @@
 import ApiService from '../ApiService'
 import {
-  Activity as ActivityEntity,
-  ActivityType as ActivityTypeEntity,
-  Accommodation as AccommodationEntity,
   Paginate,
 } from '../../../model'
-import { ActivityDto, QueryActivityDto } from './dto'
-import { ActivityFormat, ActivityType, ExtendedActivityFormat } from './types'
+import {
+  AccommodationDto, ActivityDto, AttractionDto, QueryActivityDto, RestaurantDto, TripDto,
+} from './dto'
+import {
+  AccommodationFormat,
+  ActivityFormat,
+  ActivityType,
+  AttractionFormat,
+  ExtendedActivityFormat, RestaurantFormat,
+  TripFormat,
+} from './types'
 
 class Activity {
   private activityUrl = '/activity'
@@ -15,10 +21,6 @@ class Activity {
 
   public async get<T extends ActivityFormat = ActivityFormat>(id: string): Promise<T> {
     return this.apiService.get<T>(`${this.activityUrl}/find/${id}`)
-  }
-
-  public async getAccommodation(id: string): Promise<AccommodationEntity> {
-    return this.apiService.get<AccommodationEntity>(`${this.activityUrl}/accommodation/find/${id}`)
   }
 
   public async getAll(
@@ -44,23 +46,57 @@ class Activity {
     }
   }
 
-  public async getAllAccommodations(source?: QueryActivityDto): Promise<AccommodationEntity[]> {
-    const results = await this.apiService.get<AccommodationEntity[]>(
-      `${this.activityUrl}/accommodation/all?source=${source}`,
-    )
-    return results.map((result) => new AccommodationEntity(result))
+  public async putAccommodation(data: AccommodationDto, id?: string): Promise<AccommodationFormat> {
+    if (id) {
+      return this.apiService.put<AccommodationFormat>(`${this.activityUrl}/accommodation/${id}`, data)
+    }
+    return this.apiService.post<AccommodationFormat>(`${this.activityUrl}/accommodation`, data)
   }
 
-  public async getTypes(): Promise<ActivityTypeEntity[]> {
-    return this.apiService.get<ActivityTypeEntity[]>(`${this.activityUrl}/get-types`)
+  public async putAttraction(data: AttractionDto, id?: string): Promise<AttractionFormat> {
+    if (id) {
+      return this.apiService.put<AttractionFormat>(`${this.activityUrl}/attraction/${id}`, data)
+    }
+    return this.apiService.post<AttractionFormat>(`${this.activityUrl}/attraction`, data)
   }
 
-  public async createActivity(data: ActivityDto): Promise<ActivityEntity> {
-    return this.apiService.post<ActivityEntity>(`${this.activityUrl}`, data)
+  public async putTrip(data: TripDto, id?: string): Promise<TripFormat> {
+    if (id) {
+      return this.apiService.put<TripFormat>(`${this.activityUrl}/trip/${id}`, data)
+    }
+    return this.apiService.post<TripFormat>(`${this.activityUrl}/trip`, data)
   }
 
-  public async putActivity(id: string, data: ActivityDto): Promise<ActivityEntity> {
-    return this.apiService.put<ActivityEntity>(`${this.activityUrl}/${id}`, data)
+  public async putRestaurant(data: RestaurantDto, id?: string): Promise<RestaurantFormat> {
+    if (id) {
+      return this.apiService.put<RestaurantFormat>(`${this.activityUrl}/restaurant/${id}`, data)
+    }
+    return this.apiService.post<RestaurantFormat>(`${this.activityUrl}/restaurant`, data)
+  }
+
+  // TODO: param should not be 'any' type
+  public async putActivity(data: any, id?: string): Promise<ActivityFormat> {
+    const getTransformedData = <T extends ActivityDto>(request: ExtendedActivityFormat): T => ({
+      name: request.name,
+      description: request.description,
+      place: request.place,
+      price: request.price,
+      priceType: request.priceType,
+      from: request.from,
+      to: request.to,
+    } as unknown as T)
+
+    switch (data.activityType) {
+      case 'Accommodation':
+        return this.putAccommodation(getTransformedData<AccommodationDto>(data), id)
+      case 'Attraction':
+        return this.putAttraction(getTransformedData<AttractionDto>(data), id)
+      case 'Restaurant':
+        return this.putRestaurant(getTransformedData<RestaurantDto>(data), id)
+      case 'Trip':
+      default:
+        return this.putTrip(getTransformedData<TripDto>(data), id)
+    }
   }
 
   public async acceptActivity(id: number): Promise<number> {
@@ -69,14 +105,6 @@ class Activity {
 
   public async restoreActivity(id: number): Promise<number> {
     return this.apiService.delete<number>(`${this.activityUrl}/restore/${id}`)
-  }
-
-  public async acceptAccommodation(id: string): Promise<number> {
-    return this.apiService.post<number>(`${this.activityUrl}/accommodation/accept/${id}`)
-  }
-
-  public async restoreAccommodation(id: string): Promise<number> {
-    return this.apiService.delete<number>(`${this.activityUrl}/accommodation/restore/${id}`)
   }
 
   constructor(token: string) {

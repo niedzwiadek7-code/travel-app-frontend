@@ -3,16 +3,14 @@ import {
   Button, Checkbox, FormControlLabel, Stack,
 } from '@mui/material'
 import { useForm } from 'react-hook-form'
-import { useDependencies } from '../../../../context/dependencies'
-import { useAuth } from '../../../../context/auth'
-import * as Modal from '../../../../components/UI/Modal'
-import * as Input from '../../../../components/UI/Input'
-import { Rating } from '../../../../model'
+import { useDependencies, useAuth } from '../../../context'
+import * as Modal from '../../../components/UI/Modal'
+import * as Input from '../../../components/UI/Input'
+import { Rating } from '../../../model'
 
 type Props = {
-  elemId: string
+  elemId: number
   name: string
-  activityType: string
 }
 
 type Inputs = {
@@ -48,10 +46,9 @@ const RateActivity: React.FC<Props> = (props) => {
   const onSubmit = async (data: Inputs) => {
     try {
       await ratingService.putRating({
-        activityType: props.activityType,
         text: data.text,
         sharePhotos: data.sharePhotos,
-        elementTravelId: props.elemId.toString(),
+        elementTravelId: props.elemId,
       })
       toastUtils.Toast.showToast(
         toastUtils.types.INFO,

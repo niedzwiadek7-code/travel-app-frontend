@@ -1,8 +1,8 @@
 import Activity from './Activity'
-import TravelElement from './TravelElement'
+import LocallyTravelElement from './LocallyTravelElement'
 
 class ElementTravelInstance {
-  id: string
+  id: number
 
   passed: boolean
 
@@ -14,7 +14,7 @@ class ElementTravelInstance {
 
   activity: Activity
 
-  elementTravel?: TravelElement
+  elementTravel?: LocallyTravelElement
 
   constructor(obj: any) {
     this.id = obj.id

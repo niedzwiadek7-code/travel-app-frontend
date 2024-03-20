@@ -1,7 +1,7 @@
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { useQuery } from '.'
 
-// Should move to src/context ?
+// TODO: Should move to src/context ?
 // Should handle redirects from page?
 // Maybe should be global hoc for every page?
 // This may make a unit test easier

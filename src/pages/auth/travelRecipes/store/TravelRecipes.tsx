@@ -5,9 +5,8 @@ import {
 } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import { ReceiptLong } from '@mui/icons-material'
-import { useDependencies } from '../../../../context/dependencies'
-import { UserTravelRecipeDto } from '../../../../services/backend/Travel/dto'
-import { useAuth } from '../../../../context/auth'
+import { useDependencies, useAuth } from '../../../../context'
+import { TravelRecipe } from '../../../../model'
 import * as Loading from '../../../../components/UI/Loading'
 import * as Header from '../../../../components/Header'
 import * as TravelRecipeCard from './TravelRecipeCard'
@@ -20,7 +19,7 @@ const TravelRecipes: React.FC = () => {
   const apiService = getApiService()
   const travelService = apiService.getTravel(token)
   const [loading, setLoading] = useState<boolean>(true)
-  const [travelRecipes, setTravelRecipes] = useState<UserTravelRecipeDto[]>([])
+  const [travelRecipes, setTravelRecipes] = useState<TravelRecipe[]>([])
 
   useEffect(() => {
     const fetchData = async () => {

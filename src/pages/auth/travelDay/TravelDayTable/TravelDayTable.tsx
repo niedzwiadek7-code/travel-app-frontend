@@ -40,25 +40,25 @@ const TravelDayTable: React.FC<Props> = (props) => {
         <TableBody>
           {travelElementsThisDay.map((elem) => {
             switch (elem.activity.activityType) {
-              case 'Podróż':
+              case 'Trip':
                 return (
                   <Travel
                     travelElement={elem}
                   />
                 )
-              case 'Nocleg':
+              case 'Accommodation':
                 return (
                   <Accommodation
                     travelElement={elem}
                   />
                 )
-              case 'Atrakcja':
+              case 'Attraction':
                 return (
                   <Attraction
                     travelElement={elem}
                   />
                 )
-              case 'Restauracja':
+              case 'Restaurant':
                 return (
                   <Restaurant
                     travelElement={elem}

@@ -3,10 +3,10 @@ import {
   TableCell, TableRow, useTheme,
 } from '@mui/material'
 import { Attractions } from '@mui/icons-material'
-import { TravelElement } from '../../../../../model'
+import { LocallyTravelElement } from '../../../../../model'
 
 type Props = {
-  travelElement: TravelElement
+  travelElement: LocallyTravelElement
 }
 
 const Attraction: React.FC<Props> = (props) => {

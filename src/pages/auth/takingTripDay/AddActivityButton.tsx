@@ -1,7 +1,7 @@
 import React from 'react'
 import { Button, Menu, MenuItem } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
-import { Pages } from '../../../pages/pages'
+import { Pages } from '../../pages'
 
 type Props = {
   travelInstanceId: string
@@ -46,6 +46,7 @@ const AddActivityButton: React.FC<Props> = (props) => {
         <MenuItem
           onClick={() => navigate(Pages.ACTIVITY_CREATE.getRedirectLink(), {
             state: {
+              availableTypes: ['Attraction', 'Trip', 'Restaurant'],
               travelInstance: props.travelInstanceId,
               date: props.date,
             },
@@ -56,6 +57,7 @@ const AddActivityButton: React.FC<Props> = (props) => {
         <MenuItem
           onClick={() => navigate(Pages.LIST_ACTIVITY.getRedirectLink(), {
             state: {
+              types: ['Attraction', 'Trip', 'Restaurant'],
               travelInstance: props.travelInstanceId,
               date: props.date,
               source: 'system',
@@ -67,6 +69,7 @@ const AddActivityButton: React.FC<Props> = (props) => {
         <MenuItem
           onClick={() => navigate(Pages.LIST_ACTIVITY.getRedirectLink(), {
             state: {
+              types: ['Attraction', 'Trip', 'Restaurant'],
               travelInstance: props.travelInstanceId,
               date: props.date,
               source: 'user',

@@ -3,24 +3,21 @@ import { useForm } from 'react-hook-form'
 import {
   Button, Stack, Grid, useTheme,
 } from '@mui/material'
-import { AccommodationElementInstance } from '../../../../model'
-import * as Modal from '../../../../components/UI/Modal'
-import { useDependencies } from '../../../../context/dependencies'
-import { useAuth } from '../../../../context/auth'
-import { useAppDispatch } from '../../../../app/hooks'
-import {
-  passAccommodationElementInstance,
-} from '../../../../features/travelInstance/travelInstanceSlice'
+import { ElementTravelInstance } from '../../../model'
+import * as Modal from '../../../components/UI/Modal'
+import { useDependencies, useAuth } from '../../../context'
+import { useAppDispatch } from '../../../app/hooks'
+import { passTravelElementInstance } from '../../../features/travelInstance/travelInstanceSlice'
 
 type Props = {
-  accommodationElement: AccommodationElementInstance
+  travelElement: ElementTravelInstance
 }
 
 type Inputs = {
   images: File[]
 }
 
-const PassAccommodationTravelModal: React.FC<Props> = (props) => {
+const PassElementTravelModal: React.FC<Props> = (props) => {
   const dispatch = useAppDispatch()
   const { getApiService, getToastUtils } = useDependencies()
   const toastUtils = getToastUtils()
@@ -36,15 +33,13 @@ const PassAccommodationTravelModal: React.FC<Props> = (props) => {
 
   const onSubmit = async (data: Inputs) => {
     try {
-      const result = await travelService.passAccommodationElement(
-        props.accommodationElement.id,
-        data,
-      )
-      dispatch(passAccommodationElementInstance({
-        id: props.accommodationElement.id,
+      const result = await travelService.passTravelElement(props.travelElement.id, data)
+      dispatch(passTravelElementInstance({
+        id: props.travelElement.id,
         photos: result.urls,
       }))
     } catch (err) {
+      console.log(err)
       toastUtils.Toast.showToast(
         toastUtils.types.ERROR,
         'Wystpił nieoczekiwany błąd',
@@ -138,4 +133,4 @@ const PassAccommodationTravelModal: React.FC<Props> = (props) => {
   )
 }
 
-export default PassAccommodationTravelModal
+export default PassElementTravelModal

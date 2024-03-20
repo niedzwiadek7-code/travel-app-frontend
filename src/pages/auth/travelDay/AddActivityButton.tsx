@@ -1,7 +1,7 @@
 import React from 'react'
 import { Button, Menu, MenuItem } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
-import { Pages } from '../../../pages/pages'
+import { Pages } from '../../pages'
 
 type Props = {
   countDay: string
@@ -45,6 +45,7 @@ const AddActivityButton: React.FC<Props> = (props) => {
         <MenuItem
           onClick={() => navigate(Pages.ACTIVITY_CREATE.getRedirectLink(), {
             state: {
+              availableTypes: ['Attraction', 'Trip', 'Restaurant'],
               travelRecipe: true,
               countDay: props.countDay,
             },

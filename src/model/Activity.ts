@@ -1,4 +1,5 @@
 import User from './User'
+import { ActivityType } from './ActivityType'
 
 interface Rating {
   text: string
@@ -15,7 +16,7 @@ class Activity {
 
   description: string
 
-  activityType: string
+  activityType: ActivityType
 
   price: number
 

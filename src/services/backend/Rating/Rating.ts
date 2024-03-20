@@ -1,6 +1,6 @@
 import ApiService from '../ApiService'
 import { PutRatingDto } from './dto'
-import { AccommodationRating, Rating } from '../../../model'
+import { Rating } from '../../../model'
 
 class RatingService {
   private ratingUrl = '/rating'
@@ -11,15 +11,7 @@ class RatingService {
     return this.apiService.post<Rating>(this.ratingUrl, body)
   }
 
-  public async putAccommodationRating(body: PutRatingDto): Promise<AccommodationRating> {
-    return this.apiService.post<AccommodationRating>(this.ratingUrl, body)
-  }
-
-  public async getAccommodationRating(id: string): Promise<AccommodationRating | undefined> {
-    return this.apiService.get(`${this.ratingUrl}/find/accommodation/${id}`)
-  }
-
-  public async getRating(id: string): Promise<Rating | undefined> {
+  public async getRating(id: number): Promise<Rating | undefined> {
     return this.apiService.get(`${this.ratingUrl}/find/${id}`)
   }
 

@@ -10,6 +10,7 @@ import { Pages } from '../../pages'
 import * as UnexpectedError from '../../../components/UI/UnexpectedError'
 import * as TripDayElem from './TripDayElem'
 import AddActivityButton from './AddActivityButton'
+import { ActivityType } from '../../../model'
 
 const TakingTripDay: React.FC = () => {
   const travelInstance = useAppSelector((state: RootState) => state.travelInstance)
@@ -22,18 +23,22 @@ const TakingTripDay: React.FC = () => {
     )
   }
 
-  const travelElements = travelInstance.travelElements.filter((elem) => {
-    const dateStr = dayjs(elem.from).format('YYYY-MM-DD')
-    return dateStr === date
-  }).sort((a, b) => {
-    if (a.passed && !b.passed) {
-      return 1
-    }
-    if (!a.passed && b.passed) {
-      return -1
-    }
-    return dayjs(a.from).diff(b.from)
-  })
+  const locallyActivityTypes: ActivityType[] = ['Attraction', 'Trip', 'Restaurant']
+
+  const travelElements = travelInstance.travelElements
+    .filter((elem) => locallyActivityTypes.includes(elem.activity.activityType))
+    .filter((elem) => {
+      const dateStr = dayjs(elem.from).format('YYYY-MM-DD')
+      return dateStr === date
+    }).sort((a, b) => {
+      if (a.passed && !b.passed) {
+        return 1
+      }
+      if (!a.passed && b.passed) {
+        return -1
+      }
+      return dayjs(a.from).diff(b.from)
+    })
 
   return (
     <Stack
