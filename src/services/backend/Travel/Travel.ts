@@ -12,6 +12,7 @@ import {
   PassElementDto, TravelDto, PassTravelElementDto,
 } from './dto'
 import { TravelFormat } from './types'
+import { DateHandler } from '../../../utils/Date'
 
 class Travel {
   private travelUrl = '/travel'
@@ -43,14 +44,8 @@ class Travel {
           description: elem.description,
           travelElementLocally: {
             dayCount: elem.dayCount,
-            from: {
-              hour: elem.from.hour,
-              minute: elem.from.minute,
-            },
-            to: {
-              hour: elem.to.hour,
-              minute: elem.to.minute,
-            },
+            from: new DateHandler(elem.from).format('HH:mm'),
+            to: new DateHandler(elem.to).format('HH:mm'),
           },
         })),
         ...data.accommodations.map((elem) => ({

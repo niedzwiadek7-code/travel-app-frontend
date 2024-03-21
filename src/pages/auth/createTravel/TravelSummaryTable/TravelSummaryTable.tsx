@@ -4,7 +4,8 @@ import {
 import React from 'react'
 import { useAppSelector } from '../../../../app/hooks'
 import { RootState } from '../../../../app/store'
-import { Date } from '../../../../model'
+import { DateHandler } from '../../../../utils/Date'
+import { ActivityType } from '../../../../model'
 
 const TravelSummaryTable: React.FC = () => {
   const formatter = Intl.NumberFormat('pl-PL', {
@@ -15,15 +16,15 @@ const TravelSummaryTable: React.FC = () => {
   const travelElements = useAppSelector((state: RootState) => state.travelRecipe.travelElements)
   const accommodations = useAppSelector((state: RootState) => state.travelRecipe.accommodations)
 
-  const activityTypes = [
-    'Restauracja',
-    'Podróż',
-    'Nocleg',
-    'Atrakcja',
+  const activityTypes: ActivityType[] = [
+    'Restaurant',
+    'Trip',
+    'Accommodation',
+    'Attraction',
   ]
 
-  const getTime = (activityType?: string) => {
-    if (activityType === 'Nocleg') {
+  const getTime = (activityType?: ActivityType) => {
+    if (activityType === 'Accommodation') {
       return 'nie dotyczy'
     }
 
@@ -32,7 +33,7 @@ const TravelSummaryTable: React.FC = () => {
       : travelElements
 
     const minutesSum = elements.reduce(
-      (acc, value) => acc + Date.timeDiff(value.from, value.to),
+      (acc, value) => acc + DateHandler.diff(value.to, value.from, 'minutes'),
       0,
     )
 
@@ -42,8 +43,8 @@ const TravelSummaryTable: React.FC = () => {
     return `${hours}h ${minutes}min`
   }
 
-  const getPrice = (activityType?: string) => {
-    if (activityType === 'Nocleg') {
+  const getPrice = (activityType?: ActivityType) => {
+    if (activityType === 'Accommodation') {
       const price = accommodations.reduce(
         (acc, value) => acc + value.price,
         0,

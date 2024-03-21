@@ -10,6 +10,7 @@ import { useAppSelector } from '../../../app/hooks'
 import { RootState } from '../../../app/store'
 import AddActivityButton from './AddActivityButton'
 import * as Header from '../../../components/Header'
+import * as UnexpectedError from '../../../components/UI/UnexpectedError'
 
 const TravelDay: React.FC = () => {
   const travelRecipe = useAppSelector((state: RootState) => state.travelRecipe)
@@ -18,9 +19,7 @@ const TravelDay: React.FC = () => {
 
   if (!countDay) {
     return (
-      <div>
-        Wystąpił nieoczikwany problem
-      </div>
+      <UnexpectedError.Component />
     )
   }
 

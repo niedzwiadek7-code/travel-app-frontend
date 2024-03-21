@@ -6,6 +6,7 @@ import { Restaurant as RestaurantIcon } from '@mui/icons-material'
 import { LocallyTravelElement } from '../../../../model'
 import { deleteActivityFromTravel } from '../../../../features/travelRecipe/travelRecipeSlice'
 import { useAppDispatch } from '../../../../app/hooks'
+import { DateHandler } from '../../../../utils/Date'
 
 type Props = {
   travelElement: LocallyTravelElement
@@ -24,12 +25,6 @@ const Restaurant: React.FC<Props> = (props) => {
     currency: 'PLN',
   })
 
-  const dateToStr = (obj: { hour: number, minute: number }) => {
-    const hour = obj.hour >= 10 ? `${obj.hour}` : `0${obj.hour}`
-    const minute = obj.minute >= 10 ? `${obj.minute}` : `0${obj.minute}`
-    return `${hour}:${minute}`
-  }
-
   return (
     <TableRow key={`${props.travelElement.from}-${props.travelElement.to}`}>
       <TableCell>
@@ -38,7 +33,8 @@ const Restaurant: React.FC<Props> = (props) => {
         />
       </TableCell>
       <TableCell>
-        {dateToStr(props.travelElement.from)} - {dateToStr(props.travelElement.to)}
+        {new DateHandler(props.travelElement.from).format('HH:mm')} -
+        {new DateHandler(props.travelElement.to).format('HH:mm')}
       </TableCell>
       <TableCell> {props.travelElement.activity.name} </TableCell>
       <TableCell>

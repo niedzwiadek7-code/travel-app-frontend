@@ -1,8 +1,4 @@
-// TODO: remove DateDto
-export interface DateDto {
-    hour: number
-    minute: number
-}
+import { DateType } from '../../../../utils/Date'
 
 export interface TravelElementGloballyDto {
     from: number
@@ -11,8 +7,8 @@ export interface TravelElementGloballyDto {
 
 export interface TravelElementLocallyDto {
     dayCount: number
-    from: DateDto
-    to: DateDto
+    from: DateType
+    to: DateType
 }
 
 export interface TravelElementDto {

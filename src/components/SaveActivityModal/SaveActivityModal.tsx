@@ -8,12 +8,9 @@ import { DemoContainer } from '@mui/x-date-pickers/internals/demo'
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { v4 as uuidv4 } from 'uuid'
-import dayjs from 'dayjs'
 import * as Modal from '../UI/Modal'
 import * as Input from '../UI/Input'
 import {
-  Date,
-  Date as DateEntity,
   LocallyTravelElement,
   GloballyTravelElement,
 } from '../../model'
@@ -23,6 +20,7 @@ import { putActivity } from '../../features/travelRecipe/travelRecipeSlice'
 import { Pages } from '../../pages/pages'
 import { RootState } from '../../app/store'
 import { ExtendedActivityFormat } from '../../services/backend/Activity/types'
+import { DateHandler, DateType } from '../../utils/Date'
 
 type Props = {
   activity: ExtendedActivityFormat
@@ -66,13 +64,13 @@ const SaveActivityModal: React.FC<Props> = (props) => {
       && props.activity.priceType && props.activity.priceType === 'per_hour'
       && props.activity.price
     ) {
-      const dateStart = new DateEntity(datesRange[0]?.toString())
-      const dateEnd = new DateEntity(datesRange[1]?.toString())
-      if (DateEntity.compareDates(dateEnd, dateStart) > 0) {
+      const dateStart = new DateHandler(datesRange[0]).toISOString()
+      const dateEnd = new DateHandler(datesRange[1]).toISOString()
+      if (DateHandler.compareDates(dateEnd, dateStart) > 0) {
         const numberOfPeople = watch('numberOfPeople') > 1 ? watch('numberOfPeople') : 1
         setValue(
           'price',
-          (Math.ceil(Date.timeDiff(dateStart, dateEnd) / 60)
+          (Math.ceil(DateHandler.diff(dateStart, dateEnd, 'minutes') / 60)
             * props.activity.price * numberOfPeople).toString(),
         )
       }
@@ -97,21 +95,13 @@ const SaveActivityModal: React.FC<Props> = (props) => {
   }
 
   const onSubmit = (data: Inputs) => {
-    let dateStart: Date | undefined
-    let dateEnd: Date | undefined
+    let dateStart: DateType | undefined
+    let dateEnd: DateType | undefined
 
     if (data.times) {
-      const createDateStr = (date: string) => {
-        const [hours, minutes] = date.split(':')
-        return dayjs()
-          .set('hour', parseInt(hours, 10))
-          .set('minute', parseInt(minutes, 10))
-          .toString()
-      }
-
       const dates = data.times.split(' – ')
-      dateStart = new DateEntity(createDateStr(dates[0]))
-      dateEnd = new DateEntity(createDateStr(dates[1]))
+      dateStart = new DateHandler(dates[0]).toISOString()
+      dateEnd = new DateHandler(dates[1]).toISOString()
 
       if (!data.times[0] || !data.times[1]) {
         toastUtils.Toast.showToast(
@@ -121,7 +111,7 @@ const SaveActivityModal: React.FC<Props> = (props) => {
         return
       }
 
-      if (DateEntity.compareDates(dateEnd, dateStart) < 0) {
+      if (DateHandler.compareDates(dateEnd, dateStart) < 0) {
         toastUtils.Toast.showToast(
           toastUtils.types.ERROR,
           'Czas rozpoczęcia aktywności musi być wcześniejszy niż czas jej zakończenia',

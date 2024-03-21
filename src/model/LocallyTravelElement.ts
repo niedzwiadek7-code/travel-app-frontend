@@ -1,14 +1,14 @@
 import Activity from './Activity'
-import Date from './Date'
+import { DateType } from '../utils/Date'
 
 class LocallyTravelElement {
   id: string
 
   dayCount: number
 
-  from: Date
+  from: DateType
 
-  to: Date
+  to: DateType
 
   activity: Activity
 

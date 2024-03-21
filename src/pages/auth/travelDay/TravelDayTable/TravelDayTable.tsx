@@ -4,11 +4,11 @@ import {
 } from '@mui/material'
 import { useAppSelector } from '../../../../app/hooks'
 import { RootState } from '../../../../app/store'
-import { Date as DateModel } from '../../../../model'
 import Accommodation from './Accommodation'
 import Attraction from './Attraction'
 import Restaurant from './Restaurant'
 import Travel from './Travel'
+import { DateHandler } from '../../../../utils/Date'
 
 type Props = {
   countDay: number
@@ -19,7 +19,7 @@ const TravelDayTable: React.FC<Props> = (props) => {
   const travelElementsThisDay = travelElements.filter(
     (e) => e.dayCount === props.countDay,
   ).sort(
-    (a, b) => DateModel.compareDates(a.from, b.from),
+    (a, b) => DateHandler.compareDates(b.from, a.from),
   )
 
   return (

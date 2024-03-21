@@ -7,7 +7,7 @@ import { useAppDispatch, useAppSelector } from '../../../../app/hooks'
 import { RootState } from '../../../../app/store'
 import { addCountDays, deleteDayFromTravel } from '../../../../features/travelRecipe/travelRecipeSlice'
 import { Pages } from '../../../pages'
-import { Date } from '../../../../model'
+import { DateHandler } from '../../../../utils/Date'
 
 type TravelDay = {
   countDay: number
@@ -46,7 +46,7 @@ const TravelDaysTable: React.FC = () => {
         const countOfActivities = travelElementsOnThisDay.length
 
         const freeMinutes = 24 * 60 - travelElementsOnThisDay.reduce(
-          (acc, elem) => acc + Date.timeDiff(elem.from, elem.to),
+          (acc, elem) => acc + DateHandler.diff(elem.to, elem.from, 'minutes'),
           0,
         )
 

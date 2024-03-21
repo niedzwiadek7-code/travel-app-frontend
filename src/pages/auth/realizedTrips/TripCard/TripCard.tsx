@@ -10,6 +10,7 @@ import { TravelInstance } from '../../../../model'
 import MenuComponent from './Menu'
 import { Pages } from '../../../pages'
 import * as Slider from '../../../../components/UI/Slider'
+import { DateHandler } from '../../../../utils/Date'
 
 type Props = {
   travelInstance: TravelInstance
@@ -87,13 +88,13 @@ const TripCard: React.FC<Props> = (props) => {
             <Typography variant="body1">
               {/* TODO: Add date format */}
               Termin wycieczki
-              <b> {props.travelInstance.from} </b> -
-              <b> {props.travelInstance.to} </b>
+              <b> {new DateHandler(props.travelInstance.from).format('DD-MM-YYYY')} </b> -
+              <b> {new DateHandler(props.travelInstance.to).format('DD-MM-YYYY')} </b>
             </Typography>
 
             <Typography variant="body1">
               Zrealizowano:
-              <b> { realizationTrip.passed } / {realizationTrip.all} </b>
+              <b> { realizationTrip.passed }/{realizationTrip.all} </b>
               (<b> {((realizationTrip.passed / realizationTrip.all) * 100).toFixed(2)}% </b>)
             </Typography>
           </Stack>

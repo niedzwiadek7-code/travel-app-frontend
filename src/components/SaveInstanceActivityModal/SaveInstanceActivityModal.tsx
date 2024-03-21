@@ -8,7 +8,6 @@ import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
 import { useNavigate } from 'react-router-dom'
 import {
-  Date as DateEntity,
   ElementTravelInstance,
 } from '../../model'
 import * as Modal from '../UI/Modal'
@@ -18,6 +17,7 @@ import { RootState } from '../../app/store'
 import { putActivityInstance } from '../../features/travelInstance/travelInstanceSlice'
 import { Pages } from '../../pages/pages'
 import { ExtendedActivityFormat } from '../../services/backend/Activity/types'
+import { DateHandler } from '../../utils/Date'
 
 // TODO: handle accommodations here
 
@@ -66,10 +66,10 @@ const SaveInstanceActivityModal: React.FC<Props> = (props) => {
     const dates = data.times.split(' – ')
     const dateStartObj = createDateStr(dates[0])
     const dateEndObj = createDateStr(dates[1])
-    const dateStart = new DateEntity(dateStartObj.toString())
-    const dateEnd = new DateEntity(dateEndObj.toString())
+    const dateStart = new DateHandler(dateStartObj).toISOString()
+    const dateEnd = new DateHandler(dateEndObj).toISOString()
 
-    if (DateEntity.compareDates(dateEnd, dateStart) < 0) {
+    if (DateHandler.compareDates(dateEnd, dateStart) < 0) {
       toastUtils.Toast.showToast(
         toastUtils.types.ERROR,
         'Czas rozpoczęcia aktywności musi być wcześniejszy niż czas jej zakończenia',

@@ -28,6 +28,14 @@ export class DateHandler {
     return dayjs(date1).isSameOrAfter(date2) ? 1 : -1
   }
 
+  static diff(
+    date1: DateType,
+    date2: DateType,
+    unit: UnitType,
+  ) {
+    return dayjs(date1).diff(dayjs(date2), unit)
+  }
+
   add(count: number, unit: ManipulateType) {
     this.currentDate = this.currentDate.add(count, unit)
     return this
