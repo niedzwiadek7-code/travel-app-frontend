@@ -41,6 +41,7 @@ export const travelInstanceSlice = createSlice({
       ...state,
       travelElements: [...state.travelElements, action.payload],
     }),
+    reset: () => new TravelInstance({}),
   },
 })
 
@@ -49,6 +50,7 @@ export const {
   passTravelElementInstance,
   cancelTravelElementInstance,
   putActivityInstance,
+  reset,
 } = travelInstanceSlice.actions
 
 export default travelInstanceSlice.reducer

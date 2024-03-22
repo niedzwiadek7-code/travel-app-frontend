@@ -3,10 +3,13 @@ import {
   Button, Stack, Typography, useTheme,
 } from '@mui/material'
 import { Logout as LogoutIcon } from '@mui/icons-material'
-import { useNavigate } from 'react-router-dom'
-import { useAuth } from '../../context/auth'
+import { useAuth } from '../../context'
 import Styles from './Header.module.scss'
 import { Pages } from '../../pages/pages'
+import { useAppDispatch } from '../../app/hooks'
+import { reset as resetTravelRecipe } from '../../features/travelRecipe/travelRecipeSlice'
+import { reset as resetTravelInstance } from '../../features/travelInstance/travelInstanceSlice'
+import { useRouter } from '../../hooks/useRouter'
 
 type Props = {
   title: string,
@@ -16,12 +19,17 @@ type Props = {
 const Header: React.FC<Props> = (props) => {
   const theme = useTheme()
   const { setToken, setLoggedIn, setRoles } = useAuth()
-  const navigate = useNavigate()
+  const {
+    navigate,
+  } = useRouter()
+  const dispatch = useAppDispatch()
 
   const logout = () => {
     setLoggedIn(false)
     setToken(undefined)
     setRoles([])
+    dispatch(resetTravelInstance())
+    dispatch(resetTravelRecipe())
     navigate(Pages.LOGIN.getRedirectLink())
   }
 
