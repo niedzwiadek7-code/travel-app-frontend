@@ -9,4 +9,5 @@ export type StateDto = {
   admin: boolean
   source: QueryActivityDto,
   types: ActivityType[],
+  previousPage: string,
 }

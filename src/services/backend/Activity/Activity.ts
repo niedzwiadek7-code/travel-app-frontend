@@ -35,7 +35,7 @@ class Activity {
       take: pageSize.toString(),
     })
 
-    types.forEach((type) => queryParams.append('types', type))
+    types.forEach((type) => queryParams.append('types[]', type))
 
     const { data, total } = await this.apiService
       .get<Paginate<ExtendedActivityFormat>>(`${this.activityUrl}/all?${queryParams.toString()}`)

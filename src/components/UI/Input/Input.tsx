@@ -26,6 +26,7 @@ type Props = {
   onChange?: (e: any) => void,
   error?: string,
   rows?: number,
+  // TODO: create better handling for errors
   validation?: string[],
 }
 

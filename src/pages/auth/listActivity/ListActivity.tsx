@@ -34,7 +34,12 @@ const ListActivity: React.FC = () => {
     pageSize: number,
   ): Promise<Paginate<ExtendedActivityFormat>> => {
     try {
-      return activityService.getAll(state.source || 'all', page, pageSize)
+      return activityService.getAll(
+        state.source || 'all',
+        page,
+        pageSize,
+        state.types,
+      )
     } catch (err) {
       toastUtils.Toast.showToast(
         toastUtils.types.ERROR,
@@ -97,10 +102,7 @@ const ListActivity: React.FC = () => {
     navigate(
       `${Pages.LIST_ACTIVITY.getRedirectLink()}?page=${page}`,
       {
-        state: {
-          source: state.source,
-          types: ['Attraction', 'Restaurant', 'Trip'],
-        },
+        state,
       },
     )
   }
@@ -122,40 +124,12 @@ const ListActivity: React.FC = () => {
         direction="row"
         justifyContent="flex-end"
       >
-        {
-          state?.travelRecipe && (
-            <Button
-              variant="outlined"
-              onClick={() => navigate(Pages.TRAVEL_DAY.getRedirectLink({
-                countDay: state.countDay,
-              }))}
-            >
-              Powrót
-            </Button>
-          )
-        }
-        {
-          state?.travelInstance && (
-            <Button
-              variant="outlined"
-              onClick={() => navigate(Pages.TAKING_TRIP_DAY.getRedirectLink({
-                date: state.date,
-              }))}
-            >
-              Powrót
-            </Button>
-          )
-        }
-        {
-          state?.admin && (
-            <Button
-              variant="outlined"
-              onClick={() => navigate(Pages.DASHBOARD.getRedirectLink())}
-            >
-              Powrót
-            </Button>
-          )
-        }
+        <Button
+          variant="outlined"
+          onClick={() => navigate(state.previousPage)}
+        >
+          Powrót
+        </Button>
       </Stack>
 
       <Stack

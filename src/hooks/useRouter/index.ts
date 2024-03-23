@@ -1,5 +1,5 @@
 import useQuery from './useQuery'
-import useRouter from './useRotuer'
+import useRouter from './useRouter'
 
 export {
   useQuery,

@@ -1,17 +1,21 @@
 import React from 'react'
 import { Button, Menu, MenuItem } from '@mui/material'
-import { useNavigate } from 'react-router-dom'
 import { Pages } from '../../../pages'
 import { RootState } from '../../../../app/store'
 import { useAppSelector } from '../../../../app/hooks'
 import { ActivityType } from '../../../../model'
+import { useRouter } from '../../../../hooks'
 
 type Props = {
   activityType: ActivityType
 }
 
 const AddActivityButton: React.FC<Props> = (props) => {
-  const navigate = useNavigate()
+  const {
+    navigate,
+    pathname,
+  } = useRouter()
+
   const travelInstance = useAppSelector((state: RootState) => state.travelInstance)
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
@@ -49,6 +53,7 @@ const AddActivityButton: React.FC<Props> = (props) => {
         <MenuItem
           onClick={() => navigate(Pages.ACTIVITY_CREATE.getRedirectLink(), {
             state: {
+              previousPage: pathname,
               travelInstance: travelInstance.id,
               availableTypes: [props.activityType],
             },
@@ -59,6 +64,7 @@ const AddActivityButton: React.FC<Props> = (props) => {
         <MenuItem
           onClick={() => navigate(Pages.LIST_ACTIVITY.getRedirectLink(), {
             state: {
+              previousPage: pathname,
               types: [props.activityType],
               travelInstance: travelInstance.id,
               source: 'system',
@@ -70,6 +76,7 @@ const AddActivityButton: React.FC<Props> = (props) => {
         <MenuItem
           onClick={() => navigate(Pages.LIST_ACTIVITY.getRedirectLink(), {
             state: {
+              previousPage: pathname,
               types: [props.activityType],
               travelInstance: travelInstance.id,
               source: 'user',

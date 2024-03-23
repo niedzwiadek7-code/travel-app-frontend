@@ -2,15 +2,15 @@ import React from 'react'
 import {
   Card, CardContent, Typography, Button, CardMedia, Grid,
 } from '@mui/material'
-import { useNavigate } from 'react-router-dom'
 import Styles from './Cards.module.scss'
 import { Pages } from '../../../pages'
-import { useAuth } from '../../../../context/auth'
+import { useAuth } from '../../../../context'
 import { Roles } from '../../../../model'
 import CreateTravel from '../../../../assets/theme/dashboard/create-travel.jpg'
 import TravelPlans from '../../../../assets/theme/dashboard/travel-plans.jpg'
 import RealizedTravels from '../../../../assets/theme/dashboard/realized-travels.jpg'
 import Manage from '../../../../assets/theme/dashboard/manage.jpg'
+import { useRouter } from '../../../../hooks'
 
 type CardProps = {
   image: string
@@ -64,7 +64,10 @@ const CardComponent: React.FC<CardProps> = (props) => (
 )
 
 const Cards: React.FC = () => {
-  const navigate = useNavigate()
+  const {
+    navigate,
+    pathname,
+  } = useRouter()
   const { roles } = useAuth()
 
   return (
@@ -93,32 +96,18 @@ const Cards: React.FC = () => {
 
       {
         roles?.includes(Roles.ADMIN) && (
-          <>
-            <CardComponent
-              image={Manage}
-              title="Zarządzaj aktywnościami"
-              description="Rozwijaj listę aktywności polecanych przez system"
-              link={() => navigate(Pages.LIST_ACTIVITY.getRedirectLink(), {
-                state: {
-                  admin: true,
-                  source: 'toAccept',
-                  types: ['Attraction', 'Restaurant', 'Trip'],
-                },
-              })}
-            />
-            <CardComponent
-              image={Manage}
-              title="Zarządzaj noclegami"
-              description="Rozwijaj listę noclegów polecanych przez system"
-              link={() => navigate(Pages.LIST_ACTIVITY.getRedirectLink(), {
-                state: {
-                  admin: true,
-                  source: 'toAccept',
-                  types: ['Accommodation'],
-                },
-              })}
-            />
-          </>
+          <CardComponent
+            image={Manage}
+            title="Zarządzaj aktywnościami"
+            description="Rozwijaj listę aktywności polecanych przez system"
+            link={() => navigate(Pages.LIST_ACTIVITY.getRedirectLink(), {
+              state: {
+                previousPage: pathname,
+                admin: true,
+                source: 'toAccept',
+              },
+            })}
+          />
         )
       }
     </Grid>

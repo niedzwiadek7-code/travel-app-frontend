@@ -301,47 +301,14 @@ const ActivityForm: React.FC = () => {
         )
       }
 
-      {
-        state.countDay && (
-          <Button
-            type="button"
-            variant="outlined"
-            onClick={() => navigate(Pages.TRAVEL_DAY.getRedirectLink({
-              countDay: state.countDay,
-            }))}
-          >
-            Powrót
-          </Button>
-        )
-      }
+      <Button
+        type="button"
+        variant="outlined"
+        onClick={() => navigate(state.previousPage)}
+      >
+        Powrót
+      </Button>
 
-      {
-        state?.travelInstance && (
-          <Button
-            type="button"
-            variant="outlined"
-            onClick={() => navigate(Pages.TAKING_TRIP_DAY.getRedirectLink({
-              date: state.date,
-            }))}
-          >
-            Powrót
-          </Button>
-        )
-      }
-
-      {
-        state?.admin && (
-          <Button
-            type="button"
-            variant="outlined"
-            onClick={() => navigate(Pages.LIST_ACTIVITY.getRedirectLink(), {
-              state,
-            })}
-          >
-            Powrót
-          </Button>
-        )
-      }
     </Stack>
   )
 }

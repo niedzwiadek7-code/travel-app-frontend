@@ -9,8 +9,7 @@ import { Email, Key } from '@mui/icons-material'
 import { LoadingButton } from '@mui/lab'
 import Styles from './Login.module.scss'
 import * as Input from '../../../components/UI/Input'
-import { useDependencies } from '../../../context/dependencies'
-import { useAuth } from '../../../context/auth'
+import { useDependencies, useAuth } from '../../../context'
 import { Pages } from '../../../pages/pages'
 
 type Inputs = {

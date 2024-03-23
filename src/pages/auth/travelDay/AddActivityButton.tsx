@@ -1,14 +1,18 @@
 import React from 'react'
 import { Button, Menu, MenuItem } from '@mui/material'
-import { useNavigate } from 'react-router-dom'
 import { Pages } from '../../pages'
+import { locallyActivityTypes } from '../../../model'
+import { useRouter } from '../../../hooks'
 
 type Props = {
   countDay: string
 }
 
 const AddActivityButton: React.FC<Props> = (props) => {
-  const navigate = useNavigate()
+  const {
+    navigate,
+    pathname,
+  } = useRouter()
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
@@ -45,6 +49,7 @@ const AddActivityButton: React.FC<Props> = (props) => {
         <MenuItem
           onClick={() => navigate(Pages.ACTIVITY_CREATE.getRedirectLink(), {
             state: {
+              previousPage: pathname,
               availableTypes: ['Attraction', 'Trip', 'Restaurant'],
               travelRecipe: true,
               countDay: props.countDay,
@@ -56,6 +61,8 @@ const AddActivityButton: React.FC<Props> = (props) => {
         <MenuItem
           onClick={() => navigate(Pages.LIST_ACTIVITY.getRedirectLink(), {
             state: {
+              previousPage: pathname,
+              types: locallyActivityTypes,
               travelRecipe: true,
               countDay: props.countDay,
               source: 'system',
@@ -67,6 +74,8 @@ const AddActivityButton: React.FC<Props> = (props) => {
         <MenuItem
           onClick={() => navigate(Pages.LIST_ACTIVITY.getRedirectLink(), {
             state: {
+              previousPage: pathname,
+              types: locallyActivityTypes,
               travelRecipe: true,
               countDay: props.countDay,
               source: 'user',

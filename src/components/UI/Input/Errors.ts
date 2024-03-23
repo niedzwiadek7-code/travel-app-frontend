@@ -44,4 +44,16 @@ export const Errors = {
         ) || 'Podany email jest niepoprawny',
     },
   }),
+  minNum: (value: number) => ({
+    min: {
+      value,
+      message: 'Wprowadzona wartość jest zbyt mała',
+    },
+  }),
+  maxNum: (value: number) => ({
+    max: {
+      value,
+      message: 'Wprowadzona wartość jest zbyt duża',
+    },
+  }),
 } as Record<string, any>

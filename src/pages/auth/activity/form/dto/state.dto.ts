@@ -1,4 +1,4 @@
-import { ActivityType } from '../../../../../model/ActivityType'
+import { ActivityType } from '../../../../../model'
 
 export type StateDto = {
   travelRecipe: boolean,
@@ -7,4 +7,5 @@ export type StateDto = {
   date: string,
   admin: boolean,
   availableTypes: ActivityType[],
+  previousPage: string,
 }

@@ -1,7 +1,7 @@
 import React from 'react'
 import { Button, Stack } from '@mui/material'
-import { useNavigate } from 'react-router-dom'
 import { Pages } from '../../../pages'
+import { useRouter } from '../../../../hooks'
 
 type Props = {
   acceptElement: () => {},
@@ -10,7 +10,10 @@ type Props = {
 }
 
 const AdminButtons: React.FC<Props> = (props) => {
-  const navigate = useNavigate()
+  const {
+    navigate,
+    pathname,
+  } = useRouter()
 
   return (
     <Stack
@@ -35,6 +38,7 @@ const AdminButtons: React.FC<Props> = (props) => {
           id: props.activityId,
         }), {
           state: {
+            previousPage: pathname,
             admin: true,
             source: 'toAccept',
             types: ['Attraction', 'Restaurant', 'Trip'],

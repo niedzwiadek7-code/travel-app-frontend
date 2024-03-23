@@ -1,15 +1,18 @@
 import React from 'react'
 import { Button, Menu, MenuItem } from '@mui/material'
-import { useNavigate } from 'react-router-dom'
 import { Pages } from '../../../pages'
 import { ActivityType } from '../../../../model'
+import { useRouter } from '../../../../hooks'
 
 type Props = {
   activityType: ActivityType
 }
 
 const AddActivityButton: React.FC<Props> = (props) => {
-  const navigate = useNavigate()
+  const {
+    navigate,
+    pathname,
+  } = useRouter()
 
   // TODO: make dropdown menu global component
 
@@ -48,6 +51,7 @@ const AddActivityButton: React.FC<Props> = (props) => {
         <MenuItem
           onClick={() => navigate(Pages.ACTIVITY_CREATE.getRedirectLink(), {
             state: {
+              previousPage: pathname,
               travelRecipe: true,
               availableTypes: [props.activityType],
             },
@@ -56,8 +60,9 @@ const AddActivityButton: React.FC<Props> = (props) => {
           Stwórz i dodaj nowy nocleg
         </MenuItem>
         <MenuItem
-          onClick={() => navigate(Pages.ADD_ACCOMMODATION.getRedirectLink(), {
+          onClick={() => navigate(Pages.LIST_ACTIVITY.getRedirectLink(), {
             state: {
+              previousPage: pathname,
               types: [props.activityType],
               travelRecipe: true,
               source: 'system',
@@ -67,8 +72,9 @@ const AddActivityButton: React.FC<Props> = (props) => {
           Wybierz z dostepnych noclegów
         </MenuItem>
         <MenuItem
-          onClick={() => navigate(Pages.ADD_ACCOMMODATION.getRedirectLink(), {
+          onClick={() => navigate(Pages.LIST_ACTIVITY.getRedirectLink(), {
             state: {
+              previousPage: pathname,
               types: [props.activityType],
               travelRecipe: true,
               source: 'user',
