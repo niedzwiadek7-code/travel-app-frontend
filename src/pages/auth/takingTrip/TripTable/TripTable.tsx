@@ -8,14 +8,12 @@ import {
   TableHead,
   TableRow,
 } from '@mui/material'
-import dayjs from 'dayjs'
-import isSameOrBefore from 'dayjs/plugin/isSameOrBefore'
 import { useNavigate } from 'react-router-dom'
 import { useAppSelector } from '../../../../app/hooks'
 import { RootState } from '../../../../app/store'
 import { Pages } from '../../../pages'
-
-dayjs.extend(isSameOrBefore)
+import { DateHandler } from '../../../../utils/Date'
+import { ActivityScope, locallyActivityTypes } from '../../../../model'
 
 const TripTable: React.FC = () => {
   const navigate = useNavigate()
@@ -24,7 +22,13 @@ const TripTable: React.FC = () => {
   const travelElements: Record<string, { passed: number, count: number }> = {}
 
   travelInstance.travelElements.forEach((elem) => {
-    const dateString = dayjs(elem.from).format('YYYY-MM-DD')
+    const activityScope: ActivityScope = locallyActivityTypes.includes(elem.activity.activityType) ? 'Locally' : 'Globally'
+
+    if (activityScope === 'Globally') {
+      return
+    }
+
+    const dateString = new DateHandler(elem.from).format('YYYY-MM-DD')
 
     if (!travelElements[dateString]) {
       travelElements[dateString] = {
@@ -37,7 +41,7 @@ const TripTable: React.FC = () => {
     travelElements[dateString].count += 1
   })
 
-  const dates = Object.keys(travelElements).sort((a, b) => (dayjs(a).isSameOrBefore(b) ? -1 : 1))
+  const dates = Object.keys(travelElements).sort((a, b) => DateHandler.compareDates(b, a))
 
   return (
     <TableContainer>

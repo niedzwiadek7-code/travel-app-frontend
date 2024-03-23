@@ -2,7 +2,6 @@ import React from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { Button, Stack } from '@mui/material'
 import { Map } from '@mui/icons-material'
-import dayjs from 'dayjs'
 import { useAppSelector } from '../../../app/hooks'
 import { RootState } from '../../../app/store'
 import * as Header from '../../../components/Header'
@@ -11,6 +10,7 @@ import * as UnexpectedError from '../../../components/UI/UnexpectedError'
 import * as TripDayElem from './TripDayElem'
 import AddActivityButton from './AddActivityButton'
 import { ActivityType } from '../../../model'
+import { DateHandler } from '../../../utils/Date'
 
 const TakingTripDay: React.FC = () => {
   const travelInstance = useAppSelector((state: RootState) => state.travelInstance)
@@ -28,7 +28,7 @@ const TakingTripDay: React.FC = () => {
   const travelElements = travelInstance.travelElements
     .filter((elem) => locallyActivityTypes.includes(elem.activity.activityType))
     .filter((elem) => {
-      const dateStr = dayjs(elem.from).format('YYYY-MM-DD')
+      const dateStr = new DateHandler(elem.from).format('YYYY-MM-DD')
       return dateStr === date
     }).sort((a, b) => {
       if (a.passed && !b.passed) {
@@ -37,7 +37,7 @@ const TakingTripDay: React.FC = () => {
       if (!a.passed && b.passed) {
         return -1
       }
-      return dayjs(a.from).diff(b.from)
+      return DateHandler.compareDates(b.from, a.from)
     })
 
   return (

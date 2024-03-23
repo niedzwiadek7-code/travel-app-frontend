@@ -1,14 +1,9 @@
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import { Button, Stack } from '@mui/material'
-import { LocalizationProvider, SingleInputTimeRangeField } from '@mui/x-date-pickers-pro'
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
-import { DemoContainer } from '@mui/x-date-pickers/internals/demo'
-import dayjs from 'dayjs'
-import utc from 'dayjs/plugin/utc'
-import { useNavigate } from 'react-router-dom'
 import {
-  ElementTravelInstance,
+  ActivityScope,
+  ElementTravelInstance, locallyActivityTypes,
 } from '../../model'
 import * as Modal from '../UI/Modal'
 import { useDependencies, useAuth } from '../../context'
@@ -18,10 +13,8 @@ import { putActivityInstance } from '../../features/travelInstance/travelInstanc
 import { Pages } from '../../pages/pages'
 import { ExtendedActivityFormat } from '../../services/backend/Activity/types'
 import { DateHandler } from '../../utils/Date'
-
-// TODO: handle accommodations here
-
-dayjs.extend(utc)
+import { useRouter } from '../../hooks'
+import * as Input from '../UI/Input'
 
 type Props = {
   activity: ExtendedActivityFormat
@@ -29,7 +22,8 @@ type Props = {
 }
 
 type Inputs = {
-  times: string
+  from: string
+  to: string
 }
 
 const SaveInstanceActivityModal: React.FC<Props> = (props) => {
@@ -40,57 +34,72 @@ const SaveInstanceActivityModal: React.FC<Props> = (props) => {
   const toastUtils = getToastUtils()
   const travelInstance = useAppSelector((state: RootState) => state.travelInstance)
   const dispatch = useAppDispatch()
-  const navigate = useNavigate()
+  const activityScope: ActivityScope = locallyActivityTypes.includes(props.activity.activityType) ? 'Locally' : 'Globally'
+
+  const {
+    navigate,
+  } = useRouter()
 
   const {
     register,
     handleSubmit,
+    watch,
+    setError,
+    clearErrors,
+    formState: { errors },
   } = useForm<Inputs>()
 
+  const validateElemRange = () => {
+    const fromInputValue = watch('from')
+    const toInputValue = watch('to')
+
+    if (!fromInputValue || !toInputValue) {
+      return false
+    }
+
+    const setErrorMessage = () => {
+      setError('to', { message: 'Aktywność nie może zakończyć się przed rozpoczęciem' })
+    }
+
+    const unsetErrorMessage = () => {
+      clearErrors('to')
+    }
+
+    if (DateHandler.compareDates(fromInputValue, toInputValue) < 0) {
+      setErrorMessage()
+      return false
+    }
+    unsetErrorMessage()
+    return true
+  }
+
   const onSubmit = async (data: Inputs) => {
-    if (!data.times[0] || !data.times[1]) {
-      toastUtils.Toast.showToast(
-        toastUtils.types.ERROR,
-        'Podane godziny są niepoprawne',
-      )
+    if (!validateElemRange()) {
       return
     }
+    const dateStart = activityScope === 'Locally'
+      ? new DateHandler(`${props.date} ${data.from}`).toISOString()
+      : new DateHandler(data.from).toISOString()
 
-    const createDateStr = (date: string) => {
-      const [hours, minutes] = date.split(':')
-      return dayjs(dayjs.utc(props.date)
-        .set('hour', parseInt(hours, 10))
-        .set('minute', parseInt(minutes, 10))).utc()
-    }
-
-    const dates = data.times.split(' – ')
-    const dateStartObj = createDateStr(dates[0])
-    const dateEndObj = createDateStr(dates[1])
-    const dateStart = new DateHandler(dateStartObj).toISOString()
-    const dateEnd = new DateHandler(dateEndObj).toISOString()
-
-    if (DateHandler.compareDates(dateEnd, dateStart) < 0) {
-      toastUtils.Toast.showToast(
-        toastUtils.types.ERROR,
-        'Czas rozpoczęcia aktywności musi być wcześniejszy niż czas jej zakończenia',
-      )
-    }
+    const dateEnd = activityScope === 'Locally'
+      ? new DateHandler(`${props.date} ${data.to}`).toISOString()
+      : new DateHandler(data.to).toISOString()
 
     try {
       const result = await travelService.addActivityToTravelInstance(
         travelInstance.id.toString(),
         {
           activityId: props.activity.id,
-          from: dateStartObj.toISOString(),
-          to: dateEndObj.toISOString(),
+          from: dateStart,
+          to: dateEnd,
         },
       )
       const travelElement = new ElementTravelInstance({
         id: result.id,
         passed: false,
         photos: [],
-        from: dateStartObj.toISOString(),
-        to: dateEndObj.toISOString(),
+        from: dateStart,
+        to: dateEnd,
         activity: props.activity,
       })
       dispatch(putActivityInstance(travelElement))
@@ -122,16 +131,25 @@ const SaveInstanceActivityModal: React.FC<Props> = (props) => {
           <Stack
             gap={2}
           >
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DemoContainer components={['SingleInputTimeRangeField']}>
-                <SingleInputTimeRangeField
-                  ampm={false}
-                  label="Zaplanuj w terminie"
-                  {...register('times')}
-                  onChange={() => {}}
-                />
-              </DemoContainer>
-            </LocalizationProvider>
+            <Input.Component
+              variant={Input.Variant.OUTLINED}
+              type={activityScope === 'Locally' ? Input.Type.TIME : Input.Type.DATE}
+              label="Od"
+              register={register}
+              name="from"
+              validation={['required']}
+              error={errors.from?.message || ''}
+            />
+
+            <Input.Component
+              variant={Input.Variant.OUTLINED}
+              type={activityScope === 'Locally' ? Input.Type.TIME : Input.Type.DATE}
+              label="Do"
+              register={register}
+              name="to"
+              validation={['required']}
+              error={errors.to?.message || ''}
+            />
           </Stack>
         )}
         actions={[

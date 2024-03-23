@@ -13,6 +13,7 @@ import * as Slider from '../../../../components/UI/Slider'
 import {
   cancelTravelElementInstance,
 } from '../../../../features/travelInstance/travelInstanceSlice'
+import { DateHandler } from '../../../../utils/Date'
 
 type Props = {
   elem: ElementTravelInstance,
@@ -65,10 +66,14 @@ const GloballyElem: React.FC<Props> = (props) => {
           {props.elem.activity.name}
         </Stack>
 
-        <Typography sx={{ fontWeight: 'bold', fontSize: '1.2em' }}>
-          {props.elem.activity.place}
+        <Typography>
+          {new DateHandler(props.elem.from).format('DD-MM-YYYY')} - {new DateHandler(props.elem.to).format('DD-MM-YYYY')}
         </Typography>
       </Stack>
+
+      <Typography>
+        Miejsce: {props.elem.activity.place}
+      </Typography>
 
       {
         props.elem.elementTravel && (

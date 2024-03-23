@@ -12,7 +12,7 @@ export class DateHandler {
   private currentDate: Dayjs
 
   constructor(date: DateType = new Date()) {
-    this.currentDate = dayjs(date).utc(true)
+    this.currentDate = dayjs.utc(date)
 
     if (!this.currentDate.isValid()) {
       const dateStr = `01-01-1970 ${date}`

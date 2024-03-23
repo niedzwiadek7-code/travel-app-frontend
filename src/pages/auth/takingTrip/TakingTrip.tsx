@@ -67,7 +67,7 @@ const TakingTrip: React.FC = () => {
       />
 
       <GloballySection.Component
-        title="Dodaj nocleg"
+        title="Noclegi"
         activityType="Accommodation"
       />
 

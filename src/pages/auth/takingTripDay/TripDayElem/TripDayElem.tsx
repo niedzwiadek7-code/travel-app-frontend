@@ -59,6 +59,14 @@ const TripDayElem: React.FC<Props> = (props) => {
     }
   }
 
+  const getPlaceString = () => {
+    const { activity } = props.travelElement
+    if (activity.place) {
+      return activity.place
+    }
+    return `${activity.from} - ${activity.to}`
+  }
+
   return (
     <Stack
       direction="column"
@@ -83,10 +91,14 @@ const TripDayElem: React.FC<Props> = (props) => {
           {props.travelElement.activity.name.toUpperCase()}
         </Stack>
 
-        <Typography sx={{ fontWeight: 'bold', fontSize: '1.2em' }}>
+        <Typography>
           {dayjs(props.travelElement.from).utc().format('HH:mm')} - {dayjs(props.travelElement.to).utc().format('HH:mm')}
         </Typography>
       </Stack>
+
+      <Typography>
+        Miejsce: {getPlaceString()}
+      </Typography>
 
       {
         props.travelElement.elementTravel && (
