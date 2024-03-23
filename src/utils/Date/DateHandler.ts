@@ -24,8 +24,9 @@ export class DateHandler {
     date1: DateType,
     date2: DateType,
   ) {
-    if (dayjs(date1).isSame(date2)) return 0
-    return dayjs(date1).isSameOrAfter(date2) ? 1 : -1
+    const date1Obj = new DateHandler(date1).toISOString()
+    const date2Obj = new DateHandler(date2).toISOString()
+    return DateHandler.diff(date2Obj, date1Obj, 'milliseconds')
   }
 
   static diff(
@@ -33,7 +34,9 @@ export class DateHandler {
     date2: DateType,
     unit: UnitType,
   ) {
-    return dayjs(date1).diff(dayjs(date2), unit)
+    const date1Obj = new DateHandler(date1).toISOString()
+    const date2Obj = new DateHandler(date2).toISOString()
+    return dayjs(date1Obj).diff(dayjs(date2Obj), unit)
   }
 
   add(count: number, unit: ManipulateType) {

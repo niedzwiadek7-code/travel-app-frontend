@@ -4,7 +4,6 @@ import {
   Stack,
   Typography,
 } from '@mui/material'
-import { useNavigate, useParams } from 'react-router-dom'
 import { Create as CreateIcon } from '@mui/icons-material'
 import { LoadingButton } from '@mui/lab'
 import { useAppDispatch, useAppSelector } from '../../../app/hooks'
@@ -20,9 +19,13 @@ import { Pages } from '../../pages'
 import * as Loading from '../../../components/UI/Loading'
 import * as Header from '../../../components/Header'
 import * as TravelGloballyElem from './TravelGloballyElem'
+import { useRouter } from '../../../hooks'
+
+type Params = {
+  id: string | undefined
+}
 
 const CreateTravel: React.FC = () => {
-  const { id } = useParams()
   const [loading, setLoading] = useState<boolean>(false)
   const [btnLoading, setBtnLoading] = useState<boolean>(false)
 
@@ -33,14 +36,22 @@ const CreateTravel: React.FC = () => {
   const { token } = useAuth()
   const travelService = apiService.getTravel(token)
   const toastUtils = getToastUtils()
-  const navigate = useNavigate()
+
+  const {
+    navigate,
+    params,
+  } = useRouter<
+    Record<string, any>,
+    Record<string, any>,
+    Params
+  >()
 
   useEffect(() => {
     const fetchData = async () => {
-      if (id) {
+      if (params.id) {
         if (!travelRecipe.id) {
           setLoading(true)
-          const travelRecipeTemp = await travelService.get(id)
+          const travelRecipeTemp = await travelService.get(params.id)
           dispatch(setNewTravelRecipe(travelRecipeTemp))
           setLoading(false)
         }
@@ -49,7 +60,7 @@ const CreateTravel: React.FC = () => {
       }
     }
     fetchData()
-  }, [id])
+  }, [params.id])
 
   const putTravel = async () => {
     try {

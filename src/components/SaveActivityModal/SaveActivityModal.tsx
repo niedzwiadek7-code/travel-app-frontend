@@ -1,26 +1,23 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import {
   Button, Stack,
 } from '@mui/material'
-import { LocalizationProvider, SingleInputTimeRangeField } from '@mui/x-date-pickers-pro'
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
-import { DemoContainer } from '@mui/x-date-pickers/internals/demo'
 import { useForm } from 'react-hook-form'
-import { useNavigate } from 'react-router-dom'
 import { v4 as uuidv4 } from 'uuid'
 import * as Modal from '../UI/Modal'
 import * as Input from '../UI/Input'
 import {
   LocallyTravelElement,
   GloballyTravelElement,
+  locallyActivityTypes, ActivityScope,
 } from '../../model'
-import { useDependencies } from '../../context'
 import { useAppDispatch, useAppSelector } from '../../app/hooks'
 import { putActivity } from '../../features/travelRecipe/travelRecipeSlice'
 import { Pages } from '../../pages/pages'
 import { RootState } from '../../app/store'
 import { ExtendedActivityFormat } from '../../services/backend/Activity/types'
-import { DateHandler, DateType } from '../../utils/Date'
+import { DateHandler } from '../../utils/Date'
+import { useRouter } from '../../hooks'
 
 type Props = {
   activity: ExtendedActivityFormat
@@ -29,107 +26,122 @@ type Props = {
 
 type Inputs = {
   times: string
-  numberOfDays: number
+  from: string
+  to: string
   numberOfPeople: number
-  price: string
+  price: number
   description: string
 }
 
 const SaveActivityModal: React.FC<Props> = (props) => {
+  const {
+    navigate,
+  } = useRouter()
   const travelRecipe = useAppSelector((state: RootState) => state.travelRecipe)
-  const { getToastUtils } = useDependencies()
   const dispatch = useAppDispatch()
-  const navigate = useNavigate()
-  const toastUtils = getToastUtils()
+  const activityScope: ActivityScope = locallyActivityTypes.includes(props.activity.activityType) ? 'Locally' : 'Globally'
 
   const {
     register,
     handleSubmit,
     setValue,
     watch,
+    setError,
+    clearErrors,
+    formState: { errors },
   } = useForm<Inputs>()
 
-  useEffect(() => {
-    if (props.activity.price) {
-      if (props.activity.priceType && props.activity.priceType === 'per_hour') {
-        return
-      }
-      setValue('price', props.activity.price.toString())
-    }
-  }, [])
+  const validateElemRange = () => {
+    const fromInputValue = watch('from')
+    const toInputValue = watch('to')
 
-  const calculatePriceForActivity = (datesRange: any[]) => {
-    if (
-      datesRange[0] && datesRange[1]
-      && props.activity.priceType && props.activity.priceType === 'per_hour'
-      && props.activity.price
-    ) {
-      const dateStart = new DateHandler(datesRange[0]).toISOString()
-      const dateEnd = new DateHandler(datesRange[1]).toISOString()
-      if (DateHandler.compareDates(dateEnd, dateStart) > 0) {
-        const numberOfPeople = watch('numberOfPeople') > 1 ? watch('numberOfPeople') : 1
-        setValue(
-          'price',
-          (Math.ceil(DateHandler.diff(dateStart, dateEnd, 'minutes') / 60)
-            * props.activity.price * numberOfPeople).toString(),
-        )
-      }
+    if (!fromInputValue || !toInputValue) {
+      return false
+    }
+
+    const setErrorMessage = () => {
+      setError('to', { message: 'Aktywność nie może zakończyć się przed rozpoczęciem' })
+    }
+
+    const unsetErrorMessage = () => {
+      clearErrors('to')
+    }
+
+    switch (activityScope) {
+      case 'Locally':
+        if (DateHandler.compareDates(fromInputValue, toInputValue) < 0) {
+          setErrorMessage()
+          return false
+        }
+        unsetErrorMessage()
+        return true
+      case 'Globally':
+        if (fromInputValue > toInputValue) {
+          setErrorMessage()
+          return false
+        }
+        unsetErrorMessage()
+        return true
+      default:
+        return false
     }
   }
 
-  const calculatePriceForActivityButAfterNumberOfPeopleChange = () => {
-    if (props.activity.priceType && props.activity.priceType === 'per_hour') {
+  const calculatePriceForActivity = () => {
+    const from = new DateHandler(watch('from')).format('HH:mm')
+    const to = new DateHandler(watch('to')).format('HH:mm')
+    const numberOfPeople = watch('numberOfPeople') > 1 ? watch('numberOfPeople') : 1
+    const diff = DateHandler.diff(to, from, 'hours')
+
+    if (props.activity.priceType === 'per_hour') {
+      setValue('price', (diff * props.activity.price * numberOfPeople))
       return
     }
 
-    const numberOfPeople = watch('numberOfPeople')
-    if (numberOfPeople > 1 && props.activity.price) {
-      setValue('price', (props.activity.price * numberOfPeople).toString())
+    setValue('price', props.activity.price * numberOfPeople)
+  }
+
+  const calculatePriceForGloballyElem = () => {
+    const from = parseInt(watch('from'), 10)
+    const to = parseInt(watch('to'), 10)
+    const numberOfDays = to - from + 1
+
+    if (numberOfDays > 1 && props.activity.price) {
+      setValue('price', (numberOfDays * props.activity.price))
     }
   }
 
-  const calculatePriceForAccommodation = (numberOfDays: number) => {
-    if (numberOfDays > 1 && props.activity.price) {
-      setValue('price', (numberOfDays * props.activity.price).toString())
+  const calculatePrice = () => {
+    if (!validateElemRange()) {
+      return
+    }
+
+    switch (activityScope) {
+      case 'Locally':
+        calculatePriceForActivity()
+        break
+      case 'Globally':
+        calculatePriceForGloballyElem()
+        break
+      default:
+        break
     }
   }
 
   const onSubmit = (data: Inputs) => {
-    let dateStart: DateType | undefined
-    let dateEnd: DateType | undefined
-
-    if (data.times) {
-      const dates = data.times.split(' – ')
-      dateStart = new DateHandler(dates[0]).toISOString()
-      dateEnd = new DateHandler(dates[1]).toISOString()
-
-      if (!data.times[0] || !data.times[1]) {
-        toastUtils.Toast.showToast(
-          toastUtils.types.ERROR,
-          'Podane godziny są niepoprawne',
-        )
-        return
-      }
-
-      if (DateHandler.compareDates(dateEnd, dateStart) < 0) {
-        toastUtils.Toast.showToast(
-          toastUtils.types.ERROR,
-          'Czas rozpoczęcia aktywności musi być wcześniejszy niż czas jej zakończenia',
-        )
-        return
-      }
+    if (!validateElemRange()) {
+      return
     }
 
-    switch (props.activity.activityType) {
-      case 'Accommodation':
+    switch (activityScope) {
+      case 'Globally':
         dispatch(putActivity(
           new GloballyTravelElement({
             id: uuidv4(),
-            // TODO: improve this - user should pick from and to day number and number of people
-            from: 1,
-            to: 1,
-            numberOfPeople: 1,
-            price: parseInt(data.price, 10),
+            from: parseInt(data.from, 10),
+            to: parseInt(data.to, 10),
+            numberOfPeople: data.numberOfPeople,
+            price: data.price,
             description: data.description,
             photos: [],
             activity: props.activity,
@@ -143,21 +155,22 @@ const SaveActivityModal: React.FC<Props> = (props) => {
           navigate(Pages.CREATE_TRAVEL.getRedirectLink())
         }
         break
-      default:
+      case 'Locally':
         dispatch(putActivity(new LocallyTravelElement({
           id: uuidv4(),
           dayCount: parseInt(props.countDay, 10),
-          from: dateStart,
-          to: dateEnd,
+          from: new DateHandler(data.from).format('HH:mm'),
+          to: new DateHandler(data.to).format('HH:mm'),
           activity: props.activity,
-          price: parseInt(data.price, 10),
+          price: data.price,
           numberOfPeople: data.numberOfPeople || undefined,
           description: data.description,
-          numberOfDays: data.numberOfDays,
         })))
         navigate(Pages.TRAVEL_DAY.getRedirectLink({
           countDay: props.countDay,
         }))
+        break
+      default:
         break
     }
   }
@@ -179,32 +192,41 @@ const SaveActivityModal: React.FC<Props> = (props) => {
           <Stack
             gap={2}
           >
+            <Input.Component
+              variant={Input.Variant.OUTLINED}
+              type={activityScope === 'Locally' ? Input.Type.TIME : Input.Type.NUMBER}
+              label="Od"
+              register={register}
+              name="from"
+              validation={[
+                'required',
+                ...(activityScope === 'Globally'
+                  ? ['minNum:1', `maxNum:${travelRecipe.countDays}`]
+                  : []
+                ),
+              ]}
+              onChange={calculatePrice}
+              error={errors.from?.message || ''}
+            />
 
-            {
-              props.activity.activityType === 'Accommodation' ? (
-                <Input.Component
-                  variant={Input.Variant.OUTLINED}
-                  type={Input.Type.NUMBER}
-                  label="Ilość dni"
-                  register={register}
-                  name="numberOfDays"
-                  validation={['required']}
-                  onChange={calculatePriceForAccommodation}
-                />
-              ) : (
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DemoContainer components={['SingleInputTimeRangeField']}>
-                    <SingleInputTimeRangeField
-                      ampm={false}
-                      label="Zaplanuj w terminie"
-                      {...register('times')}
-                      onChange={calculatePriceForActivity}
-                    />
-                  </DemoContainer>
-                </LocalizationProvider>
-              )
-            }
+            <Input.Component
+              variant={Input.Variant.OUTLINED}
+              type={activityScope === 'Locally' ? Input.Type.TIME : Input.Type.NUMBER}
+              label="Do"
+              register={register}
+              name="to"
+              validation={[
+                'required',
+                ...(activityScope === 'Globally'
+                  ? ['minNum:1', `maxNum:${travelRecipe.countDays}`]
+                  : []
+                ),
+              ]}
+              onChange={calculatePrice}
+              error={errors.to?.message || ''}
+            />
 
+            {/* TODO: move number of people to travel recipe class */}
             {
               (props.activity.price || props.activity.price === 0)
               && props.activity.activityType !== 'Accommodation'
@@ -216,7 +238,8 @@ const SaveActivityModal: React.FC<Props> = (props) => {
                   register={register}
                   name="numberOfPeople"
                   validation={['required']}
-                  onChange={calculatePriceForActivityButAfterNumberOfPeopleChange}
+                  onChange={calculatePrice}
+                  error={errors.numberOfPeople?.message || ''}
                 />
               )
             }
@@ -225,9 +248,10 @@ const SaveActivityModal: React.FC<Props> = (props) => {
               variant={Input.Variant.OUTLINED}
               type={Input.Type.TEXT}
               label="Dodatkowe informacje"
-              rows={10}
+              rows={Infinity}
               register={register}
               name="description"
+              error={errors.description?.message || ''}
             />
 
             <Input.Component
@@ -236,7 +260,8 @@ const SaveActivityModal: React.FC<Props> = (props) => {
               label="Cena całkowita"
               register={register}
               name="price"
-              validation={['required']}
+              validation={['required', 'minNum:0']}
+              error={errors.price?.message || ''}
             />
           </Stack>
         )}
