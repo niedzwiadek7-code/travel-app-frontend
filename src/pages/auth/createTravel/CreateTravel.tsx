@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import {
   Button,
   Stack,
-  Typography,
 } from '@mui/material'
 import { Create as CreateIcon } from '@mui/icons-material'
 import { LoadingButton } from '@mui/lab'
@@ -20,7 +19,9 @@ import { Pages } from '../../pages'
 import * as Loading from '../../../components/UI/Loading'
 import * as Header from '../../../components/Header'
 import * as TravelGloballyElem from './TravelGloballyElem'
-import { useRouter } from '../../../hooks'
+import { useRouter, useFetch } from '../../../hooks'
+import { TravelRecipe } from '../../../model'
+import * as Collapse from '../../../components/UI/Collapse'
 
 type Params = {
   id: string | undefined
@@ -47,9 +48,7 @@ const CreateTravel: React.FC = () => {
     formState: { errors },
   } = useForm<CountDaysInput>()
 
-  const [loading, setLoading] = useState<boolean>(false)
   const [btnLoading, setBtnLoading] = useState<boolean>(false)
-
   const travelRecipe = useAppSelector((state: RootState) => state.travelRecipe)
   const dispatch = useAppDispatch()
   const { getApiService, getToastUtils } = useDependencies()
@@ -57,20 +56,24 @@ const CreateTravel: React.FC = () => {
   const travelService = apiService.getTravel(token)
   const toastUtils = getToastUtils()
 
-  useEffect(() => {
-    const fetchData = async () => {
-      if (params.id) {
-        if (!travelRecipe.id) {
-          setLoading(true)
-          const travelRecipeTemp = await travelService.get(params.id)
-          dispatch(setNewTravelRecipe(travelRecipeTemp))
-          setLoading(false)
-        }
-      } else if (travelRecipe.id) {
-        dispatch(reset())
+  const fetchData = async (): Promise<TravelRecipe | undefined> => {
+    if (params.id) {
+      if (!travelRecipe.id) {
+        const travelRecipeTemp = await travelService.get(params.id)
+        dispatch(setNewTravelRecipe(travelRecipeTemp))
+        return travelRecipeTemp
       }
+    } else if (travelRecipe.id) {
+      dispatch(reset())
     }
-    fetchData()
+    return undefined
+  }
+
+  const {
+    loading,
+  } = useFetch<TravelRecipe>({
+    fetchData,
+    defaultData: undefined,
   }, [params.id])
 
   const putTravel = async () => {
@@ -167,16 +170,11 @@ const CreateTravel: React.FC = () => {
 
         ) : (
           <>
-            <Stack>
-              <Typography
-                variant="h5"
-                component="h5"
-              >
-                Podsumowanie
-              </Typography>
-
+            <Collapse.Component
+              title="Podsumowanie"
+            >
               <TravelSummaryTable.Component />
-            </Stack>
+            </Collapse.Component>
 
             <TravelGloballyElem.Component
               title="Noclegi"
@@ -187,16 +185,12 @@ const CreateTravel: React.FC = () => {
               activityType="Accommodation"
             />
 
-            <Stack>
-              <Typography
-                variant="h5"
-                component="h5"
-              >
-                Przeglądaj poszczególne dni swojej wycieczki
-              </Typography>
-
+            <Collapse.Component
+              defaultOpen
+              title="Przeglądaj poszczególne dni swojej wycieczki"
+            >
               <TravelDaysTable.Component />
-            </Stack>
+            </Collapse.Component>
 
             <Stack
               gap={1}
