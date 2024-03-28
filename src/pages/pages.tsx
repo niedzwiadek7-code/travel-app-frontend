@@ -1,7 +1,7 @@
 import React from 'react'
 import { Routes, Route } from 'react-router-dom'
 import Page from './class/Page'
-import * as Public from './public'
+import * as Public from './public/indexa'
 import * as Auth from './auth'
 
 export const Pages: Record<string, Page> = {

@@ -6,7 +6,7 @@ import {
   PaletteColorOptions,
   ThemeProvider,
 } from '@mui/material/styles'
-import Content from './pages'
+import Content from './pages/indexa'
 import { AuthProvider } from './context/auth'
 import { DependenciesProvider } from './context/dependencies'
 import 'react-toastify/dist/ReactToastify.css'
@@ -25,7 +25,7 @@ declare module '@mui/material/Button' {
   }
 }
 
-const App = () => {
+function App() {
   const { palette } = createTheme()
   const { augmentColor } = palette
   const createColor = (mainColor: string) => augmentColor({ color: { main: mainColor } })
