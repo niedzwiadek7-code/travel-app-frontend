@@ -1,5 +1,6 @@
 import React from 'react'
 import {
+  Button,
   Stack, useTheme,
 } from '@mui/material'
 import * as SaveActivityModal from '../../../../../components/SaveActivityModal'
@@ -85,6 +86,15 @@ const Accommodation: React.FC<Props> = (props) => {
           {
             props.state?.travelRecipe && (
               <SaveActivityModal.Component
+                button={(
+                  <Button
+                    type="button"
+                    variant="contained"
+                    sx={{ width: '100%' }}
+                  >
+                    Dodaj do wycieczki
+                  </Button>
+                )}
                 activity={props.activity}
                 countDay=""
               />

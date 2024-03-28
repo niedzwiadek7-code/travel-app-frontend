@@ -82,7 +82,7 @@ const TravelDaysTable: React.FC = () => {
             <TableCell> Dzień wyjazdu </TableCell>
             <TableCell> Ilość aktywności </TableCell>
             <TableCell> Czas do zaplanowania </TableCell>
-            <TableCell align="center"> Akcja </TableCell>
+            <TableCell align="center"> Akcje </TableCell>
           </TableRow>
         </TableHead>
 

@@ -35,7 +35,7 @@ const TravelDayTable: React.FC<Props> = (props) => {
             <TableCell
               align="center"
             >
-              Odwołaj
+              Akcje
             </TableCell>
           </TableRow>
         </TableHead>

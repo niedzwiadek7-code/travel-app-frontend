@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { ReactNode } from 'react'
 import {
-  Button, Stack,
+  Stack,
 } from '@mui/material'
 import { useForm } from 'react-hook-form'
 import { v4 as uuidv4 } from 'uuid'
@@ -16,10 +16,12 @@ import { putActivity } from '../../features/travelRecipe/travelRecipeSlice'
 import { Pages } from '../../pages/pages'
 import { RootState } from '../../app/store'
 import { ExtendedActivityFormat } from '../../services/backend/Activity/types'
-import { DateHandler } from '../../utils/Date'
+import { DateHandler, DateType } from '../../utils/Date'
 import { useRouter } from '../../hooks'
 
 type Props = {
+  button: ReactNode,
+  travelElement?: LocallyTravelElement | GloballyTravelElement
   activity: ExtendedActivityFormat
   countDay: string
 }
@@ -98,7 +100,9 @@ const SaveActivityModal: React.FC<Props> = (props) => {
       return
     }
 
-    setValue('price', props.activity.price * numberOfPeople)
+    if (props.activity.price) {
+      setValue('price', props.activity.price * numberOfPeople)
+    }
   }
 
   const calculatePriceForGloballyElem = () => {
@@ -128,6 +132,18 @@ const SaveActivityModal: React.FC<Props> = (props) => {
     }
   }
 
+  const getDefaultRangeProp = (prop: string | DateType | undefined) => {
+    if (!prop) {
+      return undefined
+    }
+
+    if (activityScope === 'Locally') {
+      return new DateHandler(prop).format('HH:mm')
+    }
+
+    return prop.toString()
+  }
+
   const onSubmit = (data: Inputs) => {
     if (!validateElemRange()) {
       return
@@ -137,7 +153,7 @@ const SaveActivityModal: React.FC<Props> = (props) => {
       case 'Globally':
         dispatch(putActivity(
           new GloballyTravelElement({
-            id: uuidv4(),
+            id: props.travelElement?.id || uuidv4(),
             from: parseInt(data.from, 10),
             to: parseInt(data.to, 10),
             numberOfPeople: data.numberOfPeople,
@@ -157,14 +173,15 @@ const SaveActivityModal: React.FC<Props> = (props) => {
         break
       case 'Locally':
         dispatch(putActivity(new LocallyTravelElement({
-          id: uuidv4(),
+          id: props.travelElement?.id || uuidv4(),
           dayCount: parseInt(props.countDay, 10),
           from: new DateHandler(data.from).format('HH:mm'),
           to: new DateHandler(data.to).format('HH:mm'),
           activity: props.activity,
           price: data.price,
-          numberOfPeople: data.numberOfPeople || undefined,
+          numberOfPeople: data.numberOfPeople,
           description: data.description,
+          photos: [],
         })))
         navigate(Pages.TRAVEL_DAY.getRedirectLink({
           countDay: props.countDay,
@@ -178,15 +195,7 @@ const SaveActivityModal: React.FC<Props> = (props) => {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Modal.Component
-        buttonComponent={(
-          <Button
-            type="button"
-            variant="contained"
-            sx={{ width: '100%' }}
-          >
-            Dodaj do wycieczki
-          </Button>
-        )}
+        buttonComponent={props.button}
         title={props.activity.name}
         content={(
           <Stack
@@ -198,6 +207,7 @@ const SaveActivityModal: React.FC<Props> = (props) => {
               label="Od"
               register={register}
               name="from"
+              default={getDefaultRangeProp(props.travelElement?.from)}
               validation={[
                 'required',
                 ...(activityScope === 'Globally'
@@ -215,6 +225,7 @@ const SaveActivityModal: React.FC<Props> = (props) => {
               label="Do"
               register={register}
               name="to"
+              default={getDefaultRangeProp(props.travelElement?.to)}
               validation={[
                 'required',
                 ...(activityScope === 'Globally'
@@ -227,22 +238,17 @@ const SaveActivityModal: React.FC<Props> = (props) => {
             />
 
             {/* TODO: move number of people to travel recipe class */}
-            {
-              (props.activity.price || props.activity.price === 0)
-              && props.activity.activityType !== 'Accommodation'
-              && (
-                <Input.Component
-                  variant={Input.Variant.OUTLINED}
-                  type={Input.Type.NUMBER}
-                  label="Ilość osób"
-                  register={register}
-                  name="numberOfPeople"
-                  validation={['required']}
-                  onChange={calculatePrice}
-                  error={errors.numberOfPeople?.message || ''}
-                />
-              )
-            }
+            <Input.Component
+              variant={Input.Variant.OUTLINED}
+              type={Input.Type.NUMBER}
+              label="Ilość osób"
+              register={register}
+              default={props.travelElement?.numberOfPeople}
+              name="numberOfPeople"
+              validation={['required']}
+              onChange={calculatePrice}
+              error={errors.numberOfPeople?.message || ''}
+            />
 
             <Input.Component
               variant={Input.Variant.OUTLINED}
@@ -250,6 +256,7 @@ const SaveActivityModal: React.FC<Props> = (props) => {
               label="Dodatkowe informacje"
               rows={Infinity}
               register={register}
+              default={props.travelElement?.description}
               name="description"
               error={errors.description?.message || ''}
             />
@@ -259,6 +266,7 @@ const SaveActivityModal: React.FC<Props> = (props) => {
               type={Input.Type.NUMBER}
               label="Cena całkowita"
               register={register}
+              default={props.travelElement?.price || 0}
               name="price"
               validation={['required', 'minNum:0']}
               error={errors.price?.message || ''}
@@ -267,7 +275,7 @@ const SaveActivityModal: React.FC<Props> = (props) => {
         )}
         actions={[
           {
-            name: 'Dodaj aktywność',
+            name: props.travelElement ? 'Edytuj aktywność' : 'Dodaj aktywność',
             onClick: handleSubmit(onSubmit),
             type: 'submit',
           },

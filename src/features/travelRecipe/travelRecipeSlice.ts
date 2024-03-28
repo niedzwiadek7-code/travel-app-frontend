@@ -25,14 +25,22 @@ export const travelRecipeSlice = createSlice({
     putActivity: (state, action: PayloadAction<LocallyTravelElement | GloballyTravelElement>) => {
       switch (action.payload.activity.activityType) {
         case 'Accommodation':
+          // eslint-disable-next-line no-case-declarations
+          const accommodations = state.accommodations.filter(
+            (elem) => elem.id !== action.payload.id,
+          )
           return {
             ...state,
-            accommodations: [...state.accommodations, new GloballyTravelElement(action.payload)],
+            accommodations: [...accommodations, new GloballyTravelElement(action.payload)],
           }
         default:
+          // eslint-disable-next-line no-case-declarations
+          const travelElements = state.travelElements.filter(
+            (elem) => elem.id !== action.payload.id,
+          )
           return {
             ...state,
-            travelElements: [...state.travelElements, new LocallyTravelElement(action.payload)],
+            travelElements: [...travelElements, new LocallyTravelElement(action.payload)],
           }
       }
     },

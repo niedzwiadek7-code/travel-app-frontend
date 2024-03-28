@@ -1,12 +1,14 @@
 import React from 'react'
 import {
+  Stack,
   TableCell, TableRow, useTheme,
 } from '@mui/material'
-import { AirplanemodeActive, Cancel } from '@mui/icons-material'
+import { AirplanemodeActive, Cancel, Edit } from '@mui/icons-material'
 import { LocallyTravelElement } from '../../../../model'
 import { deleteActivityFromTravel } from '../../../../features/travelRecipe/travelRecipeSlice'
 import { useAppDispatch } from '../../../../app/hooks'
 import { DateHandler } from '../../../../utils/Date'
+import * as SaveActivityModal from '../../../../components/SaveActivityModal'
 
 type Props = {
   travelElement: LocallyTravelElement
@@ -47,13 +49,31 @@ const Travel: React.FC<Props> = (props) => {
       <TableCell
         align="center"
       >
-        <Cancel
-          color="error"
-          onClick={() => { deleteActivity(props.travelElement.id) }}
-          sx={{
-            cursor: 'pointer',
-          }}
-        />
+        <Stack
+          direction="row"
+          gap={1}
+        >
+          <SaveActivityModal.Component
+            button={(
+              <Edit
+                color="primary"
+                sx={{
+                  cursor: 'pointer',
+                }}
+              />
+            )}
+            travelElement={props.travelElement}
+            activity={props.travelElement.activity}
+            countDay={props.travelElement.dayCount.toString()}
+          />
+          <Cancel
+            color="error"
+            onClick={() => { deleteActivity(props.travelElement.id) }}
+            sx={{
+              cursor: 'pointer',
+            }}
+          />
+        </Stack>
       </TableCell>
     </TableRow>
   )

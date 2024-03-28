@@ -1,5 +1,5 @@
 import React from 'react'
-import { Stack, useTheme } from '@mui/material'
+import { Button, Stack, useTheme } from '@mui/material'
 import * as SaveActivityModal from '../../../../../components/SaveActivityModal'
 import * as SaveInstanceActivityModal from '../../../../../components/SaveInstanceActivityModal'
 import AdminButtons from '../AdminButtons'
@@ -22,6 +22,7 @@ const Travel: React.FC<Props> = (props) => {
     currency: 'PLN',
   })
 
+  // @ts-ignore
   return (
     <Stack
       key={props.activity.id}
@@ -83,6 +84,15 @@ const Travel: React.FC<Props> = (props) => {
           {
             props.state?.travelRecipe && (
               <SaveActivityModal.Component
+                button={(
+                  <Button
+                    type="button"
+                    variant="contained"
+                    sx={{ width: '100%' }}
+                  >
+                    Dodaj do wycieczki
+                  </Button>
+                )}
                 activity={props.activity}
                 countDay={props.state.countDay}
               />

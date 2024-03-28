@@ -1,13 +1,15 @@
 import React from 'react'
 import {
+  Stack,
   Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
 } from '@mui/material'
-import { AddCircle, Cancel } from '@mui/icons-material'
+import { AddCircle, Cancel, Edit } from '@mui/icons-material'
 import { ActivityType, GloballyTravelElement } from '../../../../model'
 import * as Collapse from '../../../../components/UI/Collapse'
 import * as SplitButton from '../../../../components/UI/SplitButton'
 import { useRouter } from '../../../../hooks'
 import { Pages } from '../../../pages'
+import * as SaveActivityModal from '../../../../components/SaveActivityModal'
 
 type Props = {
   title: string
@@ -91,7 +93,7 @@ const TravelGloballyElem: React.FC<Props> = (props) => {
                   <TableCell
                     align="center"
                   >
-                    Odwołaj
+                    Akcje
                   </TableCell>
                 </TableRow>
               </TableHead>
@@ -109,13 +111,31 @@ const TravelGloballyElem: React.FC<Props> = (props) => {
                       <TableCell
                         align="center"
                       >
-                        <Cancel
-                          color="error"
-                          onClick={() => { props.deleteTravelElement(elem.id) }}
-                          sx={{
-                            cursor: 'pointer',
-                          }}
-                        />
+                        <Stack
+                          direction="row"
+                          gap={1}
+                        >
+                          <SaveActivityModal.Component
+                            button={(
+                              <Edit
+                                color="primary"
+                                sx={{
+                                  cursor: 'pointer',
+                                }}
+                              />
+                            )}
+                            travelElement={elem}
+                            activity={elem.activity}
+                            countDay=""
+                          />
+                          <Cancel
+                            color="error"
+                            onClick={() => { props.deleteTravelElement(elem.id) }}
+                            sx={{
+                              cursor: 'pointer',
+                            }}
+                          />
+                        </Stack>
                       </TableCell>
                     </TableRow>
                   ))

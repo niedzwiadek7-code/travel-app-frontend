@@ -1,5 +1,5 @@
 import React from 'react'
-import { Stack, useTheme } from '@mui/material'
+import { Button, Stack, useTheme } from '@mui/material'
 import * as SaveActivityModal from '../../../../../components/SaveActivityModal'
 import * as SaveInstanceActivityModal from '../../../../../components/SaveInstanceActivityModal'
 import { StateDto } from '../../dto/state.dto'
@@ -78,8 +78,17 @@ const Restaurant: React.FC<Props> = (props) => {
           {
             props.state?.travelRecipe && (
               <SaveActivityModal.Component
+                button={(
+                  <Button
+                    type="button"
+                    variant="contained"
+                    sx={{ width: '100%' }}
+                  >
+                    Dodaj do wycieczki
+                  </Button>
+                )}
                 activity={props.activity}
-                countDay={props.state.countDay}
+                countDay={props.state.countDay.toString()}
               />
             )
           }
