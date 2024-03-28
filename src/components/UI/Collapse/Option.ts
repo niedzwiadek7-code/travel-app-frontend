@@ -1,7 +1,6 @@
-import { SvgIconProps } from '@mui/material'
+import { SvgIconComponent } from '@mui/icons-material'
 
 export type Option = {
-  // eslint-disable-next-line no-unused-vars
-  Icon: (props: SvgIconProps) => JSX.Element,
+  Icon: SvgIconComponent,
   action: () => void,
 }

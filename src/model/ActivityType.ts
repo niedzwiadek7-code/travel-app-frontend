@@ -16,9 +16,7 @@ export const globallyActivityTypes: ActivityType[] = [
   'Accommodation',
 ]
 
-export const getActivityTypeIcon = (activityType: ActivityType)
-  // eslint-disable-next-line no-unused-vars
-  : SvgIconComponent => {
+export const getActivityTypeIcon = (activityType: ActivityType): SvgIconComponent => {
   switch (activityType) {
     case 'Attraction':
       return Attractions

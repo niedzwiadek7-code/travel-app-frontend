@@ -1,9 +1,8 @@
 import React, { useState } from 'react'
 import {
-  Button,
-  Stack,
+  Button, Stack,
 } from '@mui/material'
-import { Create as CreateIcon } from '@mui/icons-material'
+import { AddCircle, Create as CreateIcon } from '@mui/icons-material'
 import { LoadingButton } from '@mui/lab'
 import { useForm } from 'react-hook-form'
 import { useAppDispatch, useAppSelector } from '../../../app/hooks'
@@ -55,6 +54,13 @@ const CreateTravel: React.FC = () => {
   const apiService = getApiService()
   const travelService = apiService.getTravel(token)
   const toastUtils = getToastUtils()
+
+  const planNextDay = () => {
+    dispatch(addCountDays(1))
+    navigate(Pages.TRAVEL_DAY.getRedirectLink({
+      countDay: (travelRecipe.countDays + 1).toString(),
+    }))
+  }
 
   const fetchData = async (): Promise<TravelRecipe | undefined> => {
     if (params.id) {
@@ -188,6 +194,17 @@ const CreateTravel: React.FC = () => {
             <Collapse.Component
               defaultOpen
               title="Przeglądaj poszczególne dni swojej wycieczki"
+              nodeOptions={[
+                <Button
+                  key="addDay"
+                  type="button"
+                  onClick={planNextDay}
+                >
+                  <AddCircle
+                    color="success"
+                  />
+                </Button>,
+              ]}
             >
               <TravelDaysTable.Component />
             </Collapse.Component>

@@ -51,6 +51,7 @@ const Restaurant: React.FC<Props> = (props) => {
       >
         <Stack
           direction="row"
+          justifyContent="end"
           gap={1}
         >
           <SaveActivityModal.Component

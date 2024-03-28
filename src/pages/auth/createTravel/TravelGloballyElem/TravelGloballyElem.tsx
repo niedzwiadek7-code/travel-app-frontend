@@ -91,7 +91,7 @@ const TravelGloballyElem: React.FC<Props> = (props) => {
                   <TableCell> Zakres dni </TableCell>
                   <TableCell> Cena </TableCell>
                   <TableCell
-                    align="center"
+                    align="right"
                   >
                     Akcje
                   </TableCell>
@@ -109,10 +109,11 @@ const TravelGloballyElem: React.FC<Props> = (props) => {
                       </TableCell>
                       <TableCell> {formatter.format(elem.price)} </TableCell>
                       <TableCell
-                        align="center"
+                        align="right"
                       >
                         <Stack
                           direction="row"
+                          justifyContent="flex-end"
                           gap={1}
                         >
                           <SaveActivityModal.Component

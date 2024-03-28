@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import {
-  Button, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
+  Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
 } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import { Visibility, Delete } from '@mui/icons-material'
@@ -18,19 +18,10 @@ type TravelDay = {
 
 const TravelDaysTable: React.FC = () => {
   const travelRecipe = useAppSelector((state: RootState) => state.travelRecipe)
-  const { countDays } = travelRecipe
-
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const [loading, setLoading] = useState<boolean>(true)
   const [sortedTravelElements, setSortedTravelElements] = useState<TravelDay[]>([])
-
-  const planNextDay = () => {
-    dispatch(addCountDays(1))
-    navigate(Pages.TRAVEL_DAY.getRedirectLink({
-      countDay: (countDays + 1).toString(),
-    }))
-  }
 
   const deleteDay = (dayNumber: number) => {
     dispatch(deleteDayFromTravel(dayNumber))
@@ -82,7 +73,7 @@ const TravelDaysTable: React.FC = () => {
             <TableCell> Dzień wyjazdu </TableCell>
             <TableCell> Ilość aktywności </TableCell>
             <TableCell> Czas do zaplanowania </TableCell>
-            <TableCell align="center"> Akcje </TableCell>
+            <TableCell align="right"> Akcje </TableCell>
           </TableRow>
         </TableHead>
 
@@ -93,12 +84,12 @@ const TravelDaysTable: React.FC = () => {
                 <TableCell> Dzień {elem.countDay} </TableCell>
                 <TableCell> {elem.countOfActivities} </TableCell>
                 <TableCell> {elem.timeToManage} </TableCell>
-                <TableCell align="center">
+                <TableCell align="right">
                   <Stack
                     gap={1}
                     direction="row"
                     alignItems="center"
-                    justifyContent="center"
+                    justifyContent="flex-end"
                   >
                     <Visibility
                       color="primary"
@@ -127,29 +118,6 @@ const TravelDaysTable: React.FC = () => {
                 </TableCell>
               </TableRow>
             ))
-          }
-
-          {
-            (!sortedTravelElements[sortedTravelElements.length - 1]
-            || sortedTravelElements[sortedTravelElements.length - 1].countOfActivities > 0) && (
-              <TableRow>
-                <TableCell />
-                <TableCell />
-                <TableCell />
-                <TableCell align="center">
-                  <Stack>
-                    <Button
-                      type="button"
-                      variant="contained"
-                      color="success"
-                      onClick={planNextDay}
-                    >
-                      Zaplanuj następny dzień
-                    </Button>
-                  </Stack>
-                </TableCell>
-              </TableRow>
-            )
           }
         </TableBody>
       </Table>

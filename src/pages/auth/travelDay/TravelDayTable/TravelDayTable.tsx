@@ -33,7 +33,7 @@ const TravelDayTable: React.FC<Props> = (props) => {
             <TableCell> Ilość osób </TableCell>
             <TableCell> Cena </TableCell>
             <TableCell
-              align="center"
+              align="right"
             >
               Akcje
             </TableCell>
