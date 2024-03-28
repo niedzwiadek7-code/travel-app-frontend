@@ -1,8 +1,8 @@
 import React from 'react'
 import {
-  Button, Stack, TableCell, TableRow, useTheme,
+  TableCell, TableRow, useTheme,
 } from '@mui/material'
-import { Restaurant as RestaurantIcon } from '@mui/icons-material'
+import { Cancel, Restaurant as RestaurantIcon } from '@mui/icons-material'
 import { LocallyTravelElement } from '../../../../model'
 import { deleteActivityFromTravel } from '../../../../features/travelRecipe/travelRecipeSlice'
 import { useAppDispatch } from '../../../../app/hooks'
@@ -44,18 +44,18 @@ const Restaurant: React.FC<Props> = (props) => {
       </TableCell>
       <TableCell />
       <TableCell> { formatter.format(props.travelElement.price) } </TableCell>
-      <TableCell>
-        <Stack>
-          <Button
-            type="button"
-            variant="contained"
-            color="error"
-            onClick={() => deleteActivity(props.travelElement.id)}
-          >
-            Odwołaj
-          </Button>
-        </Stack>
+      <TableCell
+        align="center"
+      >
+        <Cancel
+          color="error"
+          onClick={() => { deleteActivity(props.travelElement.id) }}
+          sx={{
+            cursor: 'pointer',
+          }}
+        />
       </TableCell>
+
     </TableRow>
   )
 }

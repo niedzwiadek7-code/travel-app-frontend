@@ -2,7 +2,6 @@ import React from 'react'
 import {
   Stack, Button,
 } from '@mui/material'
-import { useNavigate, useParams } from 'react-router-dom'
 import { Today } from '@mui/icons-material'
 import { Pages } from '../../../pages/pages'
 import * as TravelDayTable from './TravelDayTable'
@@ -11,11 +10,22 @@ import { RootState } from '../../../app/store'
 import AddActivityButton from './AddActivityButton'
 import * as Header from '../../../components/Header'
 import * as UnexpectedError from '../../../components/UI/UnexpectedError'
+import { useRouter } from '../../../hooks'
+
+type Params = {
+  countDay: string
+}
 
 const TravelDay: React.FC = () => {
   const travelRecipe = useAppSelector((state: RootState) => state.travelRecipe)
-  const { countDay } = useParams()
-  const navigate = useNavigate()
+  const {
+    params: { countDay },
+    navigate,
+  } = useRouter<
+    Record<string, any>,
+    Record<string, any>,
+    Params
+  >()
 
   if (!countDay) {
     return (

@@ -100,7 +100,6 @@ const TravelSummaryTable: React.FC = () => {
                     <Icon
                       fontSize="small"
                       color="primary"
-                      onClick={() => console.log('clicked')}
                     />
                     {name}
                   </Stack>

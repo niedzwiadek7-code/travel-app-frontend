@@ -1,9 +1,8 @@
 import React from 'react'
 import {
-  Button,
   Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
 } from '@mui/material'
-import { AddCircle } from '@mui/icons-material'
+import { AddCircle, Cancel } from '@mui/icons-material'
 import { ActivityType, GloballyTravelElement } from '../../../../model'
 import * as Collapse from '../../../../components/UI/Collapse'
 import * as SplitButton from '../../../../components/UI/SplitButton'
@@ -89,7 +88,11 @@ const TravelGloballyElem: React.FC<Props> = (props) => {
                   <TableCell> Miejsce </TableCell>
                   <TableCell> Zakres dni </TableCell>
                   <TableCell> Cena </TableCell>
-                  <TableCell> Odwołaj </TableCell>
+                  <TableCell
+                    align="center"
+                  >
+                    Odwołaj
+                  </TableCell>
                 </TableRow>
               </TableHead>
 
@@ -103,15 +106,16 @@ const TravelGloballyElem: React.FC<Props> = (props) => {
                         {elem.from} dzień - {elem.to} dzień
                       </TableCell>
                       <TableCell> {formatter.format(elem.price)} </TableCell>
-                      <TableCell>
-                        <Button
-                          type="button"
-                          variant="contained"
+                      <TableCell
+                        align="center"
+                      >
+                        <Cancel
                           color="error"
                           onClick={() => { props.deleteTravelElement(elem.id) }}
-                        >
-                          Odwołaj
-                        </Button>
+                          sx={{
+                            cursor: 'pointer',
+                          }}
+                        />
                       </TableCell>
                     </TableRow>
                   ))

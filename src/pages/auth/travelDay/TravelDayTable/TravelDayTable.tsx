@@ -4,7 +4,6 @@ import {
 } from '@mui/material'
 import { useAppSelector } from '../../../../app/hooks'
 import { RootState } from '../../../../app/store'
-import Accommodation from './Accommodation'
 import Attraction from './Attraction'
 import Restaurant from './Restaurant'
 import Travel from './Travel'
@@ -33,7 +32,11 @@ const TravelDayTable: React.FC<Props> = (props) => {
             <TableCell> Miejsce </TableCell>
             <TableCell> Ilość osób </TableCell>
             <TableCell> Cena </TableCell>
-            <TableCell> Akcja </TableCell>
+            <TableCell
+              align="center"
+            >
+              Odwołaj
+            </TableCell>
           </TableRow>
         </TableHead>
 
@@ -43,12 +46,6 @@ const TravelDayTable: React.FC<Props> = (props) => {
               case 'Trip':
                 return (
                   <Travel
-                    travelElement={elem}
-                  />
-                )
-              case 'Accommodation':
-                return (
-                  <Accommodation
                     travelElement={elem}
                   />
                 )
