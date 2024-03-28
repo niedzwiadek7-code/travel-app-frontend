@@ -15,7 +15,7 @@ export class DateHandler {
     this.currentDate = dayjs.utc(date)
 
     if (!this.currentDate.isValid()) {
-      const dateStr = `01-01-1970 ${date}`
+      const dateStr = `1970-01-01 ${date}`
       this.currentDate = dayjs(dateStr)
     }
   }
