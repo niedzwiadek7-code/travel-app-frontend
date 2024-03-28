@@ -3,6 +3,7 @@ import {
   Button, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
 } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
+import { Visibility, Delete } from '@mui/icons-material'
 import { useAppDispatch, useAppSelector } from '../../../../app/hooks'
 import { RootState } from '../../../../app/store'
 import { addCountDays, deleteDayFromTravel } from '../../../../features/travelRecipe/travelRecipeSlice'
@@ -95,29 +96,31 @@ const TravelDaysTable: React.FC = () => {
                 <TableCell align="center">
                   <Stack
                     gap={1}
+                    direction="row"
+                    alignItems="center"
+                    justifyContent="center"
                   >
-                    <Button
-                      type="button"
-                      variant="contained"
+                    <Visibility
+                      color="primary"
                       onClick={() => {
                         navigate(Pages.TRAVEL_DAY.getRedirectLink({
                           countDay: elem.countDay.toString(),
                         }))
                       }}
-                    >
-                      Przeglądaj
-                    </Button>
+                      sx={{
+                        cursor: 'pointer',
+                      }}
+                    />
 
                     {
                       sortedTravelElements.length === elem.countDay && (
-                        <Button
-                          type="button"
-                          variant="contained"
+                        <Delete
                           color="error"
                           onClick={() => deleteDay(elem.countDay)}
-                        >
-                          Zrezygnuj z tego dnia
-                        </Button>
+                          sx={{
+                            cursor: 'pointer',
+                          }}
+                        />
                       )
                     }
                   </Stack>

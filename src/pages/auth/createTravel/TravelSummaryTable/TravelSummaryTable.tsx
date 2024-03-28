@@ -1,11 +1,12 @@
 import {
+  Stack,
   Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TableRow,
 } from '@mui/material'
 import React from 'react'
 import { useAppSelector } from '../../../../app/hooks'
 import { RootState } from '../../../../app/store'
 import { DateHandler } from '../../../../utils/Date'
-import { ActivityType } from '../../../../model'
+import { ActivityType, getActivityTypeIcon } from '../../../../model'
 
 const TravelSummaryTable: React.FC = () => {
   const formatter = Intl.NumberFormat('pl-PL', {
@@ -87,9 +88,23 @@ const TravelSummaryTable: React.FC = () => {
         <TableBody>
           {Object.entries(activityTypes).map(([typeString, name]) => {
             const type = typeString as ActivityType
+            const Icon = getActivityTypeIcon(type)
             return (
               <TableRow key={type}>
-                <TableCell>{name}</TableCell>
+                <TableCell>
+                  <Stack
+                    direction="row"
+                    alignItems="center"
+                    gap={1}
+                  >
+                    <Icon
+                      fontSize="small"
+                      color="primary"
+                      onClick={() => console.log('clicked')}
+                    />
+                    {name}
+                  </Stack>
+                </TableCell>
                 <TableCell> { getTime(type) } </TableCell>
                 <TableCell> { getPrice(type) } </TableCell>
               </TableRow>
