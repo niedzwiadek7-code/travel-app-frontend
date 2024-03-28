@@ -16,12 +16,12 @@ const TravelSummaryTable: React.FC = () => {
   const travelElements = useAppSelector((state: RootState) => state.travelRecipe.travelElements)
   const accommodations = useAppSelector((state: RootState) => state.travelRecipe.accommodations)
 
-  const activityTypes: ActivityType[] = [
-    'Restaurant',
-    'Trip',
-    'Accommodation',
-    'Attraction',
-  ]
+  const activityTypes: Record<ActivityType, string> = {
+    Restaurant: 'Restauracja',
+    Trip: 'Podróż',
+    Accommodation: 'Zakwaterowanie',
+    Attraction: 'Atrakcja',
+  }
 
   const getTime = (activityType?: ActivityType) => {
     if (activityType === 'Accommodation') {
@@ -85,13 +85,16 @@ const TravelSummaryTable: React.FC = () => {
         </TableHead>
 
         <TableBody>
-          {activityTypes.map((type) => (
-            <TableRow key={type}>
-              <TableCell>{type}</TableCell>
-              <TableCell> { getTime(type) } </TableCell>
-              <TableCell> { getPrice(type) } </TableCell>
-            </TableRow>
-          ))}
+          {Object.entries(activityTypes).map(([typeString, name]) => {
+            const type = typeString as ActivityType
+            return (
+              <TableRow key={type}>
+                <TableCell>{name}</TableCell>
+                <TableCell> { getTime(type) } </TableCell>
+                <TableCell> { getPrice(type) } </TableCell>
+              </TableRow>
+            )
+          })}
         </TableBody>
 
         <TableFooter>

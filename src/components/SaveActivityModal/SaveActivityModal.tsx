@@ -106,7 +106,7 @@ const SaveActivityModal: React.FC<Props> = (props) => {
     const to = parseInt(watch('to'), 10)
     const numberOfDays = to - from + 1
 
-    if (numberOfDays > 1 && props.activity.price) {
+    if (numberOfDays >= 1 && props.activity.price) {
       setValue('price', (numberOfDays * props.activity.price))
     }
   }

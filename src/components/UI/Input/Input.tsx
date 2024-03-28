@@ -90,6 +90,7 @@ const InputComponent: React.FC<Props> = (props) => {
         defaultValue={props.default}
         label={props.label}
         {...props.register(props.name, {
+          valueAsNumber: props.type === Type.NUMBER,
           onChange: props.onChange,
           ...errObj,
         })}
