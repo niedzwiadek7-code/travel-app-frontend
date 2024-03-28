@@ -4,19 +4,24 @@ import React, {
 import {
   Box, Button, Modal, Stack, Typography,
 } from '@mui/material'
-import * as Action from './Action'
+import { Action } from '.'
 
 type Props = {
   buttonComponent: ReactNode,
   title: string,
   content: ReactNode,
-  actions?: Action.Action[]
+  actions?: Action[]
 }
 
 const ModalComponent: React.FC<Props> = (props) => {
   const [open, setOpen] = useState<boolean>(false)
   const showModal = () => setOpen(true)
   const hideModal = () => setOpen(false)
+
+  const buttonOnChange = (action: Action) => {
+    action.onClick()
+    hideModal()
+  }
 
   return (
     <div>
@@ -59,7 +64,7 @@ const ModalComponent: React.FC<Props> = (props) => {
                 key={action.name}
                 variant="contained"
                 type={action?.type || 'button'}
-                onClick={action.onClick}
+                onClick={() => buttonOnChange(action)}
               >
                 {action.name}
               </Button>
