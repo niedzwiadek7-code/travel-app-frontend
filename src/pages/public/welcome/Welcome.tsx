@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import {
   Button, Stack, Typography, useTheme,
 } from '@mui/material'
-import { useTranslation, withTranslation } from 'react-i18next'
+import { useTranslation } from 'react-i18next'
 import Style from './Welcome.module.scss'
 import { Pages } from '../../pages'
 
@@ -57,4 +57,4 @@ const Welcome: React.FC = () => {
   )
 }
 
-export default withTranslation()(Welcome)
+export default Welcome

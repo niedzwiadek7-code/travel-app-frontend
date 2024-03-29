@@ -1,7 +1,7 @@
 import axios, { AxiosError } from 'axios'
 
 class ApiService {
-  private baseUrl = process.env.REACT_APP_BACKEND_URL
+  private baseUrl = import.meta.env.VITE_PUBLIC_BACKEND_URL
 
   token: string
 
@@ -14,7 +14,7 @@ class ApiService {
       header.headers['Content-Type'] = 'application/json'
     }
 
-    if (process.env.NODE_ENV !== 'development') {
+    if (import.meta.env.VITE_PUBLIC_APP_ENV !== 'development') {
       header.withCredentials = true
     }
 

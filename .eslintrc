@@ -1,12 +1,14 @@
 {
   "env": {
+    "browser": true,
     "es2021": true
   },
   "extends": [
-    "react-app",
     "airbnb",
     "plugin:jsx-a11y/recommended",
-    "plugin:react/recommended"
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:react-hooks/recommended"
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
@@ -18,6 +20,7 @@
   },
   "plugins": [
     "react",
+    "react-hooks",
     "@typescript-eslint",
     "jsx-a11y"
   ],
