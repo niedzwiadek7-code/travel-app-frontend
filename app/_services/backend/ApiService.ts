@@ -1,7 +1,7 @@
-import axios from 'axios'
+import axios, { AxiosError } from 'axios'
 
 class ApiService {
-  private baseUrl = process.env.REACT_APP_BACKEND_URL
+  private baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL
 
   token: string
 
@@ -40,19 +40,14 @@ class ApiService {
   public async post<T>(endpoint: string, data?: any): Promise<T> {
     try {
       const url = `${this.baseUrl}${endpoint}`
+      console.log(url)
       const header = this.getHeader({})
-      const response = await fetch(url, {
-        method: 'POST',
-        headers: header.headers,
-        body: JSON.stringify(data),
-      })
-      return response.json()
+      const response = await axios.post<T>(url, data, header)
+      return response.data
     } catch (err) {
-      console.log(err)
-      throw new Error()
-      // const error = err as unknown as AxiosError
-      // console.log(error)
-      // throw new Error(JSON.stringify(error))
+      const error = err as unknown as AxiosError
+      console.log(error)
+      throw new Error(JSON.stringify(error))
     }
   }
 
