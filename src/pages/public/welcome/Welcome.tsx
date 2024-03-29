@@ -1,51 +1,60 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Button, Stack, useTheme } from '@mui/material'
+import {
+  Button, Stack, Typography, useTheme,
+} from '@mui/material'
+import { useTranslation, withTranslation } from 'react-i18next'
 import Style from './Welcome.module.scss'
 import { Pages } from '../../pages'
 
 const Welcome: React.FC = () => {
   const theme = useTheme()
   const navigate = useNavigate()
+  const { t } = useTranslation('translation', { keyPrefix: 'welcome' })
 
   return (
     <Stack
       className={Style.container}
       spacing={2}
     >
-      <h1
-        style={{ color: theme.palette.primary.main }}
-        className={Style.header}
+      <Typography
+        color="primary"
+        variant="h3"
+        component="h1"
       >
         Travel App
-      </h1>
+      </Typography>
 
       <Stack
         alignItems="center"
       >
-        <div
-          className={Style.description}
-          style={{ color: theme.palette.grey[800] }}
+        <Typography
+          variant="body1"
+          component="p"
+          color={theme.palette.grey[800]}
+          sx={{
+            marginBottom: theme.spacing(3),
+          }}
         >
-          Dołącz do naszej społeczności i rozpocznij podróżowanie z naszą aplikacją
-        </div>
+          {t('description')}
+        </Typography>
       </Stack>
 
       <Button
         variant="contained"
         onClick={() => navigate(Pages.REGISTER.getRedirectLink())}
       >
-        Stwórz nowe konto
+        {t('register')}
       </Button>
 
       <Button
         variant="contained"
         onClick={() => navigate(Pages.LOGIN.getRedirectLink())}
       >
-        Zaloguj się do istniejącego konta
+        {t('login')}
       </Button>
     </Stack>
   )
 }
 
-export default Welcome
+export default withTranslation()(Welcome)
