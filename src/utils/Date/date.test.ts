@@ -2,9 +2,9 @@ import dayjs from 'dayjs'
 import { DateHandler } from '.'
 
 describe('Date Utils', () => {
-  beforeAll(() => {
-    process.env.TZ = 'UTC'
-  })
+  // beforeAll(() => {
+  //   process.env.TZ = 'UTC'
+  // })
 
   it('should compare dates', () => {
     expect(

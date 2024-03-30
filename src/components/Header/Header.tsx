@@ -10,7 +10,7 @@ import { useAppDispatch } from '../../app/hooks'
 import { reset as resetTravelRecipe } from '../../features/travelRecipe/travelRecipeSlice'
 import { reset as resetTravelInstance } from '../../features/travelInstance/travelInstanceSlice'
 import { useRouter } from '../../hooks/useRouter'
-import Language from '../Language/Language'
+import Language from '../Language'
 import SplitButton from '../UI/SplitButton/SplitButton'
 
 type Props = {
