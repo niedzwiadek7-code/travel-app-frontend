@@ -3,5 +3,19 @@
     "description": "Join our community and start traveling with our app",
     "login": "Sign in to your account",
     "register": "Sign up for free"
+  },
+  "dashboard": {
+    "travel_creator": "Travel creator",
+    "travel_creator_description": "Use the tools offered by our website to create the trip of your dreams",
+    "travel_plans": "Travel plans",
+    "travel_plans_description": "Browse your planned trips",
+    "travel_realized": "Trips in progress",
+    "travel_realized_description": "Browse trips you've taken",
+    "activity_manager": "Manage activities",
+    "activity_manager_description": "Expand the list of activities recommended by the system",
+    "go": "go"
+  },
+  "travel_page": {
+    "trip_name": "Name your trip"
   }
 }

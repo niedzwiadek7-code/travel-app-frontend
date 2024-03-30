@@ -1,7 +1,10 @@
-import React, { ReactNode, useState } from 'react'
+import React, {
+  cloneElement, ReactElement, ReactNode, useState,
+} from 'react'
 import {
   Button, Menu, MenuItem, Stack,
 } from '@mui/material'
+import { IcecreamOutlined } from '@mui/icons-material'
 import { Option } from '.'
 
 type Props = {
@@ -21,16 +24,21 @@ const SplitButton: React.FC<Props> = (props) => {
 
   return (
     <Stack>
-      <Button
-        id="basic-button"
-        aria-controls={open ? 'basic-menu' : undefined}
-        aria-haspopup="true"
-        aria-expanded={open ? 'true' : undefined}
-        style={{ width: '100%' }}
-        onClick={handleClick}
-      >
-        {props.button}
-      </Button>
+      {
+        cloneElement(
+          props.button as ReactElement,
+          {
+            id: 'basic-button',
+            ariaControls: open ? 'basic-menu' : undefined,
+            ariaHasPopup: 'true',
+            ariaExpanded: open ? 'true' : undefined,
+            style: {
+              cursor: 'pointer',
+            },
+            onClick: handleClick,
+          },
+        )
+      }
 
       <Menu
         id="basic-menu"

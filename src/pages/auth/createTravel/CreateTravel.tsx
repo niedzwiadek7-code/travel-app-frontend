@@ -195,15 +195,12 @@ const CreateTravel: React.FC = () => {
               defaultOpen
               title="Przeglądaj poszczególne dni swojej wycieczki"
               nodeOptions={[
-                <Button
-                  key="addDay"
-                  type="button"
+                <AddCircle
+                  key="add-day"
+                  color="success"
                   onClick={planNextDay}
-                >
-                  <AddCircle
-                    color="success"
-                  />
-                </Button>,
+                  sx={{ cursor: 'pointer' }}
+                />,
               ]}
             >
               <TravelDaysTable.Component />

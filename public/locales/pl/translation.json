@@ -3,5 +3,20 @@
     "description": "Dołącz do naszej społeczności i rozpocznij podróżowanie z naszą aplikacją",
     "login": "Zaloguj się do istniejącego konta",
     "register": "Stwórz nowe konto"
+  },
+  "dashboard": {
+    "travel_creator": "Kreator wycieczki",
+    "travel_creator_description": "Użyj narzędzi oferowanych przez naszą witrynę aby stworzyć wycieczkę swoich marzeń",
+    "travel_plans": "Plany wycieczek",
+    "travel_plans_description": "Przeglądaj zaplanowane przez siebie wycieczki",
+    "travel_realized": "Realizowane wycieczki",
+    "travel_realized_description": "Przeglądaj odbywane przez siebie wycieczki",
+    "activity_manager": "Zarządzanie aktywnościami",
+    "activity_manager_description": "Rozwijaj listę aktywności polecanych przez system",
+    "go": "Przejdź"
+  },
+  "travel_page": {
+    "trip_name": "Nazwij swoją wycieczkę",
+    "trip_days": "Na ile dni planujesz swoją wycieczkę"
   }
 }

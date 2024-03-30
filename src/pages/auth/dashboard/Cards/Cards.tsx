@@ -2,6 +2,7 @@ import React from 'react'
 import {
   Card, CardContent, Typography, Button, CardMedia, Grid,
 } from '@mui/material'
+import { useTranslation } from 'react-i18next'
 import Styles from './Cards.module.scss'
 import { Pages } from '../../../pages'
 import { useAuth } from '../../../../context'
@@ -19,49 +20,53 @@ type CardProps = {
   link: () => any,
 }
 
-const CardComponent: React.FC<CardProps> = (props) => (
-  <Grid
-    item
-    key={props.title}
-    xs={12}
-    md={4}
-    lg={6}
-    xl={4}
-  >
-    <Card>
-      <CardMedia
-        sx={{ height: 140 }}
-        image={props.image}
-      />
-      <CardContent>
-        <Typography
-          style={{
-            margin: 0,
-          }}
-        >
-          <h3
-            className={Styles.cardHeader}
-          >
-            {props.title}
-          </h3>
-          <div
-            className={Styles.cardText}
-          >
-            {props.description}
-          </div>
-        </Typography>
+const CardComponent: React.FC<CardProps> = (props) => {
+  const { t } = useTranslation('translation', { keyPrefix: 'dashboard' })
 
-        <Button
-          className={Styles.cardButton}
-          variant="contained"
-          onClick={props.link}
-        >
-          Przejdź
-        </Button>
-      </CardContent>
-    </Card>
-  </Grid>
-)
+  return (
+    <Grid
+      item
+      key={props.title}
+      xs={12}
+      md={4}
+      lg={6}
+      xl={4}
+    >
+      <Card>
+        <CardMedia
+          sx={{ height: 140 }}
+          image={props.image}
+        />
+        <CardContent>
+          <Typography
+            style={{
+              margin: 0,
+            }}
+          >
+            <h3
+              className={Styles.cardHeader}
+            >
+              {props.title}
+            </h3>
+            <div
+              className={Styles.cardText}
+            >
+              {props.description}
+            </div>
+          </Typography>
+
+          <Button
+            className={Styles.cardButton}
+            variant="contained"
+            onClick={props.link}
+          >
+            {t('go')}
+          </Button>
+        </CardContent>
+      </Card>
+    </Grid>
+  )
+}
 
 const Cards: React.FC = () => {
   const {
@@ -69,6 +74,7 @@ const Cards: React.FC = () => {
     pathname,
   } = useRouter()
   const { roles } = useAuth()
+  const { t } = useTranslation('translation', { keyPrefix: 'dashboard' })
 
   return (
     <Grid
@@ -77,20 +83,20 @@ const Cards: React.FC = () => {
     >
       <CardComponent
         image={CreateTravel}
-        title="Kreator wycieczki"
-        description="Użyj narzędzi oferowanych przez naszą witrynę aby stworzyć wycieczkę swoich marzeń"
+        title={t('travel_creator')}
+        description={t('travel_creator_description')}
         link={() => navigate(Pages.CREATE_TRAVEL.getRedirectLink())}
       />
       <CardComponent
         image={TravelPlans}
-        title="Plany wycieczek"
-        description="Przeglądaj zaplanowane przez siebie wycieczki"
+        title={t('travel_plans')}
+        description={t('travel_plans_description')}
         link={() => navigate(Pages.TRAVEL_RECIPES_STORE.getRedirectLink())}
       />
       <CardComponent
         image={RealizedTravels}
-        title="Realizowane wycieczki"
-        description="Przeglądaj odbyte przez siebie wycieczki"
+        title={t('travel_realized')}
+        description={t('travel_realized_description')}
         link={() => navigate(Pages.REALIZED_TRIPS.getRedirectLink())}
       />
 
@@ -98,8 +104,8 @@ const Cards: React.FC = () => {
         roles?.includes(Roles.ADMIN) && (
           <CardComponent
             image={Manage}
-            title="Zarządzaj aktywnościami"
-            description="Rozwijaj listę aktywności polecanych przez system"
+            title={t('activity_manager')}
+            description={t('activity_manager_description')}
             link={() => navigate(Pages.LIST_ACTIVITY.getRedirectLink(), {
               state: {
                 previousPage: pathname,

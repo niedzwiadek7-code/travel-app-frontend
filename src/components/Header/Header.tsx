@@ -1,8 +1,8 @@
 import React, { ReactNode } from 'react'
 import {
-  Button, Stack, Typography, useTheme,
+  Stack, Typography, useTheme,
 } from '@mui/material'
-import { Logout as LogoutIcon } from '@mui/icons-material'
+import { AccountCircle } from '@mui/icons-material'
 import { useAuth } from '../../context'
 import Styles from './Header.module.scss'
 import { Pages } from '../../pages/pages'
@@ -10,6 +10,8 @@ import { useAppDispatch } from '../../app/hooks'
 import { reset as resetTravelRecipe } from '../../features/travelRecipe/travelRecipeSlice'
 import { reset as resetTravelInstance } from '../../features/travelInstance/travelInstanceSlice'
 import { useRouter } from '../../hooks/useRouter'
+import Language from '../Language/Language'
+import SplitButton from '../UI/SplitButton/SplitButton'
 
 type Props = {
   title: string,
@@ -56,26 +58,29 @@ const Header: React.FC<Props> = (props) => {
         {props.icon}
       </Stack>
 
-      <Stack>
-        <Button
-          onClick={logout}
-        >
-          <Stack
-            direction="row"
-            alignItems="center"
-            style={{ color: theme.palette.grey[600] }}
-            gap={1}
-          >
-            <span
-              style={{ fontWeight: 'bold' }}
-            >
-              Wyloguj się
-            </span>
-            <LogoutIcon />
-          </Stack>
-        </Button>
-      </Stack>
+      <Stack
+        direction="row"
+        justifyContent="center"
+        alignItems="center"
+        style={{ color: theme.palette.grey[600] }}
+        gap={1}
+      >
+        <Language />
 
+        <SplitButton
+          button={(
+            <AccountCircle
+              color="primary"
+            />
+          )}
+          options={[
+            {
+              name: 'Wyloguj się',
+              action: logout,
+            },
+          ]}
+        />
+      </Stack>
     </Stack>
   )
 }
