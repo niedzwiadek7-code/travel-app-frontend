@@ -1,5 +1,6 @@
 import React from 'react'
 import { Button, Stack, useTheme } from '@mui/material'
+import { useTranslation } from 'react-i18next'
 import * as SaveActivityModal from '../../../../../components/SaveActivityModal'
 import * as SaveInstanceActivityModal from '../../../../../components/SaveInstanceActivityModal'
 import { StateDto } from '../../dto/state.dto'
@@ -16,6 +17,7 @@ type Props = {
 
 const Restaurant: React.FC<Props> = (props) => {
   const theme = useTheme()
+  const { t } = useTranslation('translation', { keyPrefix: 'activity_list_page.activities' })
 
   return (
     <Stack
@@ -32,9 +34,7 @@ const Restaurant: React.FC<Props> = (props) => {
         <div>
           { props.activity.place }
         </div>
-        <div>
-          Cena definiowana ręcznie
-        </div>
+        <div />
       </Stack>
       <hr
         style={{ backgroundColor: theme.palette.grey['900'], height: '1px', width: '100%' }}
@@ -59,7 +59,7 @@ const Restaurant: React.FC<Props> = (props) => {
               <h3
                 style={{ margin: 0 }}
               >
-                Opinie
+                {t('rating')}
               </h3>
 
               {

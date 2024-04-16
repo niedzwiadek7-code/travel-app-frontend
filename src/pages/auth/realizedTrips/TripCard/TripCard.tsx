@@ -6,6 +6,7 @@ import { grey, green } from '@mui/material/colors'
 import React from 'react'
 import dayjs from 'dayjs'
 import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { TravelInstance } from '../../../../model'
 import MenuComponent from './Menu'
 import { Pages } from '../../../pages'
@@ -27,6 +28,7 @@ const TripCard: React.FC<Props> = (props) => {
   const isWaitingTrip = () => dayjs().diff(props.travelInstance.from) < 0
   const isCompletedTrip = () => dayjs().diff(props.travelInstance.to) > 0
   const theme = useTheme()
+  const { t } = useTranslation('translation', { keyPrefix: 'realized_trips_page.trip_card' })
 
   const getBackgroundCardHeader = (): string => {
     if (isWaitingTrip()) {
@@ -87,13 +89,13 @@ const TripCard: React.FC<Props> = (props) => {
           <Stack>
             <Typography variant="body1">
               {/* TODO: Add date format */}
-              Termin wycieczki
+              {t('date_range')}
               <b> {new DateHandler(props.travelInstance.from).format('DD-MM-YYYY')} </b> -
               <b> {new DateHandler(props.travelInstance.to).format('DD-MM-YYYY')} </b>
             </Typography>
 
             <Typography variant="body1">
-              Zrealizowano:
+              {t('realized')}:
               <b> { realizationTrip.passed }/{realizationTrip.all} </b>
               (<b> {((realizationTrip.passed / realizationTrip.all) * 100).toFixed(2)}% </b>)
             </Typography>
@@ -150,7 +152,7 @@ const TripCard: React.FC<Props> = (props) => {
               id: props.travelInstance.id.toString(),
             }))}
           >
-            Przejdź
+            {t('go')}
           </Button>
         </Stack>
       </CardContent>

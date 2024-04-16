@@ -3,6 +3,7 @@ import {
   Button, Pagination, Stack,
 } from '@mui/material'
 import { DownhillSkiing } from '@mui/icons-material'
+import { useTranslation } from 'react-i18next'
 import { useDependencies, useAuth } from '../../../context'
 import { Paginate } from '../../../model'
 import { ExtendedActivityFormat } from '../../../services/backend/Activity/types'
@@ -22,6 +23,7 @@ const ListActivity: React.FC = () => {
     query,
     navigate,
   } = useRouter<StateDto, QueryParams, Record<string, any>>()
+  const { t } = useTranslation('translation', { keyPrefix: 'activity_list_page' })
 
   const { getApiService, getToastUtils } = useDependencies()
   const toastUtils = getToastUtils()
@@ -43,7 +45,7 @@ const ListActivity: React.FC = () => {
     } catch (err) {
       toastUtils.Toast.showToast(
         toastUtils.types.ERROR,
-        'Wystąpił nieoczekiwany błąd',
+        t('error'),
       )
       return {
         data: [],
@@ -73,7 +75,7 @@ const ListActivity: React.FC = () => {
     } catch (err) {
       toastUtils.Toast.showToast(
         toastUtils.types.ERROR,
-        'Wystąpił nieoczekiwany błąd',
+        t('error'),
       )
     }
   }
@@ -86,7 +88,7 @@ const ListActivity: React.FC = () => {
     } catch (err) {
       toastUtils.Toast.showToast(
         toastUtils.types.ERROR,
-        'Wystąpił nieoczekiwany błąd',
+        t('error'),
       )
     }
   }
@@ -112,7 +114,7 @@ const ListActivity: React.FC = () => {
       gap={2}
     >
       <Header.Component
-        title={state.admin ? 'Zarządzaj aktywnościami' : 'Lista dostępnych aktywności'}
+        title={state.admin ? t('activity_manage') : t('activity_list')}
         icon={(
           <DownhillSkiing
             fontSize="large"
@@ -128,7 +130,7 @@ const ListActivity: React.FC = () => {
           variant="outlined"
           onClick={() => navigate(state.previousPage)}
         >
-          Powrót
+          {t('back')}
         </Button>
       </Stack>
 

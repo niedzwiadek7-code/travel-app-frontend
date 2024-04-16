@@ -4,6 +4,7 @@ import {
   Grid, Stack, Typography, useTheme,
 } from '@mui/material'
 import { green } from '@mui/material/colors'
+import { useTranslation } from 'react-i18next'
 import { ElementTravelInstance } from '../../../../model'
 import { useAppDispatch } from '../../../../app/hooks'
 import { useDependencies, useAuth } from '../../../../context'
@@ -25,6 +26,7 @@ const GloballyElem: React.FC<Props> = (props) => {
   const toastUtils = getToastUtils()
   const { token } = useAuth()
   const travelService = apiService.getTravel(token)
+  const { t } = useTranslation('translation', { keyPrefix: 'taking_trip_page' })
 
   const theme = useTheme()
   const dispatch = useAppDispatch()
@@ -38,7 +40,7 @@ const GloballyElem: React.FC<Props> = (props) => {
     } catch (err) {
       toastUtils.Toast.showToast(
         toastUtils.types.ERROR,
-        'Wystąpił nieoczekiwany błąd',
+        t('error'),
       )
     }
   }
@@ -72,7 +74,7 @@ const GloballyElem: React.FC<Props> = (props) => {
       </Stack>
 
       <Typography>
-        Miejsce: {props.elem.activity.place}
+        {t('place')}: {props.elem.activity.place}
       </Typography>
 
       {
@@ -149,10 +151,10 @@ const GloballyElem: React.FC<Props> = (props) => {
                 color="primary"
                 onClick={() => toastUtils.Toast.showToast(
                   toastUtils.types.INFO,
-                  'Ta funkcja nie jest obecnie dostępna',
+                  t('unavailable_fn'),
                 )}
               >
-                Odpowiedz na pytania
+                {t('answer_for_questions')}
               </Button>
             </>
           ) : (
@@ -167,7 +169,7 @@ const GloballyElem: React.FC<Props> = (props) => {
                 color="error"
                 onClick={cancelAccommodationElementInstanceFn}
               >
-                Odwołaj
+                {t('cancel')}
               </Button>
             </>
           )

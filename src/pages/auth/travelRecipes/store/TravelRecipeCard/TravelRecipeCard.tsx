@@ -10,6 +10,7 @@ import {
   AirplanemodeActive as TravelIcon,
 } from '@mui/icons-material'
 import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { ActivityType, TravelRecipe } from '../../../../../model'
 import MenuComponent from './Menu'
 import { Pages } from '../../../../pages'
@@ -27,6 +28,7 @@ const TravelRecipeCard: React.FC<Props> = (props) => {
     style: 'currency',
     currency: 'PLN',
   })
+  const { t } = useTranslation('translation', { keyPrefix: 'travel_recipes_store_page' })
 
   const calculateTotalPrice = () => {
     const activityPrice = props.userTravelRecipe.travelElements.reduce(
@@ -86,18 +88,18 @@ const TravelRecipeCard: React.FC<Props> = (props) => {
       <CardContent>
         <Stack>
           <Typography variant="body1">
-            Wycieczka została zaplanowana na <b> {props.userTravelRecipe.countDays} dni </b>
+            {t('travel_planned_to')} <b> {props.userTravelRecipe.countDays} {t('days')} </b>
           </Typography>
 
           <Typography variant="body1">
-            Szacowany budżet wycieczki wynosi <b> {calculateTotalPrice()} </b>
+            {t('budget')} <b> {calculateTotalPrice()} </b>
           </Typography>
 
           <Typography
             variant="body1"
             style={{ marginTop: '.5em' }}
           >
-            Lista rzeczy zaplanowanych na tę wycieczkę:
+            {t('planned_activities')}:
           </Typography>
 
           <List>
@@ -125,7 +127,7 @@ const TravelRecipeCard: React.FC<Props> = (props) => {
               id: props.userTravelRecipe.id.toString(),
             }))}
           >
-            Przeglądaj wycieczkę
+            {t('browse')}
           </Button>
 
           <SignUpForTrip.Component

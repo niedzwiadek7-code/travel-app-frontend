@@ -1,21 +1,257 @@
 {
+  "register_page": {
+    "email_already_exists": "User with this email already exists",
+    "incorrect_data": "Incorrect registration data",
+    "register": "Register",
+    "description": "Provide data for your account",
+    "name": "Full Name",
+    "email": "Email",
+    "password": "Password",
+    "back": "Back",
+    "sign_up": "Sign Up"
+  },
+  "login_page": {
+    "incorrect_data": "Incorrect login data",
+    "login": "Log In",
+    "description": "Enter your account credentials",
+    "email": "Email",
+    "password": "Password",
+    "back": "Back",
+    "sign_in": "Sign In"
+  },
+  "save_instance_activity_modal": {
+    "activity_not_end_before_start": "Activity cannot end before it starts",
+    "error": "An unexpected error occurred",
+    "add_to_trip": "Add to trip",
+    "add_activity": "Add activity",
+    "from": "From",
+    "to": "To"
+  },
+  "header": {
+    "logout": "Logout"
+  },
+  "activity": {
+    "rating": {
+      "title": "Rate Activity",
+      "saved": "Your rating has been saved",
+      "error": "An unexpected error occurred",
+      "rate": "Rate Activity",
+      "your_opinion": "Your opinion",
+      "share_photos": "Share photos with other users",
+      "add_rating": "Add Rating"
+    },
+    "pass": {
+      "error": "An unexpected error occurred",
+      "pass": "Save Pass",
+      "add_photos": "Add photos of activity"
+    }
+  },
+  "modal": {
+    "back": "Back"
+  },
+  "categories": {
+    "attraction": "Attraction",
+    "accommodation": "Accommodation",
+    "restaurant": "Restaurant",
+    "trip": "Trip"
+  },
   "welcome": {
     "description": "Join our community and start traveling with our app",
-    "login": "Sign in to your account",
-    "register": "Sign up for free"
+    "login": "Log in to existing account",
+    "register": "Create new account"
   },
   "dashboard": {
-    "travel_creator": "Travel creator",
-    "travel_creator_description": "Use the tools offered by our website to create the trip of your dreams",
-    "travel_plans": "Travel plans",
-    "travel_plans_description": "Browse your planned trips",
-    "travel_realized": "Trips in progress",
-    "travel_realized_description": "Browse trips you've taken",
-    "activity_manager": "Manage activities",
+    "hello": "Hello",
+    "travel_creator": "Travel Creator",
+    "travel_creator_description": "Use tools provided by our website to create your dream trip",
+    "travel_plans": "Travel Plans",
+    "travel_plans_description": "Browse the trips you have planned",
+    "travel_realized": "Realized Trips",
+    "travel_realized_description": "Browse the trips you have taken",
+    "activity_manager": "Activity Manager",
     "activity_manager_description": "Expand the list of activities recommended by the system",
-    "go": "go"
+    "go": "Go"
   },
   "travel_page": {
-    "trip_name": "Name your trip"
+    "title": "Travel Creator",
+    "trip_name": "Name Your Trip",
+    "trip_days": "How many days are you planning your trip for?",
+    "summary": "Summary",
+    "confirm": "Confirm",
+    "edit_travel": "Edit Travel Plan",
+    "create_travel": "Save Travel Plan",
+    "reset": "Reset Travel Plan",
+    "back": "Back to Homepage",
+    "create_travel_success": "Travel plan has been successfully edited",
+    "edit_travel_success": "Travel plan has been successfully created",
+    "error": "An unexpected error occurred",
+    "summary_table": {
+      "category": "Category",
+      "time": "Time Spent",
+      "cost": "Cost",
+      "sum": "Total",
+      "not_applicable": "N/A"
+    },
+    "accommodation": "Accommodations",
+    "accommodation_table": {
+      "add_accommodation": "Add Your Own Accommodation",
+      "pick_accommodation": "Choose from Proposed Accommodations",
+      "pick_your_accommodation": "Choose from Your Accommodations",
+      "name": "Name",
+      "place": "Place",
+      "days_range": "Days Range",
+      "cost": "Cost",
+      "actions": "Actions",
+      "day": "day",
+      "from": "From",
+      "to": "To"
+    },
+    "browse_trip": "Browse Days of Your Trip",
+    "browse_trip_table": {
+      "trip_day": "Departure Day",
+      "day": "Day",
+      "activities": "Number of Activities",
+      "time": "Time to Plan",
+      "count_activities": "Number of Activities",
+      "time_to_plan": "Time to Plan",
+      "actions": "Actions"
+    }
+  },
+  "activity_page": {
+    "pick_activity_type": "Select Activity Type",
+    "successfully_edit": "Activity has been successfully edited",
+    "successfully_create": "Activity has been successfully created",
+    "error": "An unexpected error occurred",
+    "edit": "Edit Activity",
+    "create": "Create Activity",
+    "accept": "Accept",
+    "delete": "Delete",
+    "back": "Back",
+    "inputs": {
+      "name": "Name",
+      "description": "Description",
+      "place": "Place",
+      "price": "Price (PLN)",
+      "price_type": "Payment Type",
+      "per_entry": "Per Entry",
+      "per_hour": "Per Hour",
+      "from": "Starting Point",
+      "to": "Ending Point"
+    },
+    "add_to_trip": {
+      "button": "Add to Trip",
+      "activity_not_end_before_start": "Activity cannot end before it starts",
+      "edit": "Edit Activity",
+      "create": "Add Activity",
+      "people": "Number of People",
+      "additional_info": "Additional Information",
+      "price": "Total Price",
+      "from": "From",
+      "to": "To"
+    }
+  },
+  "activity_list_page": {
+    "error": "An unexpected error occurred",
+    "activity_list": "Activity List",
+    "activity_manage": "Manage Activities",
+    "back": "Back",
+    "admin_buttons": {
+      "accept": "Accept",
+      "edit": "Edit",
+      "delete": "Delete"
+    },
+    "activities": {
+      "day": "day",
+      "rating": "Ratings",
+      "add_to_travel": "Add to Trip",
+      "entry": "entry",
+      "hour": "hour"
+    }
+  },
+  "realized_trips_page": {
+    "error": "An unexpected error occurred",
+    "back": "Back to Homepage",
+    "title": "Trip List",
+    "trip_card": {
+      "date_range": "Trip Date Range",
+      "realized": "Realized",
+      "go": "Go",
+      "edit_start_date": "Edit Start Date",
+      "delete_trip": "Delete Trip"
+    }
+  },
+  "taking_trip_page": {
+    "browse_trip": "Browse Trip",
+    "back_to_realized_trips": "Back to Realized Trips List",
+    "accommodations": "Accommodations",
+    "error": "An unexpected error occurred",
+    "place": "Place",
+    "add_button": "Add Accommodation",
+    "add_accommodation": "Add Your Own Accommodation",
+
+
+    "pick_accommodation": "Choose from Proposed Accommodations",
+    "pick_your_accommodation": "Choose from Your Accommodations",
+    "unavailable_fn": "This functionality is currently unavailable",
+    "answer_for_questions": "Answer Questions",
+    "cancel": "Cancel",
+    "trip_table": {
+      "day": "Day",
+      "activities_end": "Completed Activities",
+      "browse": "Browse"
+    }
+  },
+  "taking_trip_day_page": {
+    "back_to_trip": "Back to Trip",
+    "add_button": "Add Activity",
+    "add_activity": "Add Your Own Activity",
+    "pick_activity": "Choose from Proposed Activities",
+    "pick_your_activity": "Choose from Your Activities",
+    "place": "Place",
+    "error": "An unexpected error occurred",
+    "unavailable_fn": "This functionality is currently unavailable",
+    "answer_for_questions": "Answer Questions",
+    "cancel": "Cancel"
+  },
+  "travel_day_page": {
+    "day": "Day",
+    "back": "Back",
+    "add_button": "Add Activity",
+    "add_activity": "Add Your Own Activity",
+    "pick_activity": "Choose from Proposed Activities",
+    "pick_your_activity": "Choose from Your Activities",
+    "activity": {
+      "date_range": "Timeframe",
+      "activity": "Activity",
+      "place": "Place",
+      "people": "Number of People",
+      "price": "Price",
+      "actions": "Actions"
+    }
+  },
+  "travel_recipes_get_page": {
+    "share": "Share",
+    "accommodations": "Accommodations",
+    "day_schedule": "Day Schedule",
+    "day": "Day",
+    "back_to_trips": "Back to Trip List",
+    "name": "Name",
+    "place": "Place",
+    "days_range": "Days Range",
+    "cost": "Cost",
+    "time_range": "Timeframe",
+    "activity": "Activity",
+    "people": "Number of People"
+  },
+  "travel_recipes_store_page": {
+    "back_to_dashboard": "Back to Homepage",
+    "travel_plans": "Travel Plans",
+    "days": "days",
+    "travel_planned_to": "Trip planned for",
+    "budget": "Estimated trip budget is",
+    "planned_activities": "List of planned activities for this trip",
+    "browse": "Browse Trip",
+    "edit_plan": "Edit Plan",
+    "delete_plan": "Delete Plan"
   }
 }

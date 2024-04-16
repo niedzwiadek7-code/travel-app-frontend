@@ -2,6 +2,7 @@ import React from 'react'
 import {
   Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
 } from '@mui/material'
+import { useTranslation } from 'react-i18next'
 import { useAppSelector } from '../../../../../app/hooks'
 import { RootState } from '../../../../../app/store'
 import Travel from './Travel'
@@ -20,6 +21,7 @@ const TravelDayTable: React.FC<Props> = (props) => {
   ).sort(
     (a, b) => DateHandler.compareDates(a.from, b.from),
   )
+  const { t } = useTranslation('translation', { keyPrefix: 'travel_recipes_get_page' })
 
   return (
     <TableContainer>
@@ -27,11 +29,11 @@ const TravelDayTable: React.FC<Props> = (props) => {
         <TableHead>
           <TableRow>
             <TableCell />
-            <TableCell> Ramy czasowe </TableCell>
-            <TableCell> Aktywność </TableCell>
-            <TableCell> Miejsce </TableCell>
-            <TableCell> Ilość osób </TableCell>
-            <TableCell> Cena </TableCell>
+            <TableCell> {t('time_range')} </TableCell>
+            <TableCell> {t('activity')} </TableCell>
+            <TableCell> {t('place')} </TableCell>
+            <TableCell> {t('people')} </TableCell>
+            <TableCell> {t('cost')} </TableCell>
           </TableRow>
         </TableHead>
 

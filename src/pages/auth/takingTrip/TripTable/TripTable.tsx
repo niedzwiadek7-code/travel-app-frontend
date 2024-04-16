@@ -8,15 +8,20 @@ import {
   TableHead,
   TableRow,
 } from '@mui/material'
-import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { useAppSelector } from '../../../../app/hooks'
 import { RootState } from '../../../../app/store'
 import { Pages } from '../../../pages'
 import { DateHandler } from '../../../../utils/Date'
 import { ActivityScope, locallyActivityTypes } from '../../../../model'
+import { useRouter } from '../../../../hooks'
 
 const TripTable: React.FC = () => {
-  const navigate = useNavigate()
+  const {
+    navigate,
+  } = useRouter()
+  const { t } = useTranslation('translation', { keyPrefix: 'taking_trip_page.trip_table' })
+
   const travelInstance = useAppSelector((state: RootState) => state.travelInstance)
 
   const travelElements: Record<string, { passed: number, count: number }> = {}
@@ -48,9 +53,9 @@ const TripTable: React.FC = () => {
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell> Dzień </TableCell>
-            <TableCell> Zakończone aktywności </TableCell>
-            <TableCell> Przeglądaj </TableCell>
+            <TableCell> {t('day')} </TableCell>
+            <TableCell> {t('activities_end')} </TableCell>
+            <TableCell> {t('browse')} </TableCell>
           </TableRow>
         </TableHead>
 
@@ -72,7 +77,7 @@ const TripTable: React.FC = () => {
                       date,
                     }))}
                   >
-                    Przeglądaj
+                    {t('browse')}
                   </Button>
                 </TableCell>
               </TableRow>

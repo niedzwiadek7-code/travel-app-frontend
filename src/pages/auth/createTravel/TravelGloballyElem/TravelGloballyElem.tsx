@@ -4,6 +4,7 @@ import {
   Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
 } from '@mui/material'
 import { AddCircle, Cancel, Edit } from '@mui/icons-material'
+import { useTranslation } from 'react-i18next'
 import { ActivityType, GloballyTravelElement } from '../../../../model'
 import * as Collapse from '../../../../components/UI/Collapse'
 import * as SplitButton from '../../../../components/UI/SplitButton'
@@ -24,6 +25,7 @@ const TravelGloballyElem: React.FC<Props> = (props) => {
     navigate,
     pathname,
   } = useRouter()
+  const { t } = useTranslation('translation', { keyPrefix: 'travel_page.accommodation_table' })
 
   // TODO: make formatter global
   const formatter = Intl.NumberFormat('pl-PL', {
@@ -45,7 +47,7 @@ const TravelGloballyElem: React.FC<Props> = (props) => {
           )}
           options={[
             {
-              name: 'Stwórz i dodaj nowy nocleg',
+              name: t('add_accommodation'),
               action: () => navigate(Pages.ACTIVITY_CREATE.getRedirectLink(), {
                 state: {
                   previousPage: pathname,
@@ -55,7 +57,7 @@ const TravelGloballyElem: React.FC<Props> = (props) => {
               }),
             },
             {
-              name: 'Wybierz z istniejących noclegów',
+              name: t('pick_accommodation'),
               action: () => navigate(Pages.LIST_ACTIVITY.getRedirectLink(), {
                 state: {
                   previousPage: pathname,
@@ -66,7 +68,7 @@ const TravelGloballyElem: React.FC<Props> = (props) => {
               }),
             },
             {
-              name: 'Wybierz z stworzonych przez siebie noclegów',
+              name: t('pick_your_accommodation'),
               action: () => navigate(Pages.LIST_ACTIVITY.getRedirectLink(), {
                 state: {
                   previousPage: pathname,
@@ -86,14 +88,14 @@ const TravelGloballyElem: React.FC<Props> = (props) => {
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell> Nazwa </TableCell>
-                  <TableCell> Miejsce </TableCell>
-                  <TableCell> Zakres dni </TableCell>
-                  <TableCell> Cena </TableCell>
+                  <TableCell> {t('name')} </TableCell>
+                  <TableCell> {t('place')} </TableCell>
+                  <TableCell> {t('days_range')} </TableCell>
+                  <TableCell> {t('cost')} </TableCell>
                   <TableCell
                     align="right"
                   >
-                    Akcje
+                    {t('actions')}
                   </TableCell>
                 </TableRow>
               </TableHead>
@@ -105,7 +107,7 @@ const TravelGloballyElem: React.FC<Props> = (props) => {
                       <TableCell> {elem.activity.name} </TableCell>
                       <TableCell> {elem.activity.place} </TableCell>
                       <TableCell>
-                        {elem.from} dzień - {elem.to} dzień
+                        {t('from')} {elem.from}. {t('to')} {elem.to}. {t('day')}
                       </TableCell>
                       <TableCell> {formatter.format(elem.price)} </TableCell>
                       <TableCell

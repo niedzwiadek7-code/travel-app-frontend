@@ -3,6 +3,7 @@ import { Button, Stack } from '@mui/material'
 import { ReceiptLong } from '@mui/icons-material'
 import dayjs from 'dayjs'
 import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import * as Header from '../../../components/Header'
 import { TravelInstance } from '../../../model'
 import * as Loading from '../../../components/UI/Loading'
@@ -14,6 +15,7 @@ const RealizedTrips: React.FC = () => {
   const navigate = useNavigate()
   const [loading, setLoading] = useState<boolean>(true)
   const [travelInstances, setTravelInstances] = useState<TravelInstance[]>([])
+  const { t } = useTranslation('translation', { keyPrefix: 'realized_trips_page' })
 
   const { getApiService, getToastUtils } = useDependencies()
   const apiService = getApiService()
@@ -29,7 +31,7 @@ const RealizedTrips: React.FC = () => {
     } catch (err) {
       toastUtils.Toast.showToast(
         toastUtils.types.ERROR,
-        'Wystąpił nieoczekiwany błąd',
+        t('error'),
       )
     }
   }
@@ -47,7 +49,7 @@ const RealizedTrips: React.FC = () => {
         setLoading(false)
         toastUtils.Toast.showToast(
           toastUtils.types.ERROR,
-          'Wystąpił nieoczekiwany błąd',
+          t('error'),
         )
       }
     }
@@ -65,7 +67,7 @@ const RealizedTrips: React.FC = () => {
       gap={2}
     >
       <Header.Component
-        title="Lista wycieczek"
+        title={t('title')}
         icon={(
           <ReceiptLong
             fontSize="large"
@@ -88,7 +90,7 @@ const RealizedTrips: React.FC = () => {
         variant="outlined"
         onClick={() => navigate(Pages.DASHBOARD.getRedirectLink())}
       >
-        Powrót do strony głównej
+        {t('back')}
       </Button>
 
     </Stack>

@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form'
 import {
   Button, Stack, Grid, useTheme,
 } from '@mui/material'
+import { useTranslation } from 'react-i18next'
 import { ElementTravelInstance } from '../../../model'
 import * as Modal from '../../../components/UI/Modal'
 import { useDependencies, useAuth } from '../../../context'
@@ -24,6 +25,7 @@ const PassElementTravelModal: React.FC<Props> = (props) => {
   const apiService = getApiService()
   const { token } = useAuth()
   const travelService = apiService.getTravel(token)
+  const { t } = useTranslation('translation', { keyPrefix: 'activity.pass' })
 
   const theme = useTheme()
   const {
@@ -42,7 +44,7 @@ const PassElementTravelModal: React.FC<Props> = (props) => {
       console.log(err)
       toastUtils.Toast.showToast(
         toastUtils.types.ERROR,
-        'Wystpił nieoczekiwany błąd',
+        t('error'),
       )
     }
   }
@@ -56,10 +58,10 @@ const PassElementTravelModal: React.FC<Props> = (props) => {
             variant="contained"
             color="success"
           >
-            Zapisz odbycie
+            {t('pass')}
           </Button>
         )}
-        title="Zapisz odbycie"
+        title={t('pass')}
         content={(
           <Stack
             gap={2}
@@ -101,7 +103,7 @@ const PassElementTravelModal: React.FC<Props> = (props) => {
               variant="contained"
               component="label"
             >
-              Dodaj zdjęcia z aktywności
+              {t('add_photos')}
               <input
                 type="file"
                 multiple
@@ -123,7 +125,7 @@ const PassElementTravelModal: React.FC<Props> = (props) => {
         )}
         actions={[
           {
-            name: 'Zapisz odbycie',
+            name: t('pass'),
             type: 'submit',
             onClick: handleSubmit(onSubmit),
           },

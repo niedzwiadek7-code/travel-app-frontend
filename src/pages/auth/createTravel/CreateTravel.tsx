@@ -5,6 +5,7 @@ import {
 import { AddCircle, Create as CreateIcon } from '@mui/icons-material'
 import { LoadingButton } from '@mui/lab'
 import { useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from '../../../app/hooks'
 import * as Input from '../../../components/UI/Input'
 import {
@@ -54,6 +55,7 @@ const CreateTravel: React.FC = () => {
   const apiService = getApiService()
   const travelService = apiService.getTravel(token)
   const toastUtils = getToastUtils()
+  const { t } = useTranslation('translation', { keyPrefix: 'travel_page' })
 
   const planNextDay = () => {
     dispatch(addCountDays(1))
@@ -89,14 +91,14 @@ const CreateTravel: React.FC = () => {
         await travelService.putTravelRecipe(travelRecipe)
         toastUtils.Toast.showToast(
           toastUtils.types.INFO,
-          'Udało ci się poprawić plan wycieczki',
+          t('edit_travel_success'),
         )
         navigate(Pages.DASHBOARD.getRedirectLink())
       } else {
         await travelService.createTravelRecipe(travelRecipe)
         toastUtils.Toast.showToast(
           toastUtils.types.SUCCESS,
-          'Udało ci się poprawnie stworzyć plan wycieczki',
+          t('create_travel_success'),
         )
         navigate(Pages.DASHBOARD.getRedirectLink())
       }
@@ -105,7 +107,7 @@ const CreateTravel: React.FC = () => {
       setBtnLoading(false)
       toastUtils.Toast.showToast(
         toastUtils.types.ERROR,
-        'Podczas tworzenia wycieczki wystąpił nieoczekiwany błąd',
+        t('error'),
       )
     }
   }
@@ -125,7 +127,7 @@ const CreateTravel: React.FC = () => {
       gap={3}
     >
       <Header.Component
-        title="Tworzenie wycieczki"
+        title={t('title')}
         icon={(
           <CreateIcon
             fontSize="large"
@@ -140,7 +142,7 @@ const CreateTravel: React.FC = () => {
         <Input.Component
           variant={Input.Variant.STANDARD}
           type={Input.Type.TEXT}
-          label="Nazwij swoją wycieczkę"
+          label={t('trip_name')}
           default={travelRecipe.name}
           name="name"
           onChange={(value: string) => {
@@ -158,7 +160,7 @@ const CreateTravel: React.FC = () => {
               <Input.Component
                 variant={Input.Variant.STANDARD}
                 type={Input.Type.NUMBER}
-                label="Na ile dni planujesz swoją wycieczkę?"
+                label={t('trip_days')}
                 name="countDays"
                 register={register}
                 validation={['required', 'minNum:1']}
@@ -169,7 +171,7 @@ const CreateTravel: React.FC = () => {
                 type="submit"
                 variant="contained"
               >
-                Zatwierdź
+                {t('confirm')}
               </Button>
             </Stack>
           </form>
@@ -177,13 +179,13 @@ const CreateTravel: React.FC = () => {
         ) : (
           <>
             <Collapse.Component
-              title="Podsumowanie"
+              title={t('summary')}
             >
               <TravelSummaryTable.Component />
             </Collapse.Component>
 
             <TravelGloballyElem.Component
-              title="Noclegi"
+              title={t('accommodation')}
               travelElements={travelRecipe.accommodations}
               deleteTravelElement={
                 (elemId: string) => dispatch(deleteAccommodationFromTravel(elemId))
@@ -193,7 +195,7 @@ const CreateTravel: React.FC = () => {
 
             <Collapse.Component
               defaultOpen
-              title="Przeglądaj poszczególne dni swojej wycieczki"
+              title={t('browse_trip')}
               nodeOptions={[
                 <AddCircle
                   key="add-day"
@@ -217,8 +219,8 @@ const CreateTravel: React.FC = () => {
               >
                 {
                 travelRecipe.id
-                  ? 'Edytuj plan wycieczki'
-                  : 'Zapisz plan wycieczki'
+                  ? t('edit_travel')
+                  : t('create_travel')
               }
               </LoadingButton>
 
@@ -230,7 +232,7 @@ const CreateTravel: React.FC = () => {
                   variant="contained"
                   onClick={() => dispatch(reset())}
                 >
-                  Resetuj wycieczkę
+                  {t('reset')}
                 </Button>
               )
             }
@@ -245,7 +247,7 @@ const CreateTravel: React.FC = () => {
         variant="outlined"
         onClick={() => navigate(Pages.DASHBOARD.getRedirectLink())}
       >
-        Powrót na stronę główną
+        {t('back')}
       </Button>
     </Stack>
   )

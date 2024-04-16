@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { Home as HomeIcon } from '@mui/icons-material'
 import { Stack } from '@mui/material'
+import { useTranslation } from 'react-i18next'
 import * as Header from '../../../components/Header'
 import * as Cards from './Cards'
-import { useDependencies } from '../../../context/dependencies'
-import { useAuth } from '../../../context/auth'
+import { useDependencies, useAuth } from '../../../context'
 
 const Dashboard: React.FC = () => {
   const { getApiService } = useDependencies()
@@ -12,6 +12,7 @@ const Dashboard: React.FC = () => {
   const { token } = useAuth()
   const userService = apiService.getUser(token)
   const [firstName, setFirstName] = useState<string>('')
+  const { t } = useTranslation('translation', { keyPrefix: 'dashboard' })
 
   useEffect(() => {
     const fetchData = async () => {
@@ -29,7 +30,7 @@ const Dashboard: React.FC = () => {
       }}
     >
       <Header.Component
-        title={`Witaj, ${firstName}`}
+        title={`${t('hello')}, ${firstName}`}
         icon={(
           <HomeIcon
             fontSize="large"

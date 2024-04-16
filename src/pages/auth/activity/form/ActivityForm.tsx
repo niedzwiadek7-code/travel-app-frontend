@@ -5,6 +5,7 @@ import {
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { DownhillSkiing } from '@mui/icons-material'
 import { LoadingButton } from '@mui/lab'
+import { useTranslation } from 'react-i18next'
 import * as Select from '../../../../components/UI/Select'
 import InputsMap from './InputsMap'
 import * as Input from '../../../../components/UI/Input'
@@ -43,6 +44,9 @@ const ActivityForm: React.FC = () => {
     params: { id },
     navigate,
   } = useRouter<StateDto, Record<string, any>, Params>()
+  const { t } = useTranslation('translation', { keyPrefix: 'activity_page' })
+  const { t: tInputs } = useTranslation('translation', { keyPrefix: 'activity_page.inputs' })
+  const { t: tGlob } = useTranslation('translation')
 
   const {
     register,
@@ -91,7 +95,7 @@ const ActivityForm: React.FC = () => {
 
       toastUtils.Toast.showToast(
         toastUtils.types.SUCCESS,
-        id ? 'Edycja aktywności przebiegła pomyślnie' : 'Udało się stworzyć nową aktywność',
+        id ? t('successfully_edit') : t('successfully_create'),
       )
 
       setBtnLoading(false)
@@ -104,7 +108,7 @@ const ActivityForm: React.FC = () => {
       setBtnLoading(false)
       toastUtils.Toast.showToast(
         toastUtils.types.ERROR,
-        'Wystąpił nieoczekiwany błąd',
+        t('error'),
       )
     }
   }
@@ -120,7 +124,7 @@ const ActivityForm: React.FC = () => {
     } catch (err) {
       toastUtils.Toast.showToast(
         toastUtils.types.ERROR,
-        'Wystąpił nieoczekiwany błąd',
+        t('error'),
       )
     }
   }
@@ -136,7 +140,7 @@ const ActivityForm: React.FC = () => {
     } catch (err) {
       toastUtils.Toast.showToast(
         toastUtils.types.ERROR,
-        'Wystąpił nieoczekiwany błąd',
+        t('error'),
       )
     }
   }
@@ -148,10 +152,10 @@ const ActivityForm: React.FC = () => {
   }
 
   const options: Record<ActivityType, string> = {
-    Attraction: 'Atrakcja',
-    Restaurant: 'Restauracja',
-    Trip: 'Podróż',
-    Accommodation: 'Zakwaterowanie',
+    Attraction: tGlob('categories.attraction'),
+    Restaurant: tGlob('categories.restaurant'),
+    Trip: tGlob('categories.trip'),
+    Accommodation: tGlob('categories.accommodation'),
   }
 
   if (state?.availableTypes) {
@@ -168,7 +172,7 @@ const ActivityForm: React.FC = () => {
       gap={2}
     >
       <Header.Component
-        title={activity ? 'Edytuj aktywność' : 'Dodaj aktywność'}
+        title={activity ? t('edit') : t('create')}
         icon={(
           <DownhillSkiing
             fontSize="large"
@@ -184,7 +188,7 @@ const ActivityForm: React.FC = () => {
         >
           <Select.Component
             variant={Select.Variant.OUTLINED}
-            label="Wybierz typ aktywności"
+            label={t('pick_activity_type')}
             options={options}
             name="activityType"
             register={register}
@@ -192,7 +196,7 @@ const ActivityForm: React.FC = () => {
             disabled={Boolean(activity)}
           />
 
-          {(InputsMap[activityType] || []).map((input) => {
+          {(InputsMap(tInputs)[activityType] || []).map((input) => {
             switch (input.type) {
               case 'text':
                 // eslint-disable-next-line no-case-declarations
@@ -253,7 +257,7 @@ const ActivityForm: React.FC = () => {
             variant="contained"
             loading={btnLoading}
           >
-            { activity ? 'Edytuj aktywność' : 'Dodaj aktywność' }
+            { activity ? t('edit') : t('create') }
           </LoadingButton>
 
         </Stack>
@@ -286,7 +290,7 @@ const ActivityForm: React.FC = () => {
               color="success"
               onClick={() => acceptActivity()}
             >
-              Zaakceptuj
+              {t('accept')}
             </Button>
 
             <Button
@@ -295,7 +299,7 @@ const ActivityForm: React.FC = () => {
               color="error"
               onClick={() => restoreActivity()}
             >
-              Usuń
+              {t('delete')}
             </Button>
           </>
         )
@@ -306,7 +310,7 @@ const ActivityForm: React.FC = () => {
         variant="outlined"
         onClick={() => navigate(state.previousPage)}
       >
-        Powrót
+        {t('back')}
       </Button>
 
     </Stack>

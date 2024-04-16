@@ -1,16 +1,18 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import {
   Button,
   Stack,
 } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import { ReceiptLong } from '@mui/icons-material'
+import { useTranslation } from 'react-i18next'
 import { useDependencies, useAuth } from '../../../../context'
 import { TravelRecipe } from '../../../../model'
 import * as Loading from '../../../../components/UI/Loading'
 import * as Header from '../../../../components/Header'
 import * as TravelRecipeCard from './TravelRecipeCard'
 import { Pages } from '../../../pages'
+import { useFetch } from '../../../../hooks'
 
 const TravelRecipes: React.FC = () => {
   const navigate = useNavigate()
@@ -18,19 +20,17 @@ const TravelRecipes: React.FC = () => {
   const { getApiService } = useDependencies()
   const apiService = getApiService()
   const travelService = apiService.getTravel(token)
-  const [loading, setLoading] = useState<boolean>(true)
-  const [travelRecipes, setTravelRecipes] = useState<TravelRecipe[]>([])
+  const { t } = useTranslation('translation', { keyPrefix: 'travel_recipes_store_page' })
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true)
-      setTravelRecipes(
-        await travelService.getUserTravels(),
-      )
-      setLoading(false)
-    }
-    fetchData()
-  }, [])
+  const fetchData = async () => travelService.getUserTravels()
+
+  const {
+    data: travelRecipes,
+    loading,
+  } = useFetch<TravelRecipe[]>({
+    fetchData,
+    defaultData: [],
+  })
 
   if (loading) {
     return (
@@ -43,7 +43,7 @@ const TravelRecipes: React.FC = () => {
       gap={2}
     >
       <Header.Component
-        title="Plany wycieczek"
+        title={t('travel_plans')}
         icon={(
           <ReceiptLong
             fontSize="large"
@@ -62,7 +62,7 @@ const TravelRecipes: React.FC = () => {
         variant="outlined"
         onClick={() => navigate(Pages.DASHBOARD.getRedirectLink())}
       >
-        Powrót do strony głównej
+        {t('back_to_dashboard')}
       </Button>
     </Stack>
   )

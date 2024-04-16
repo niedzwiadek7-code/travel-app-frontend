@@ -7,10 +7,11 @@ import { useNavigate } from 'react-router-dom'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { Email, Key } from '@mui/icons-material'
 import { LoadingButton } from '@mui/lab'
+import { useTranslation } from 'react-i18next'
 import Styles from './Login.module.scss'
 import * as Input from '../../../components/UI/Input'
 import { useDependencies, useAuth } from '../../../context'
-import { Pages } from '../../../pages/pages'
+import { Pages } from '../../pages'
 
 type Inputs = {
   email: string,
@@ -24,6 +25,7 @@ const Login: React.FC = () => {
   const { setToken, setLoggedIn, setRoles } = useAuth()
   const navigate = useNavigate()
   const [btnLoading, setBtnLoading] = useState<boolean>(false)
+  const { t } = useTranslation('translation', { keyPrefix: 'login_page' })
 
   const {
     register, handleSubmit, formState: { errors },
@@ -47,7 +49,7 @@ const Login: React.FC = () => {
       setBtnLoading(false)
       toastUtils.Toast.showToast(
         toastUtils.types.ERROR,
-        'Niepoprawne dane logowania',
+        t('incorrect_data'),
       )
     }
   }
@@ -61,7 +63,7 @@ const Login: React.FC = () => {
         style={{ color: theme.palette.primary.main }}
         className={Styles.header}
       >
-        Logowanie
+        {t('login')}
       </h1>
 
       <Stack
@@ -71,7 +73,7 @@ const Login: React.FC = () => {
           className={Styles.description}
           style={{ color: theme.palette.grey[800] }}
         >
-          Podaj dane do swojego konta
+          {t('description')}
         </div>
       </Stack>
 
@@ -88,7 +90,7 @@ const Login: React.FC = () => {
             <Input.Component
               variant={Input.Variant.OUTLINED}
               type={Input.Type.EMAIL}
-              label="Email"
+              label={t('email')}
               icon={
                 <Email />
               }
@@ -107,7 +109,7 @@ const Login: React.FC = () => {
             <Input.Component
               variant={Input.Variant.OUTLINED}
               type={Input.Type.PASSWORD}
-              label="Hasło"
+              label={t('password')}
               icon={
                 <Key />
               }
@@ -131,7 +133,7 @@ const Login: React.FC = () => {
             className={Styles.button}
             onClick={() => navigate(Pages.WELCOME.getRedirectLink())}
           >
-            Powrót
+            {t('back')}
           </Button>
 
           <LoadingButton
@@ -140,7 +142,7 @@ const Login: React.FC = () => {
             className={Styles.button}
             loading={btnLoading}
           >
-            Zaloguj się
+            {t('sign_in')}
           </LoadingButton>
         </Stack>
       </form>

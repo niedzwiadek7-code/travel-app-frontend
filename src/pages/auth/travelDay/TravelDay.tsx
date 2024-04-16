@@ -3,7 +3,8 @@ import {
   Stack, Button,
 } from '@mui/material'
 import { Today } from '@mui/icons-material'
-import { Pages } from '../../../pages/pages'
+import { useTranslation } from 'react-i18next'
+import { Pages } from '../../pages'
 import * as TravelDayTable from './TravelDayTable'
 import { useAppSelector } from '../../../app/hooks'
 import { RootState } from '../../../app/store'
@@ -26,6 +27,7 @@ const TravelDay: React.FC = () => {
     Record<string, any>,
     Params
   >()
+  const { t } = useTranslation('translation', { keyPrefix: 'travel_day_page' })
 
   if (!countDay) {
     return (
@@ -38,7 +40,7 @@ const TravelDay: React.FC = () => {
       gap={2}
     >
       <Header.Component
-        title={`Dzień ${countDay}`}
+        title={`${t('day')} ${countDay}`}
         icon={(
           <Today
             fontSize="large"
@@ -69,7 +71,7 @@ const TravelDay: React.FC = () => {
             }
           }}
         >
-          Powrót
+          {t('back')}
         </Button>
 
         <AddActivityButton

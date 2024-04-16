@@ -2,9 +2,8 @@ import React, {
   cloneElement, ReactElement, ReactNode, useState,
 } from 'react'
 import {
-  Button, Menu, MenuItem, Stack,
+  Menu, MenuItem, Stack,
 } from '@mui/material'
-import { IcecreamOutlined } from '@mui/icons-material'
 import { Option } from '.'
 
 type Props = {

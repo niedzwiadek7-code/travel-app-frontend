@@ -3,6 +3,7 @@ import {
   Button,
   Stack, useTheme,
 } from '@mui/material'
+import { useTranslation } from 'react-i18next'
 import * as SaveActivityModal from '../../../../../components/SaveActivityModal'
 import * as Rating from '../../../../../components/Rating'
 import { StateDto } from '../../dto/state.dto'
@@ -19,6 +20,7 @@ type Props = {
 
 const Accommodation: React.FC<Props> = (props) => {
   const theme = useTheme()
+  const { t } = useTranslation('translation', { keyPrefix: 'activity_list_page.activities' })
 
   const formatter = Intl.NumberFormat('pl-PL', {
     style: 'currency',
@@ -36,12 +38,13 @@ const Accommodation: React.FC<Props> = (props) => {
         alignItems="center"
         justifyContent="space-between"
       >
+        { /* TODO: In future you shouldn't use div and any similar HTML components */}
         <div> {props.activity.name} </div>
         <div>
           { props.activity.place }
         </div>
         <div>
-          { formatter.format(props.activity.price) } / dzień
+          { formatter.format(props.activity.price) } / {t('day')}
         </div>
       </Stack>
       <hr
@@ -67,7 +70,7 @@ const Accommodation: React.FC<Props> = (props) => {
               <h3
                 style={{ margin: 0 }}
               >
-                Opinie
+                {t('rating')}
               </h3>
 
               {
@@ -92,7 +95,7 @@ const Accommodation: React.FC<Props> = (props) => {
                     variant="contained"
                     sx={{ width: '100%' }}
                   >
-                    Dodaj do wycieczki
+                    {t('add_to_travel')}
                   </Button>
                 )}
                 activity={props.activity}

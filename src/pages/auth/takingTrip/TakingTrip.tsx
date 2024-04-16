@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import React from 'react'
 import { Map } from '@mui/icons-material'
 import { Button, Stack, Typography } from '@mui/material'
+import { useTranslation } from 'react-i18next'
 import { useDependencies, useAuth } from '../../../context'
 import * as Loading from '../../../components/UI/Loading'
 import { useAppDispatch, useAppSelector } from '../../../app/hooks'
@@ -12,34 +12,44 @@ import * as Header from '../../../components/Header'
 import { Pages } from '../../pages'
 import * as TripTable from './TripTable'
 import * as GloballySection from './GloballySection'
+import { useFetch, useRouter } from '../../../hooks'
+import { TravelInstance } from '../../../model'
+
+type Params = {
+  id: string
+}
 
 const TakingTrip: React.FC = () => {
-  const { id } = useParams()
+  const {
+    params: { id },
+    navigate,
+  } = useRouter<
+    Record<string, any>,
+    Record<string, any>,
+    Params
+  >()
+
   const { getApiService } = useDependencies()
   const apiService = getApiService()
   const { token } = useAuth()
   const travelService = apiService.getTravel(token)
-  const [loading, setLoading] = useState<boolean>(true)
-  const navigate = useNavigate()
+  const { t } = useTranslation('translation', { keyPrefix: 'taking_trip_page' })
 
   const travelInstance = useAppSelector((state: RootState) => state.travelInstance)
   const dispatch = useAppDispatch()
 
-  useEffect(() => {
-    const fetchData = async () => {
-      if (id) {
-        setLoading(true)
-        if (travelInstance.id === parseInt(id, 10)) {
-          setLoading(false)
-          return
-        }
-        const travelInstanceTemp = await travelService.getTravelInstance(id)
-        dispatch(setNewTravelInstance(travelInstanceTemp))
-        setLoading(false)
-      }
-    }
-    fetchData()
-  }, [])
+  const fetchData = async (): Promise<TravelInstance> => {
+    const travelInstanceTemp = await travelService.getTravelInstance(id)
+    dispatch(setNewTravelInstance(travelInstanceTemp))
+    return travelInstanceTemp
+  }
+
+  const {
+    loading,
+  } = useFetch<TravelInstance>({
+    fetchData,
+    defaultData: undefined,
+  })
 
   if (!id) {
     return (
@@ -67,13 +77,13 @@ const TakingTrip: React.FC = () => {
       />
 
       <GloballySection.Component
-        title="Noclegi"
+        title={t('accommodations')}
         activityType="Accommodation"
       />
 
       <Stack>
         <Typography variant="h5" component="h5">
-          Przeglądaj wycieczkę
+          {t('browse_trip')}
         </Typography>
 
         <TripTable.Component />
@@ -84,7 +94,7 @@ const TakingTrip: React.FC = () => {
         variant="outlined"
         onClick={() => navigate(Pages.REALIZED_TRIPS.getRedirectLink())}
       >
-        Powrót do listy realizowanych wycieczek
+        {t('back_to_realized_trips')}
       </Button>
     </Stack>
   )

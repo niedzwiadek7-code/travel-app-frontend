@@ -4,6 +4,7 @@ import {
 } from '@mui/material'
 import { useForm } from 'react-hook-form'
 import { v4 as uuidv4 } from 'uuid'
+import { useTranslation } from 'react-i18next'
 import * as Modal from '../UI/Modal'
 import * as Input from '../UI/Input'
 import {
@@ -42,6 +43,7 @@ const SaveActivityModal: React.FC<Props> = (props) => {
   const travelRecipe = useAppSelector((state: RootState) => state.travelRecipe)
   const dispatch = useAppDispatch()
   const activityScope: ActivityScope = locallyActivityTypes.includes(props.activity.activityType) ? 'Locally' : 'Globally'
+  const { t } = useTranslation('translation', { keyPrefix: 'activity_page.add_to_trip' })
 
   const {
     register,
@@ -62,7 +64,7 @@ const SaveActivityModal: React.FC<Props> = (props) => {
     }
 
     const setErrorMessage = () => {
-      setError('to', { message: 'Aktywność nie może zakończyć się przed rozpoczęciem' })
+      setError('to', { message: t('activity_not_end_before_start') })
     }
 
     const unsetErrorMessage = () => {
@@ -204,7 +206,7 @@ const SaveActivityModal: React.FC<Props> = (props) => {
             <Input.Component
               variant={Input.Variant.OUTLINED}
               type={activityScope === 'Locally' ? Input.Type.TIME : Input.Type.NUMBER}
-              label="Od"
+              label={t('from')}
               register={register}
               name="from"
               default={getDefaultRangeProp(props.travelElement?.from)}
@@ -222,7 +224,7 @@ const SaveActivityModal: React.FC<Props> = (props) => {
             <Input.Component
               variant={Input.Variant.OUTLINED}
               type={activityScope === 'Locally' ? Input.Type.TIME : Input.Type.NUMBER}
-              label="Do"
+              label={t('to')}
               register={register}
               name="to"
               default={getDefaultRangeProp(props.travelElement?.to)}
@@ -241,7 +243,7 @@ const SaveActivityModal: React.FC<Props> = (props) => {
             <Input.Component
               variant={Input.Variant.OUTLINED}
               type={Input.Type.NUMBER}
-              label="Ilość osób"
+              label={t('people')}
               register={register}
               default={props.travelElement?.numberOfPeople}
               name="numberOfPeople"
@@ -253,7 +255,7 @@ const SaveActivityModal: React.FC<Props> = (props) => {
             <Input.Component
               variant={Input.Variant.OUTLINED}
               type={Input.Type.TEXT}
-              label="Dodatkowe informacje"
+              label={t('additional_info')}
               rows={Infinity}
               register={register}
               default={props.travelElement?.description}
@@ -264,7 +266,7 @@ const SaveActivityModal: React.FC<Props> = (props) => {
             <Input.Component
               variant={Input.Variant.OUTLINED}
               type={Input.Type.NUMBER}
-              label="Cena całkowita"
+              label={t('price')}
               register={register}
               default={props.travelElement?.price || 0}
               name="price"
@@ -275,7 +277,7 @@ const SaveActivityModal: React.FC<Props> = (props) => {
         )}
         actions={[
           {
-            name: props.travelElement ? 'Edytuj aktywność' : 'Dodaj aktywność',
+            name: props.travelElement ? t('edit') : t('create'),
             onClick: handleSubmit(onSubmit),
             type: 'submit',
           },

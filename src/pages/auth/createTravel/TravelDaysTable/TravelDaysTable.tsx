@@ -4,11 +4,13 @@ import {
 } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import { Visibility, Delete } from '@mui/icons-material'
+import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from '../../../../app/hooks'
 import { RootState } from '../../../../app/store'
 import { addCountDays, deleteDayFromTravel } from '../../../../features/travelRecipe/travelRecipeSlice'
 import { Pages } from '../../../pages'
 import { DateHandler } from '../../../../utils/Date'
+import * as Loading from '../../../../components/UI/Loading'
 
 type TravelDay = {
   countDay: number
@@ -22,6 +24,7 @@ const TravelDaysTable: React.FC = () => {
   const navigate = useNavigate()
   const [loading, setLoading] = useState<boolean>(true)
   const [sortedTravelElements, setSortedTravelElements] = useState<TravelDay[]>([])
+  const { t } = useTranslation('translation', { keyPrefix: 'travel_page.browse_trip_table' })
 
   const deleteDay = (dayNumber: number) => {
     dispatch(deleteDayFromTravel(dayNumber))
@@ -61,7 +64,7 @@ const TravelDaysTable: React.FC = () => {
 
   if (loading) {
     return (
-      <div> Trwa pobieranie danych </div>
+      <Loading.Component />
     )
   }
 
@@ -70,10 +73,10 @@ const TravelDaysTable: React.FC = () => {
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell> Dzień wyjazdu </TableCell>
-            <TableCell> Ilość aktywności </TableCell>
-            <TableCell> Czas do zaplanowania </TableCell>
-            <TableCell align="right"> Akcje </TableCell>
+            <TableCell> {t('trip_day')} </TableCell>
+            <TableCell> {t('activities')} </TableCell>
+            <TableCell> {t('time')} </TableCell>
+            <TableCell align="right"> {t('actions')} </TableCell>
           </TableRow>
         </TableHead>
 
@@ -81,7 +84,7 @@ const TravelDaysTable: React.FC = () => {
           {
             sortedTravelElements.map((elem) => (
               <TableRow key={elem.countDay}>
-                <TableCell> Dzień {elem.countDay} </TableCell>
+                <TableCell> {t('day')} {elem.countDay} </TableCell>
                 <TableCell> {elem.countOfActivities} </TableCell>
                 <TableCell> {elem.timeToManage} </TableCell>
                 <TableCell align="right">

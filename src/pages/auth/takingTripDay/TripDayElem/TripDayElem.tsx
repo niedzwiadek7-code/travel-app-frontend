@@ -3,13 +3,12 @@ import {
   Button, Grid, Stack, Typography, useTheme,
 } from '@mui/material'
 import { green } from '@mui/material/colors'
-import dayjs from 'dayjs'
-import utc from 'dayjs/plugin/utc'
 import {
   Restaurant as RestaurantIcon,
   Attractions as AttractionIcon,
   AirplanemodeActive as TravelIcon,
 } from '@mui/icons-material'
+import { useTranslation } from 'react-i18next'
 import { ActivityType, ElementTravelInstance } from '../../../../model'
 import { useAppDispatch } from '../../../../app/hooks'
 import { cancelTravelElementInstance } from '../../../../features/travelInstance/travelInstanceSlice'
@@ -17,8 +16,7 @@ import { useDependencies, useAuth } from '../../../../context'
 import * as Slider from '../../../../components/UI/Slider'
 import * as PassActivity from '../../../../components/Activity/PassActivity'
 import * as RateActivity from '../../../../components/Activity/RateActivity'
-
-dayjs.extend(utc)
+import { DateHandler } from '../../../../utils/Date'
 
 type Props = {
   travelElement: ElementTravelInstance
@@ -27,6 +25,7 @@ type Props = {
 const TripDayElem: React.FC<Props> = (props) => {
   const theme = useTheme()
   const dispatch = useAppDispatch()
+  const { t } = useTranslation('translation', { keyPrefix: 'taking_trip_day_page' })
 
   const { getApiService, getToastUtils } = useDependencies()
   const toastUtils = getToastUtils()
@@ -54,7 +53,7 @@ const TripDayElem: React.FC<Props> = (props) => {
     } catch (err) {
       toastUtils.Toast.showToast(
         toastUtils.types.ERROR,
-        'Wystąpił nieoczekiwany błąd',
+        t('error'),
       )
     }
   }
@@ -92,12 +91,12 @@ const TripDayElem: React.FC<Props> = (props) => {
         </Stack>
 
         <Typography>
-          {dayjs(props.travelElement.from).utc().format('HH:mm')} - {dayjs(props.travelElement.to).utc().format('HH:mm')}
+          {new DateHandler(props.travelElement.from).format('HH:mm')} - {new DateHandler(props.travelElement.to).format('HH:mm')}
         </Typography>
       </Stack>
 
       <Typography>
-        Miejsce: {getPlaceString()}
+        {t('place')}: {getPlaceString()}
       </Typography>
 
       {
@@ -172,9 +171,12 @@ const TripDayElem: React.FC<Props> = (props) => {
                 type="button"
                 variant="contained"
                 color="primary"
-                onClick={() => {}}
+                onClick={() => toastUtils.Toast.showToast(
+                  toastUtils.types.INFO,
+                  t('unavailable_fn'),
+                )}
               >
-                Odpowiedz na pytania
+                {t('answer_for_questions')}
               </Button>
             </>
           ) : (
@@ -189,7 +191,7 @@ const TripDayElem: React.FC<Props> = (props) => {
                 color="error"
                 onClick={cancelTravelElementInstanceFn}
               >
-                Odwołaj
+                {t('cancel')}
               </Button>
             </>
           )

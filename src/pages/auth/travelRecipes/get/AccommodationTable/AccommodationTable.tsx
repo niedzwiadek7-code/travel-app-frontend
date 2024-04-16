@@ -2,11 +2,13 @@ import React from 'react'
 import {
   Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
 } from '@mui/material'
+import { useTranslation } from 'react-i18next'
 import { useAppSelector } from '../../../../../app/hooks'
 import { RootState } from '../../../../../app/store'
 
 const AccommodationTable: React.FC = () => {
   const accommodations = useAppSelector((state: RootState) => state.travelRecipe.accommodations)
+  const { t } = useTranslation('translation', { keyPrefix: 'travel_recipes_get_page' })
 
   const formatter = Intl.NumberFormat('pl-PL', {
     style: 'currency',
@@ -18,10 +20,10 @@ const AccommodationTable: React.FC = () => {
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell> Nazwa </TableCell>
-            <TableCell> Miejsce </TableCell>
-            <TableCell> Zakres dni </TableCell>
-            <TableCell> Cena </TableCell>
+            <TableCell> {t('name')} </TableCell>
+            <TableCell> {t('place')} </TableCell>
+            <TableCell> {t('days_range')} </TableCell>
+            <TableCell> {t('cost')} </TableCell>
           </TableRow>
         </TableHead>
 

@@ -3,6 +3,7 @@ import {
   Button, Checkbox, FormControlLabel, Stack,
 } from '@mui/material'
 import { useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { useDependencies, useAuth } from '../../../context'
 import * as Modal from '../../../components/UI/Modal'
 import * as Input from '../../../components/UI/Input'
@@ -25,6 +26,7 @@ const RateActivity: React.FC<Props> = (props) => {
   const apiService = getApiService()
   const ratingService = apiService.getRating(token)
   const [rating, setRating] = useState<Rating | undefined>(undefined)
+  const { t } = useTranslation('translation', { keyPrefix: 'activity.rating' })
 
   const {
     register, handleSubmit,
@@ -52,12 +54,12 @@ const RateActivity: React.FC<Props> = (props) => {
       })
       toastUtils.Toast.showToast(
         toastUtils.types.INFO,
-        'Twoja ocena została zapisana',
+        t('saved'),
       )
     } catch (err) {
       toastUtils.Toast.showToast(
         toastUtils.types.ERROR,
-        'Wystąpił nieoczekiwany błąd',
+        t('error'),
       )
     }
   }
@@ -71,16 +73,16 @@ const RateActivity: React.FC<Props> = (props) => {
             variant="contained"
             color="primary"
           >
-            Oceń aktywność
+            {t('rate')}
           </Button>
         )}
-        title={`Oceń aktywność "${props.name}"`}
+        title={`${t('rate')} "${props.name}"`}
         content={(
           <Stack>
             <Input.Component
               variant={Input.Variant.OUTLINED}
               type={Input.Type.TEXT}
-              label="Twoja opinia"
+              label={t('your_opinion')}
               rows={10}
               register={register}
               name="text"
@@ -90,14 +92,14 @@ const RateActivity: React.FC<Props> = (props) => {
 
             <FormControlLabel
               control={<Checkbox />}
-              label="Pochwal się zdjęciami z innymi użytkownikami"
+              label={t('share_photos')}
               {...register('sharePhotos')}
             />
           </Stack>
         )}
         actions={[
           {
-            name: 'Dodaj ocenę',
+            name: t('add_rating'),
             type: 'submit',
             onClick: handleSubmit(onSubmit),
           },

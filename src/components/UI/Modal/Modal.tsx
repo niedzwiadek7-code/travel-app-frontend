@@ -4,6 +4,7 @@ import React, {
 import {
   Box, Button, Modal, Stack, Typography,
 } from '@mui/material'
+import { useTranslation } from 'react-i18next'
 import { Action } from '.'
 
 type Props = {
@@ -17,6 +18,7 @@ const ModalComponent: React.FC<Props> = (props) => {
   const [open, setOpen] = useState<boolean>(false)
   const showModal = () => setOpen(true)
   const hideModal = () => setOpen(false)
+  const { t } = useTranslation('translation', { keyPrefix: 'modal' })
 
   const buttonOnChange = (action: Action) => {
     action.onClick()
@@ -74,7 +76,7 @@ const ModalComponent: React.FC<Props> = (props) => {
               variant="outlined"
               onClick={hideModal}
             >
-              Powrót
+              {t('back')}
             </Button>
           </Stack>
         </Box>

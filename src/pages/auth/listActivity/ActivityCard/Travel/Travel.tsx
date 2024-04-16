@@ -1,5 +1,6 @@
 import React from 'react'
 import { Button, Stack, useTheme } from '@mui/material'
+import { useTranslation } from 'react-i18next'
 import * as SaveActivityModal from '../../../../../components/SaveActivityModal'
 import * as SaveInstanceActivityModal from '../../../../../components/SaveInstanceActivityModal'
 import AdminButtons from '../AdminButtons'
@@ -16,6 +17,7 @@ type Props = {
 
 const Travel: React.FC<Props> = (props) => {
   const theme = useTheme()
+  const { t } = useTranslation('translation', { keyPrefix: 'activity_list_page.activities' })
 
   const formatter = Intl.NumberFormat('pl-PL', {
     style: 'currency',
@@ -65,7 +67,7 @@ const Travel: React.FC<Props> = (props) => {
               <h3
                 style={{ margin: 0 }}
               >
-                Opinie
+                {t('rating')}
               </h3>
 
               {
@@ -90,7 +92,7 @@ const Travel: React.FC<Props> = (props) => {
                     variant="contained"
                     sx={{ width: '100%' }}
                   >
-                    Dodaj do wycieczki
+                    {t('add_to_travel')}
                   </Button>
                 )}
                 activity={props.activity}

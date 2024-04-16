@@ -3,6 +3,7 @@ import {
   Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TableRow,
 } from '@mui/material'
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import { useAppSelector } from '../../../../app/hooks'
 import { RootState } from '../../../../app/store'
 import { DateHandler } from '../../../../utils/Date'
@@ -16,17 +17,19 @@ const TravelSummaryTable: React.FC = () => {
 
   const travelElements = useAppSelector((state: RootState) => state.travelRecipe.travelElements)
   const accommodations = useAppSelector((state: RootState) => state.travelRecipe.accommodations)
+  const { t: tGlob } = useTranslation('translation')
+  const { t } = useTranslation('translation', { keyPrefix: 'travel_page.summary_table' })
 
   const activityTypes: Record<ActivityType, string> = {
-    Restaurant: 'Restauracja',
-    Trip: 'Podróż',
-    Accommodation: 'Zakwaterowanie',
-    Attraction: 'Atrakcja',
+    Restaurant: tGlob('categories.restaurant'),
+    Trip: tGlob('categories.trip'),
+    Accommodation: tGlob('categories.accommodation'),
+    Attraction: tGlob('categories.attraction'),
   }
 
   const getTime = (activityType?: ActivityType) => {
     if (activityType === 'Accommodation') {
-      return 'nie dotyczy'
+      return t('not_applicable')
     }
 
     const elements = activityType
@@ -79,9 +82,9 @@ const TravelSummaryTable: React.FC = () => {
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell> Kategoria </TableCell>
-            <TableCell> Spędzony czas </TableCell>
-            <TableCell> Cena </TableCell>
+            <TableCell> {t('category')} </TableCell>
+            <TableCell> {t('time')} </TableCell>
+            <TableCell> {t('cost')} </TableCell>
           </TableRow>
         </TableHead>
 
@@ -113,7 +116,7 @@ const TravelSummaryTable: React.FC = () => {
 
         <TableFooter>
           <TableRow>
-            <TableCell> Suma </TableCell>
+            <TableCell> {t('sum')} </TableCell>
             <TableCell> { getTime() } </TableCell>
             <TableCell> { getPrice() } </TableCell>
           </TableRow>

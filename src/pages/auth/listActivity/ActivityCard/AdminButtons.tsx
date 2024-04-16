@@ -1,5 +1,6 @@
 import React from 'react'
 import { Button, Stack } from '@mui/material'
+import { useTranslation } from 'react-i18next'
 import { Pages } from '../../../pages'
 import { useRouter } from '../../../../hooks'
 
@@ -14,6 +15,7 @@ const AdminButtons: React.FC<Props> = (props) => {
     navigate,
     pathname,
   } = useRouter()
+  const { t } = useTranslation('translation', { keyPrefix: 'activity_list_page.admin_buttons' })
 
   return (
     <Stack
@@ -27,7 +29,7 @@ const AdminButtons: React.FC<Props> = (props) => {
         color="success"
         onClick={props.acceptElement}
       >
-        Zaakceptuj
+        {t('accept')}
       </Button>
 
       <Button
@@ -45,7 +47,7 @@ const AdminButtons: React.FC<Props> = (props) => {
           },
         })}
       >
-        Edytuj
+        {t('edit')}
       </Button>
 
       <Button
@@ -54,7 +56,7 @@ const AdminButtons: React.FC<Props> = (props) => {
         color="error"
         onClick={props.deleteElement}
       >
-        Usuń
+        {t('delete')}
       </Button>
     </Stack>
   )

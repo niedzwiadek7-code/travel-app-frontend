@@ -1,10 +1,67 @@
 {
+  "register_page": {
+    "email_already_exists": "Użytkownik z podanym emailem już istnieje",
+    "incorrect_data": "Nieprawidłowe dane do rejestracji",
+    "register": "Zarejestruj się",
+    "description": "Podaj dane do swojego konta",
+    "name": "Imię i Nazwisko",
+    "email": "Email",
+    "password": "Hasło",
+    "back": "Powrót",
+    "sign_up": "Zarejestruj się"
+  },
+  "login_page": {
+    "incorrect_data": "Nieprawidłowe dane logowanie",
+    "login": "Zaloguj się",
+    "description": "Podaj dane swojego konta",
+    "email": "Email",
+    "password": "Hasło",
+    "back": "Powrót",
+    "sign_in": "Zaloguj się"
+  },
+  "save_instance_activity_modal": {
+    "activity_not_end_before_start": "Aktywność nie może zakończyć się przed rozpoczęciem",
+    "error": "Wystąpił nieoczekiwany błąd",
+    "add_to_trip": "Dodaj do wycieczki",
+    "add_activity": "Dodaj aktywność",
+    "from": "Od",
+    "to": "Do"
+  },
+  "header": {
+    "logout": "Wyloguj"
+  },
+  "activity": {
+    "rating": {
+      "title": "Oceń aktywność",
+      "saved": "Twoja ocena została zapisana",
+      "error": "Wystąpił nieoczekiwany błąd",
+      "rate": "Oceń aktywność",
+      "your_opinion": "Twoja opinia",
+      "share_photos": "Pochwal się zdjęciami z innymi użytkownikami",
+      "add_rating": "Dodaj ocenę"
+    },
+    "pass": {
+      "error": "Wystąpił nieoczekiwany błąd",
+      "pass": "Zapisz odbycie",
+      "add_photos": "Dodaj zdjęcia z aktywności"
+    }
+  },
+  "modal": {
+    "back": "Powrót"
+  },
+  "categories": {
+    "attraction": "Atrakcja",
+    "accommodation": "Nocleg",
+    "restaurant": "Restauracja",
+    "trip": "Podróż"
+  },
   "welcome": {
     "description": "Dołącz do naszej społeczności i rozpocznij podróżowanie z naszą aplikacją",
     "login": "Zaloguj się do istniejącego konta",
     "register": "Stwórz nowe konto"
   },
   "dashboard": {
+    "hello": "Witaj",
     "travel_creator": "Kreator wycieczki",
     "travel_creator_description": "Użyj narzędzi oferowanych przez naszą witrynę aby stworzyć wycieczkę swoich marzeń",
     "travel_plans": "Plany wycieczek",
@@ -16,7 +73,183 @@
     "go": "Przejdź"
   },
   "travel_page": {
+    "title": "Kreator wycieczki",
     "trip_name": "Nazwij swoją wycieczkę",
-    "trip_days": "Na ile dni planujesz swoją wycieczkę"
+    "trip_days": "Na ile dni planujesz swoją wycieczkę?",
+    "summary": "Podsumowanie",
+    "confirm": "Potwierdź",
+    "edit_travel": "Edytuj plan wycieczkę",
+    "create_travel": "Zapisz plan wycieczki",
+    "reset": "Resetuj plan wycieczki",
+    "back": "Powrót na stronę główną",
+    "create_travel_success": "Plan wycieczki został edytowany pomyślnie",
+    "edit_travel_success": "Plan wycieczki został utworzony pomyślnie",
+    "error": "Wystąpił nieoczekiwany błąd",
+    "summary_table": {
+      "category": "Kategoria",
+      "time": "Spędzony czas",
+      "cost": "Koszt",
+      "sum": "Suma",
+      "not_applicable": "nie dotyczy"
+    },
+    "accommodation": "Noclegi",
+    "accommodation_table": {
+      "add_accommodation": "Dodaj własny nocleg",
+      "pick_accommodation": "Wybierz z proponowanych noclegów",
+      "pick_your_accommodation": "Wybierz z swoich noclegów",
+      "name": "Nazwa",
+      "place": "Miejsce",
+      "days_range": "Zakres dni",
+      "cost": "Koszt",
+      "actions": "Akcje",
+      "day": "dnia",
+      "from": "Od",
+      "to": "do"
+    },
+    "browse_trip": "Przeglądaj dni swojej wycieczki",
+    "browse_trip_table": {
+      "trip_day": "Dzień wyjazdu",
+      "day": "Dzień",
+      "activities": "Ilość aktywności",
+      "time": "Czas do zaplanowania",
+      "count_activities": "Liczba aktywności",
+      "time_to_plan": "Czas do zaplanowania",
+      "actions": "Akcje"
+    }
+  },
+  "activity_page": {
+    "pick_activity_type": "Wybierz typ aktywności",
+    "successfully_edit": "Aktywność została edytowana pomyślnie",
+    "successfully_create": "Aktywność została utworzona pomyślnie",
+    "error": "Wystąpił nieoczekiwany błąd",
+    "edit": "Edytuj aktywność",
+    "create": "Stwórz aktywność",
+    "accept": "Zaakceptuj",
+    "delete": "Usuń",
+    "back": "Powrót",
+    "inputs": {
+      "name": "Nazwa",
+      "description": "Opis",
+      "place": "Miejsce",
+      "price": "Cena (PLN)",
+      "price_type": "Rodzaj płatności",
+      "per_entry": "Za wejście",
+      "per_hour": "Za godzinę",
+      "from": "Punkt startowy",
+      "to": "Punkt końcowy"
+    },
+    "add_to_trip": {
+      "button": "Dodaj do wycieczki",
+      "activity_not_end_before_start": "Aktywność nie może zakończyć się przed rozpoczęciem",
+      "edit": "Edytuj aktywność",
+      "create": "Dodaj aktywność",
+      "people": "Ilość osób",
+      "additional_info": "Dodatkowe informacje",
+      "price": "Cena całkowita",
+      "from": "Od",
+      "to": "Do"
+    }
+  },
+  "activity_list_page": {
+    "error": "Wystąpił nieoczekiwany błąd",
+    "activity_list": "Lista aktywności",
+    "activity_manage": "Zarządzaj aktywnościami",
+    "back": "Powrót",
+    "admin_buttons": {
+      "accept": "Zaakceptuj",
+      "edit": "Edytuj",
+      "delete": "Usuń"
+    },
+    "activities": {
+      "day": "dzień",
+      "rating": "Opinie",
+      "add_to_travel": "Dodaj do wycieczki",
+      "entry": "wejście",
+      "hour": "godzina"
+    }
+  },
+  "realized_trips_page": {
+    "error": "Wystąpił nieoczekiwany błąd",
+    "back": "Powrót do strony głównej",
+    "title": "Lista wycieczek",
+    "trip_card": {
+      "date_range": "Termin wycieczki",
+      "realized": "Zrealizowano",
+      "go": "Przejdź",
+      "edit_start_date": "Edytuj datę rozpoczęcia",
+      "delete_trip": "Usuń wycieczkę"
+    }
+  },
+  "taking_trip_page": {
+    "browse_trip": "Przeglądaj wycieczkę",
+    "back_to_realized_trips": "Powrót do listy realizowanych wycieczek",
+    "accommodations": "Noclegi",
+    "error": "Wystąpił nieoczekiwany błąd",
+    "place": "Miejsce",
+    "add_button": "Dodaj nocleg",
+    "add_accommodation": "Dodaj własny nocleg",
+    "pick_accommodation": "Wybierz z proponowanych noclegów",
+    "pick_your_accommodation": "Wybierz z swoich noclegów",
+    "unavailable_fn": "Ta funkcjonalność nie jest obecnie dostępna",
+    "answer_for_questions": "Odpowiedz na pytania",
+    "cancel": "Odwołaj",
+    "trip_table": {
+      "day": "Dzień",
+      "activities_end": "Zakończone aktywności",
+      "browse": "Przeglądaj"
+    }
+  },
+  "taking_trip_day_page": {
+    "back_to_trip": "Powrót do wycieczki",
+    "add_button": "Dodaj aktywność",
+    "add_activity": "Dodaj własną aktywność",
+    "pick_activity": "Wybierz z proponowanych aktivności",
+    "pick_your_activity": "Wybierz z swoich aktywności",
+    "place": "Miejsce",
+    "error": "Wystąpił nieoczekiwany błąd",
+    "unavailable_fn": "Ta funkcjonalność nie jest obecnie dostępna",
+    "answer_for_questions": "Odpowiedz na pytania",
+    "cancel": "Odwołaj"
+  },
+  "travel_day_page": {
+    "day": "Dzień",
+    "back": "Powrót",
+    "add_button": "Dodaj aktywność",
+    "add_activity": "Dodaj własną aktywność",
+    "pick_activity": "Wybierz z proponowanych aktivności",
+    "pick_your_activity": "Wybierz z swoich aktywności",
+    "activity": {
+      "date_range": "Ramy czasowe",
+      "activity": "Aktywność",
+      "place": "Miejsce",
+      "people": "Ilość osób",
+      "price": "Cena",
+      "actions": "Akcje"
+    }
+  },
+  "travel_recipes_get_page": {
+    "share": "Udostępnij",
+    "accommodations": "Noclegi",
+    "day_schedule": "Rozkład dni",
+    "day": "Dzień",
+    "back_to_trips": "Powrót do listy wycieczek",
+    "name": "Nazwa",
+    "place": "Miejsce",
+    "days_range": "Zakres dni",
+    "cost": "Koszt",
+    "time_range": "Ramy czasowe",
+    "activity": "Aktywność",
+    "people": "Ilość osób"
+  },
+  "travel_recipes_store_page": {
+    "back_to_dashboard": "Powrót do strony głównej",
+    "travel_plans": "Plany wycieczek",
+    "days": "dni",
+    "travel_planned_to": "Wycieczka została zaplanowana na",
+    "budget": "Szacowany budżet wycieczki wynosi",
+    "planned_activities": "Lista zaplanowanych aktywności na tę wycieczkę",
+    "browse": "Przeglądaj wycieczkę",
+    "edit_plan": "Edytuj plan",
+    "delete_plan": "Usuń plan"
   }
 }

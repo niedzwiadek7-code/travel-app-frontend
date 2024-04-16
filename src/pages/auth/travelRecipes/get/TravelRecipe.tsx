@@ -1,13 +1,12 @@
-import React, { useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import React from 'react'
 import {
   Button, Stack, Typography, useTheme,
 } from '@mui/material'
 import { ReceiptLong } from '@mui/icons-material'
+import { useTranslation } from 'react-i18next'
 import * as UnexpectedError from '../../../../components/UI/UnexpectedError'
 import * as Header from '../../../../components/Header'
-import { useDependencies } from '../../../../context/dependencies'
-import { useAuth } from '../../../../context/auth'
+import { useDependencies, useAuth } from '../../../../context'
 import { useAppDispatch, useAppSelector } from '../../../../app/hooks'
 import { RootState } from '../../../../app/store'
 import { setNewTravelRecipe } from '../../../../features/travelRecipe/travelRecipeSlice'
@@ -17,33 +16,43 @@ import * as TravelDayTable from './TravelDayTable'
 import { Pages } from '../../../pages'
 import * as SignUpForTrip from '../../../../components/SignUpForTrip'
 import * as CopyToClipboard from '../../../../components/UI/CopyToClipboard'
+import { useFetch, useRouter } from '../../../../hooks'
+import { TravelRecipe } from '../../../../model'
 
-const TravelRecipe: React.FC = () => {
-  const { id } = useParams()
+type Params = {
+  id: string
+}
+
+const TravelRecipeComponent: React.FC = () => {
+  const {
+    params: { id },
+    navigate,
+  } = useRouter<
+    Record<string, any>,
+    Record<string, any>,
+    Params
+  >()
   const { getApiService } = useDependencies()
   const apiService = getApiService()
   const { token } = useAuth()
   const travelService = apiService.getTravel(token)
-  const [loading, setLoading] = useState<boolean>(true)
   const travelRecipe = useAppSelector((state: RootState) => state.travelRecipe)
   const dispatch = useAppDispatch()
-  const navigate = useNavigate()
   const theme = useTheme()
+  const { t } = useTranslation('translation', { keyPrefix: 'travel_recipes_get_page' })
 
-  useEffect(() => {
-    const fetchData = async () => {
-      if (id) {
-        setLoading(true)
-        if (travelRecipe.id === parseInt(id, 10)) {
-          setLoading(false)
-        }
-        const travelRecipeTemp = await travelService.get(id)
-        dispatch(setNewTravelRecipe(travelRecipeTemp))
-        setLoading(false)
-      }
-    }
-    fetchData()
-  }, [])
+  const fetchData = async (): Promise<TravelRecipe> => {
+    const travelRecipeTemp = await travelService.get(id)
+    dispatch(setNewTravelRecipe(travelRecipeTemp))
+    return travelRecipeTemp
+  }
+
+  const {
+    loading,
+  } = useFetch<TravelRecipe>({
+    fetchData,
+    defaultData: undefined,
+  })
 
   if (!id) {
     return (
@@ -81,7 +90,7 @@ const TravelRecipe: React.FC = () => {
         gap={1}
       >
         <Typography>
-          Udostępnij
+          {t('share')}
         </Typography>
         <CopyToClipboard.Component
           color={theme.palette.primary.main}
@@ -94,7 +103,7 @@ const TravelRecipe: React.FC = () => {
         <h2
           style={{ marginTop: 0 }}
         >
-          Noclegi
+          {t('accommodations')}
         </h2>
 
         <AccommodationTable.Component />
@@ -104,7 +113,7 @@ const TravelRecipe: React.FC = () => {
         <h2
           style={{ marginTop: 0, marginBottom: 0 }}
         >
-          Rozkład dni
+          {t('day_schedule')}
         </h2>
 
         <Stack
@@ -117,7 +126,7 @@ const TravelRecipe: React.FC = () => {
                 <h3
                   style={{ marginTop: '1' }}
                 >
-                  Dzień {i + 1}
+                  {t('day')} {i + 1}
                 </h3>
 
                 <TravelDayTable.Component
@@ -139,10 +148,10 @@ const TravelRecipe: React.FC = () => {
         variant="outlined"
         onClick={() => navigate(Pages.TRAVEL_RECIPES_STORE.getRedirectLink())}
       >
-        Powrót do listy wycieczek
+        {t('back_to_trips')}
       </Button>
     </Stack>
   )
 }
 
-export default TravelRecipe
+export default TravelRecipeComponent

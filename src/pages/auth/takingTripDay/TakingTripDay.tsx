@@ -2,6 +2,7 @@ import React from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { Button, Stack } from '@mui/material'
 import { Map } from '@mui/icons-material'
+import { useTranslation } from 'react-i18next'
 import { useAppSelector } from '../../../app/hooks'
 import { RootState } from '../../../app/store'
 import * as Header from '../../../components/Header'
@@ -16,6 +17,7 @@ const TakingTripDay: React.FC = () => {
   const travelInstance = useAppSelector((state: RootState) => state.travelInstance)
   const { date } = useParams()
   const navigate = useNavigate()
+  const { t } = useTranslation('translation', { keyPrefix: 'taking_trip_day_page' })
 
   if (!date) {
     return (
@@ -78,7 +80,7 @@ const TakingTripDay: React.FC = () => {
           id: travelInstance.id.toString(),
         }))}
       >
-        Powrót do widoku wycieczki
+        {t('back_to_trip')}
       </Button>
     </Stack>
   )

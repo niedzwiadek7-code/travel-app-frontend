@@ -3,6 +3,7 @@ import {
   Stack, Typography, useTheme,
 } from '@mui/material'
 import { AccountCircle } from '@mui/icons-material'
+import { useTranslation } from 'react-i18next'
 import { useAuth } from '../../context'
 import Styles from './Header.module.scss'
 import { Pages } from '../../pages/pages'
@@ -25,6 +26,7 @@ const Header: React.FC<Props> = (props) => {
     navigate,
   } = useRouter()
   const dispatch = useAppDispatch()
+  const { t } = useTranslation('translation', { keyPrefix: 'header' })
 
   const logout = () => {
     setLoggedIn(false)
@@ -75,7 +77,7 @@ const Header: React.FC<Props> = (props) => {
           )}
           options={[
             {
-              name: 'Wyloguj się',
+              name: t('logout'),
               action: logout,
             },
           ]}

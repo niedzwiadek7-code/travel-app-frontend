@@ -1,6 +1,7 @@
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import { Button, Stack } from '@mui/material'
+import { useTranslation } from 'react-i18next'
 import {
   ActivityScope,
   ElementTravelInstance, locallyActivityTypes,
@@ -35,6 +36,7 @@ const SaveInstanceActivityModal: React.FC<Props> = (props) => {
   const travelInstance = useAppSelector((state: RootState) => state.travelInstance)
   const dispatch = useAppDispatch()
   const activityScope: ActivityScope = locallyActivityTypes.includes(props.activity.activityType) ? 'Locally' : 'Globally'
+  const { t } = useTranslation('translation', { keyPrefix: 'save_instance_activity_modal' })
 
   const {
     navigate,
@@ -58,7 +60,7 @@ const SaveInstanceActivityModal: React.FC<Props> = (props) => {
     }
 
     const setErrorMessage = () => {
-      setError('to', { message: 'Aktywność nie może zakończyć się przed rozpoczęciem' })
+      setError('to', { message: t('activity_not_end_before_start') })
     }
 
     const unsetErrorMessage = () => {
@@ -109,7 +111,7 @@ const SaveInstanceActivityModal: React.FC<Props> = (props) => {
     } catch (err) {
       toastUtils.Toast.showToast(
         toastUtils.types.ERROR,
-        'Wystąpił nieoczekiwany błąd',
+        t('error'),
       )
     }
   }
@@ -123,7 +125,7 @@ const SaveInstanceActivityModal: React.FC<Props> = (props) => {
             variant="contained"
             sx={{ width: '100%' }}
           >
-            Dodaj do wycieczki
+            {t('add_to_trip')}
           </Button>
         )}
         title={props.activity.name}
@@ -134,7 +136,7 @@ const SaveInstanceActivityModal: React.FC<Props> = (props) => {
             <Input.Component
               variant={Input.Variant.OUTLINED}
               type={activityScope === 'Locally' ? Input.Type.TIME : Input.Type.DATE}
-              label="Od"
+              label={t('from')}
               register={register}
               name="from"
               validation={['required']}
@@ -144,7 +146,7 @@ const SaveInstanceActivityModal: React.FC<Props> = (props) => {
             <Input.Component
               variant={Input.Variant.OUTLINED}
               type={activityScope === 'Locally' ? Input.Type.TIME : Input.Type.DATE}
-              label="Do"
+              label={t('to')}
               register={register}
               name="to"
               validation={['required']}
@@ -154,7 +156,7 @@ const SaveInstanceActivityModal: React.FC<Props> = (props) => {
         )}
         actions={[
           {
-            name: 'Dodaj aktywność',
+            name: t('add_activity'),
             onClick: handleSubmit(onSubmit),
             type: 'submit',
           },

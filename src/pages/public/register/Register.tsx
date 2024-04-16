@@ -8,11 +8,11 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { Email, Key, Badge } from '@mui/icons-material'
 import { AxiosError } from 'axios'
 import { LoadingButton } from '@mui/lab'
+import { useTranslation } from 'react-i18next'
 import Styles from './Register.module.scss'
 import * as Input from '../../../components/UI/Input'
-import { useDependencies } from '../../../context/dependencies'
-import { useAuth } from '../../../context/auth'
-import { Pages } from '../../../pages/pages'
+import { useDependencies, useAuth } from '../../../context'
+import { Pages } from '../../pages'
 
 type Inputs = {
   name: string,
@@ -28,6 +28,7 @@ const Register: React.FC = () => {
   const { setToken } = useAuth()
   const navigate = useNavigate()
   const [btnLoading, setBtnLoading] = useState<boolean>(false)
+  const { t } = useTranslation('translation', { keyPrefix: 'register_page' })
 
   const {
     register, handleSubmit, formState: { errors }, watch,
@@ -62,7 +63,7 @@ const Register: React.FC = () => {
         if (errorAxios.status === 409) {
           toastUtils.Toast.showToast(
             toastUtils.types.ERROR,
-            'Użytkownik z podanym mailem już istnieje',
+            t('email_already_exists'),
           )
           return
         }
@@ -70,7 +71,7 @@ const Register: React.FC = () => {
 
       toastUtils.Toast.showToast(
         toastUtils.types.ERROR,
-        'Niepoprawne dane do rejestracji',
+        t('incorrect_data'),
       )
     }
   }
@@ -84,7 +85,7 @@ const Register: React.FC = () => {
         style={{ color: theme.palette.primary.main }}
         className={Styles.header}
       >
-        Rejestracja
+        {t('register')}
       </h1>
 
       <Stack
@@ -94,7 +95,7 @@ const Register: React.FC = () => {
           className={Styles.description}
           style={{ color: theme.palette.grey[800] }}
         >
-          Podaj dane do swojego konta
+          {t('description')}
         </div>
       </Stack>
 
@@ -105,7 +106,8 @@ const Register: React.FC = () => {
           <Input.Component
             variant={Input.Variant.OUTLINED}
             type={Input.Type.TEXT}
-            label="Imię i Nazwisko"
+            // TODO: this should be simplified
+            label={t('name')}
             icon={
               <Badge />
             }
@@ -118,7 +120,7 @@ const Register: React.FC = () => {
           <Input.Component
             variant={Input.Variant.OUTLINED}
             type={Input.Type.EMAIL}
-            label="Email"
+            label={t('email')}
             icon={
               <Email />
             }
@@ -131,7 +133,7 @@ const Register: React.FC = () => {
           <Input.Component
             variant={Input.Variant.OUTLINED}
             type={Input.Type.PASSWORD}
-            label="Hasło"
+            label={t('password')}
             icon={
               <Key />
             }
@@ -154,7 +156,7 @@ const Register: React.FC = () => {
             className={Styles.button}
             onClick={() => navigate(Pages.WELCOME.getRedirectLink())}
           >
-            Powrót
+            {t('back')}
           </Button>
 
           <LoadingButton
@@ -163,7 +165,7 @@ const Register: React.FC = () => {
             className={Styles.button}
             loading={btnLoading}
           >
-            Zarejestruj się
+            {t('sign_up')}
           </LoadingButton>
         </Stack>
       </form>
