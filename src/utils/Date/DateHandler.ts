@@ -65,4 +65,8 @@ export class DateHandler {
   toISOString() {
     return this.currentDate.toISOString()
   }
+
+  toDateObj() {
+    return this.currentDate.toDate()
+  }
 }

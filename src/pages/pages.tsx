@@ -69,6 +69,10 @@ export const Pages: Record<string, Page> = {
     '/realized-trips',
     <Auth.RealizedTrips.Component />,
   ),
+  REALIZED_TRIPS_TEMP: new Page(
+    '/realized-trips-temp',
+    <Auth.RealizedTripsTemp.Component />,
+  ),
 }
 
 const App: React.FC = () => (
