@@ -4,7 +4,6 @@ import {
 } from '@mui/material'
 import { grey, green } from '@mui/material/colors'
 import React from 'react'
-import dayjs from 'dayjs'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { TravelInstance } from '../../../../model'
@@ -25,8 +24,8 @@ type RealizationTrip = {
 
 const TripCard: React.FC<Props> = (props) => {
   const navigate = useNavigate()
-  const isWaitingTrip = () => dayjs().diff(props.travelInstance.from) < 0
-  const isCompletedTrip = () => dayjs().diff(props.travelInstance.to) > 0
+  const isWaitingTrip = () => DateHandler.diff(new DateHandler().toISOString(), props.travelInstance.from, 'day') < 0
+  const isCompletedTrip = () => DateHandler.diff(new DateHandler().toISOString(), props.travelInstance.from, 'day') > 0
   const theme = useTheme()
   const { t } = useTranslation('translation', { keyPrefix: 'realized_trips_page.trip_card' })
 

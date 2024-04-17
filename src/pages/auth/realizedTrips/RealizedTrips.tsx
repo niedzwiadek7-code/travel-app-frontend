@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Button, Stack } from '@mui/material'
 import { ReceiptLong } from '@mui/icons-material'
-import dayjs from 'dayjs'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import * as Header from '../../../components/Header'
@@ -10,6 +9,7 @@ import * as Loading from '../../../components/UI/Loading'
 import { useDependencies, useAuth } from '../../../context'
 import * as TripCard from './TripCard'
 import { Pages } from '../../pages'
+import { DateHandler } from '../../../utils/Date'
 
 const RealizedTrips: React.FC = () => {
   const navigate = useNavigate()
@@ -41,7 +41,7 @@ const RealizedTrips: React.FC = () => {
       try {
         setLoading(true)
         const travelInstancesTemp = (await travelService.getAllTravelInstances()).sort(
-          (a, b) => dayjs(a.from).diff(b.from),
+          (a, b) => DateHandler.compareDates(b.from, a.from),
         )
         setTravelInstances(travelInstancesTemp)
         setLoading(false)
