@@ -4,10 +4,12 @@ import {
 } from '@mui/material'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
+import { LoadingButton } from '@mui/lab'
 import { useDependencies, useAuth } from '../../../context'
 import * as Modal from '../../../components/UI/Modal'
 import * as Input from '../../../components/UI/Input'
 import { Rating } from '../../../model'
+import { useFetch } from '../../../hooks'
 
 type Props = {
   elemId: number
@@ -25,28 +27,25 @@ const RateActivity: React.FC<Props> = (props) => {
   const toastUtils = getToastUtils()
   const apiService = getApiService()
   const ratingService = apiService.getRating(token)
-  const [rating, setRating] = useState<Rating | undefined>(undefined)
   const { t } = useTranslation('translation', { keyPrefix: 'activity.rating' })
+  const [loading, setLoading] = useState(false)
 
   const {
     register, handleSubmit,
   } = useForm<Inputs>()
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setRating(
-          await ratingService.getRating(props.elemId),
-        )
-      } catch (err) {
-        console.log(err)
-      }
-    }
-    fetchData()
-  }, [])
+  const fetchData = async () => ratingService.getRating(props.elemId)
+
+  const {
+    data: rating,
+  } = useFetch<Rating>({
+    fetchData,
+    defaultData: undefined,
+  })
 
   const onSubmit = async (data: Inputs) => {
     try {
+      setLoading(true)
       await ratingService.putRating({
         text: data.text,
         sharePhotos: data.sharePhotos,
@@ -56,6 +55,7 @@ const RateActivity: React.FC<Props> = (props) => {
         toastUtils.types.INFO,
         t('saved'),
       )
+      setLoading(false)
     } catch (err) {
       toastUtils.Toast.showToast(
         toastUtils.types.ERROR,
@@ -68,13 +68,14 @@ const RateActivity: React.FC<Props> = (props) => {
     <form onSubmit={handleSubmit(onSubmit)}>
       <Modal.Component
         buttonComponent={(
-          <Button
+          <LoadingButton
             type="button"
             variant="contained"
             color="primary"
+            loading={loading}
           >
             {t('rate')}
-          </Button>
+          </LoadingButton>
         )}
         title={`${t('rate')} "${props.name}"`}
         content={(

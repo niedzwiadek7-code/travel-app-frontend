@@ -4,6 +4,7 @@ import {
   Button, Stack, Grid, useTheme,
 } from '@mui/material'
 import { useTranslation } from 'react-i18next'
+import { LoadingButton } from '@mui/lab'
 import { ElementTravelInstance } from '../../../model'
 import * as Modal from '../../../components/UI/Modal'
 import { useDependencies, useAuth } from '../../../context'
@@ -26,6 +27,7 @@ const PassElementTravelModal: React.FC<Props> = (props) => {
   const { token } = useAuth()
   const travelService = apiService.getTravel(token)
   const { t } = useTranslation('translation', { keyPrefix: 'activity.pass' })
+  const [loading, setLoading] = useState<boolean>(false)
 
   const theme = useTheme()
   const {
@@ -35,11 +37,13 @@ const PassElementTravelModal: React.FC<Props> = (props) => {
 
   const onSubmit = async (data: Inputs) => {
     try {
+      setLoading(true)
       const result = await travelService.passTravelElement(props.travelElement.id, data)
       dispatch(passTravelElementInstance({
         id: props.travelElement.id,
         photos: result.urls,
       }))
+      setLoading(false)
     } catch (err) {
       console.log(err)
       toastUtils.Toast.showToast(
@@ -53,13 +57,14 @@ const PassElementTravelModal: React.FC<Props> = (props) => {
     <form onSubmit={handleSubmit(onSubmit)}>
       <Modal.Component
         buttonComponent={(
-          <Button
+          <LoadingButton
             type="button"
             variant="contained"
             color="success"
+            loading={loading}
           >
             {t('pass')}
-          </Button>
+          </LoadingButton>
         )}
         title={t('pass')}
         content={(

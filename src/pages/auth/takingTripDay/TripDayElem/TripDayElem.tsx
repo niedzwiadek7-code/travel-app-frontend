@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
   Button, Grid, Stack, Typography, useTheme,
 } from '@mui/material'
@@ -9,6 +9,7 @@ import {
   AirplanemodeActive as TravelIcon,
 } from '@mui/icons-material'
 import { useTranslation } from 'react-i18next'
+import { LoadingButton } from '@mui/lab'
 import { ActivityType, ElementTravelInstance } from '../../../../model'
 import { useAppDispatch } from '../../../../app/hooks'
 import { cancelTravelElementInstance } from '../../../../features/travelInstance/travelInstanceSlice'
@@ -32,6 +33,7 @@ const TripDayElem: React.FC<Props> = (props) => {
   const apiService = getApiService()
   const { token } = useAuth()
   const travelService = apiService.getTravel(token)
+  const [cancelLoading, setCancelLoading] = useState<boolean>(false)
 
   const getIcon = (type: ActivityType) => {
     switch (type) {
@@ -48,8 +50,10 @@ const TripDayElem: React.FC<Props> = (props) => {
 
   const cancelTravelElementInstanceFn = async () => {
     try {
+      setCancelLoading(true)
       await travelService.cancelTravelElementInstance(props.travelElement.id)
       dispatch(cancelTravelElementInstance(props.travelElement.id))
+      setCancelLoading(false)
     } catch (err) {
       toastUtils.Toast.showToast(
         toastUtils.types.ERROR,
@@ -185,14 +189,15 @@ const TripDayElem: React.FC<Props> = (props) => {
                 travelElement={props.travelElement}
               />
 
-              <Button
+              <LoadingButton
                 type="button"
                 variant="contained"
                 color="error"
                 onClick={cancelTravelElementInstanceFn}
+                loading={cancelLoading}
               >
                 {t('cancel')}
-              </Button>
+              </LoadingButton>
             </>
           )
         }
