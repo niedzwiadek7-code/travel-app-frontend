@@ -50,6 +50,8 @@ const AddActivityButton: React.FC<Props> = (props) => {
               state: {
                 previousPage: pathname,
                 types: [props.activityType],
+                travelInstance: travelInstance.id,
+                source: 'system',
               },
             }),
           },
@@ -59,6 +61,8 @@ const AddActivityButton: React.FC<Props> = (props) => {
               state: {
                 previousPage: pathname,
                 types: [props.activityType],
+                travelInstance: travelInstance.id,
+                source: 'user',
               },
             }),
           },

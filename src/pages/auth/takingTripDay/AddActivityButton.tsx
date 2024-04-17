@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, Menu, MenuItem } from '@mui/material'
+import { Button } from '@mui/material'
 import { useTranslation } from 'react-i18next'
 import { Pages } from '../../pages'
 import { locallyActivityTypes } from '../../../model'

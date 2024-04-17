@@ -105,9 +105,17 @@ const SaveInstanceActivityModal: React.FC<Props> = (props) => {
         activity: props.activity,
       })
       dispatch(putActivityInstance(travelElement))
-      navigate(Pages.TAKING_TRIP_DAY.getRedirectLink({
-        date: props.date,
-      }))
+      switch (props.activity.activityType) {
+        case 'Accommodation':
+          navigate(Pages.TAKING_TRIP.getRedirectLink({
+            id: travelInstance.id.toString(),
+          }))
+          break
+        default:
+          navigate(Pages.TAKING_TRIP_DAY.getRedirectLink({
+            date: props.date,
+          }))
+      }
     } catch (err) {
       toastUtils.Toast.showToast(
         toastUtils.types.ERROR,
