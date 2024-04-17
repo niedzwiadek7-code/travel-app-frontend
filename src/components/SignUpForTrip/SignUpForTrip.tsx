@@ -2,12 +2,13 @@ import React from 'react'
 import { Button } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import * as Modal from '../UI/Modal'
 import * as Input from '../UI/Input'
 import { PlanATravelDto } from '../../services/backend/Travel/dto'
 import { Pages } from '../../pages/pages'
-import { useDependencies } from '../../context/dependencies'
-import { useAuth } from '../../context/auth'
+import { useDependencies, useAuth } from '../../context'
+import { useRouter } from '../../hooks'
 
 type ModalInputs = {
   startDate: Date,
@@ -19,12 +20,16 @@ type Props = {
 }
 
 const SignUpForTrip: React.FC<Props> = (props) => {
+  const {
+    navigate,
+  } = useRouter()
+
   const { getApiService, getToastUtils } = useDependencies()
   const toastUtils = getToastUtils()
   const apiService = getApiService()
   const { token } = useAuth()
   const travelService = apiService.getTravel(token)
-  const navigate = useNavigate()
+  const { t } = useTranslation('translation', { keyPrefix: 'sign_up_for_trip' })
 
   const {
     register, handleSubmit,
@@ -43,7 +48,7 @@ const SignUpForTrip: React.FC<Props> = (props) => {
     } catch (e) {
       toastUtils.Toast.showToast(
         toastUtils.types.ERROR,
-        'Wystąpił nieoczekiwany błąd',
+        t('error'),
       )
     }
   }
@@ -61,22 +66,22 @@ const SignUpForTrip: React.FC<Props> = (props) => {
             style={{ width: '100%' }}
             onClick={() => {}}
           >
-            Wybierz się na wycieczkę
+            {t('go_to_travel')}
           </Button>
         )}
-        title={`Zapisz się na wycieczkę ${props.name}`}
+        title={`${t('save_to_travel')} ${props.name}`}
         content={(
           <Input.Component
             variant={Input.Variant.OUTLINED}
             type={Input.Type.DATE}
-            label="Podaj datę początkową"
+            label={t('start_date')}
             register={register}
             name="startDate"
           />
         )}
         actions={[
           {
-            name: 'Wybierz się na wycieczkę',
+            name: t('go_to_travel'),
             type: 'submit',
             onClick: handleSubmit(onSubmit),
           },

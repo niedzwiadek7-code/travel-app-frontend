@@ -1,4 +1,10 @@
 {
+  "sign_up_for_trip": {
+    "go_to_travel": "Join the trip",
+    "error": "An unexpected error occurred",
+    "save_to_travel": "Save to trip",
+    "start_date": "Enter start date"
+  },
   "register_page": {
     "email_already_exists": "User with this email already exists",
     "incorrect_data": "Incorrect registration data",

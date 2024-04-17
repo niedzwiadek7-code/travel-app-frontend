@@ -1,4 +1,10 @@
 {
+  "sign_up_for_trip": {
+    "go_to_travel": "Wybierz się na wycieczkę",
+    "error": "Wystąpił nieoczekiwany błąd",
+    "save_to_travel": "Zapisz się na wycieczkę",
+    "start_date": "Podaj datę początkową"
+  },
   "register_page": {
     "email_already_exists": "Użytkownik z podanym emailem już istnieje",
     "incorrect_data": "Nieprawidłowe dane do rejestracji",

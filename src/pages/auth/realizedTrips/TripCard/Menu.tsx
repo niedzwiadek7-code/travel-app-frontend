@@ -35,7 +35,7 @@ const MenuComponent: React.FC<Props> = (props) => {
         <MenuIcon
           sx={{
             paddingX: theme.spacing(1),
-            paddingTop: theme.spacing(0.5),
+            paddingTop: theme.spacing(0.75),
           }}
         />
       )}

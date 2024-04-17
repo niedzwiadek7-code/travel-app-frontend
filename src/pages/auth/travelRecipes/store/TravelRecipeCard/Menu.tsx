@@ -21,7 +21,12 @@ const MenuComponent: React.FC<Props> = (props) => {
     <div>
       <SplitButton.Component
         button={(
-          <MenuIcon />
+          <MenuIcon
+            sx={{
+              paddingX: 1,
+              paddingTop: 0.75,
+            }}
+          />
         )}
         options={[
           {
