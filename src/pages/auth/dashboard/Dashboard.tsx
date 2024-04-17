@@ -25,9 +25,6 @@ const Dashboard: React.FC = () => {
   return (
     <Stack
       spacing={3}
-      sx={{
-        p: 0, m: 3,
-      }}
     >
       <Header.Component
         title={`${t('hello')}, ${firstName}`}

@@ -42,7 +42,9 @@ const Header: React.FC<Props> = (props) => {
       direction="row"
       justifyContent="space-between"
       alignItems="center"
-      className={Styles.header}
+      sx={{
+        paddingY: theme.spacing(1),
+      }}
     >
       <Typography
         variant="h5"

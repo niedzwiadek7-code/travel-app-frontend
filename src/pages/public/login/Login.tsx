@@ -12,6 +12,7 @@ import Styles from './Login.module.scss'
 import * as Input from '../../../components/UI/Input'
 import { useDependencies, useAuth } from '../../../context'
 import { Pages } from '../../pages'
+import PublicHeader from '../../../components/PublicHeader'
 
 type Inputs = {
   email: string,
@@ -55,98 +56,100 @@ const Login: React.FC = () => {
   }
 
   return (
-    <Stack
-      className={Styles.container}
-      spacing={2}
-    >
-      <h1
-        style={{ color: theme.palette.primary.main }}
-        className={Styles.header}
-      >
-        {t('login')}
-      </h1>
-
+    <Stack>
+      <PublicHeader />
       <Stack
-        alignItems="center"
+        className={Styles.container}
+        spacing={2}
       >
-        <div
-          className={Styles.description}
-          style={{ color: theme.palette.grey[800] }}
+        <h1
+          style={{ color: theme.palette.primary.main }}
+          className={Styles.header}
         >
-          {t('description')}
-        </div>
-      </Stack>
-
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <Grid
-          container
-          spacing={2}
-        >
-          <Grid
-            item
-            xs={12}
-            lg={6}
-          >
-            <Input.Component
-              variant={Input.Variant.OUTLINED}
-              type={Input.Type.EMAIL}
-              label={t('email')}
-              icon={
-                <Email />
-              }
-              register={register}
-              name="email"
-              validation={['required', 'email']}
-              error={errors?.email?.message || ''}
-            />
-          </Grid>
-
-          <Grid
-            item
-            xs={12}
-            lg={6}
-          >
-            <Input.Component
-              variant={Input.Variant.OUTLINED}
-              type={Input.Type.PASSWORD}
-              label={t('password')}
-              icon={
-                <Key />
-              }
-              register={register}
-              name="password"
-              validation={['required']}
-              error={errors?.password?.message || ''}
-            />
-          </Grid>
-        </Grid>
+          {t('login')}
+        </h1>
 
         <Stack
-          marginTop={2}
-          direction="row"
-          gap={1}
-          justifyContent="end"
+          alignItems="center"
         >
-          <Button
-            type="button"
-            variant="contained"
-            className={Styles.button}
-            onClick={() => navigate(Pages.WELCOME.getRedirectLink())}
+          <div
+            className={Styles.description}
+            style={{ color: theme.palette.grey[800] }}
           >
-            {t('back')}
-          </Button>
-
-          <LoadingButton
-            type="submit"
-            variant="contained"
-            className={Styles.button}
-            loading={btnLoading}
-          >
-            {t('sign_in')}
-          </LoadingButton>
+            {t('description')}
+          </div>
         </Stack>
-      </form>
 
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Grid
+            container
+            spacing={2}
+          >
+            <Grid
+              item
+              xs={12}
+              lg={6}
+            >
+              <Input.Component
+                variant={Input.Variant.OUTLINED}
+                type={Input.Type.EMAIL}
+                label={t('email')}
+                icon={
+                  <Email />
+                }
+                register={register}
+                name="email"
+                validation={['required', 'email']}
+                error={errors?.email?.message || ''}
+              />
+            </Grid>
+
+            <Grid
+              item
+              xs={12}
+              lg={6}
+            >
+              <Input.Component
+                variant={Input.Variant.OUTLINED}
+                type={Input.Type.PASSWORD}
+                label={t('password')}
+                icon={
+                  <Key />
+                }
+                register={register}
+                name="password"
+                validation={['required']}
+                error={errors?.password?.message || ''}
+              />
+            </Grid>
+          </Grid>
+
+          <Stack
+            marginTop={2}
+            direction="row"
+            gap={1}
+            justifyContent="end"
+          >
+            <Button
+              type="button"
+              variant="contained"
+              className={Styles.button}
+              onClick={() => navigate(Pages.WELCOME.getRedirectLink())}
+            >
+              {t('back')}
+            </Button>
+
+            <LoadingButton
+              type="submit"
+              variant="contained"
+              className={Styles.button}
+              loading={btnLoading}
+            >
+              {t('sign_in')}
+            </LoadingButton>
+          </Stack>
+        </form>
+      </Stack>
     </Stack>
   )
 }

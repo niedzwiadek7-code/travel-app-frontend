@@ -1,6 +1,6 @@
 import React from 'react'
 import {
-  Card, CardContent, Typography, Button, CardMedia, Grid,
+  Card, CardContent, Typography, Button, CardMedia, Grid, useTheme,
 } from '@mui/material'
 import { useTranslation } from 'react-i18next'
 import Styles from './Cards.module.scss'
@@ -73,6 +73,7 @@ const Cards: React.FC = () => {
     navigate,
     pathname,
   } = useRouter()
+  const theme = useTheme()
   const { roles } = useAuth()
   const { t } = useTranslation('translation', { keyPrefix: 'dashboard' })
 
@@ -80,6 +81,9 @@ const Cards: React.FC = () => {
     <Grid
       container
       spacing={2}
+      sx={{
+        paddingRight: theme.spacing(3),
+      }}
     >
       <CardComponent
         image={CreateTravel}

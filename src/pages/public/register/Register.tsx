@@ -13,6 +13,7 @@ import Styles from './Register.module.scss'
 import * as Input from '../../../components/UI/Input'
 import { useDependencies, useAuth } from '../../../context'
 import { Pages } from '../../pages'
+import PublicHeader from '../../../components/PublicHeader'
 
 type Inputs = {
   name: string,
@@ -77,99 +78,101 @@ const Register: React.FC = () => {
   }
 
   return (
-    <Stack
-      className={Styles.container}
-      spacing={2}
-    >
-      <h1
-        style={{ color: theme.palette.primary.main }}
-        className={Styles.header}
-      >
-        {t('register')}
-      </h1>
-
+    <Stack>
+      <PublicHeader />
       <Stack
-        alignItems="center"
+        className={Styles.container}
+        spacing={2}
       >
-        <div
-          className={Styles.description}
-          style={{ color: theme.palette.grey[800] }}
+        <h1
+          style={{ color: theme.palette.primary.main }}
+          className={Styles.header}
         >
-          {t('description')}
-        </div>
+          {t('register')}
+        </h1>
+
+        <Stack
+          alignItems="center"
+        >
+          <div
+            className={Styles.description}
+            style={{ color: theme.palette.grey[800] }}
+          >
+            {t('description')}
+          </div>
+        </Stack>
+
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Stack
+            spacing={2}
+          >
+            <Input.Component
+              variant={Input.Variant.OUTLINED}
+              type={Input.Type.TEXT}
+              // TODO: this should be simplified
+              label={t('name')}
+              icon={
+                <Badge />
+              }
+              register={register}
+              name="name"
+              error={errors?.name?.message || ''}
+              validation={['required', 'min:3']}
+            />
+
+            <Input.Component
+              variant={Input.Variant.OUTLINED}
+              type={Input.Type.EMAIL}
+              label={t('email')}
+              icon={
+                <Email />
+              }
+              register={register}
+              name="email"
+              validation={['required', 'email']}
+              error={errors?.email?.message || ''}
+            />
+
+            <Input.Component
+              variant={Input.Variant.OUTLINED}
+              type={Input.Type.PASSWORD}
+              label={t('password')}
+              icon={
+                <Key />
+              }
+              register={register}
+              name="password"
+              validation={['required', 'password']}
+              error={errors?.password?.message || ''}
+            />
+          </Stack>
+
+          <Stack
+            marginTop={1}
+            direction="row"
+            gap={1}
+            justifyContent="end"
+          >
+            <Button
+              type="button"
+              variant="contained"
+              className={Styles.button}
+              onClick={() => navigate(Pages.WELCOME.getRedirectLink())}
+            >
+              {t('back')}
+            </Button>
+
+            <LoadingButton
+              type="submit"
+              variant="contained"
+              className={Styles.button}
+              loading={btnLoading}
+            >
+              {t('sign_up')}
+            </LoadingButton>
+          </Stack>
+        </form>
       </Stack>
-
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <Stack
-          spacing={2}
-        >
-          <Input.Component
-            variant={Input.Variant.OUTLINED}
-            type={Input.Type.TEXT}
-            // TODO: this should be simplified
-            label={t('name')}
-            icon={
-              <Badge />
-            }
-            register={register}
-            name="name"
-            error={errors?.name?.message || ''}
-            validation={['required', 'min:3']}
-          />
-
-          <Input.Component
-            variant={Input.Variant.OUTLINED}
-            type={Input.Type.EMAIL}
-            label={t('email')}
-            icon={
-              <Email />
-            }
-            register={register}
-            name="email"
-            validation={['required', 'email']}
-            error={errors?.email?.message || ''}
-          />
-
-          <Input.Component
-            variant={Input.Variant.OUTLINED}
-            type={Input.Type.PASSWORD}
-            label={t('password')}
-            icon={
-              <Key />
-            }
-            register={register}
-            name="password"
-            validation={['required', 'password']}
-            error={errors?.password?.message || ''}
-          />
-        </Stack>
-
-        <Stack
-          marginTop={1}
-          direction="row"
-          gap={1}
-          justifyContent="end"
-        >
-          <Button
-            type="button"
-            variant="contained"
-            className={Styles.button}
-            onClick={() => navigate(Pages.WELCOME.getRedirectLink())}
-          >
-            {t('back')}
-          </Button>
-
-          <LoadingButton
-            type="submit"
-            variant="contained"
-            className={Styles.button}
-            loading={btnLoading}
-          >
-            {t('sign_up')}
-          </LoadingButton>
-        </Stack>
-      </form>
-
     </Stack>
   )
 }

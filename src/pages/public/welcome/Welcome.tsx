@@ -6,6 +6,7 @@ import {
 import { useTranslation } from 'react-i18next'
 import Style from './Welcome.module.scss'
 import { Pages } from '../../pages'
+import PublicHeader from '../../../components/PublicHeader'
 
 const Welcome: React.FC = () => {
   const theme = useTheme()
@@ -13,46 +14,49 @@ const Welcome: React.FC = () => {
   const { t } = useTranslation('translation', { keyPrefix: 'welcome' })
 
   return (
-    <Stack
-      className={Style.container}
-      spacing={2}
-    >
-      <Typography
-        color="primary"
-        variant="h3"
-        component="h1"
-      >
-        Travel App
-      </Typography>
-
+    <Stack>
+      <PublicHeader />
       <Stack
-        alignItems="center"
+        className={Style.container}
+        spacing={2}
       >
         <Typography
-          variant="body1"
-          component="p"
-          color={theme.palette.grey[800]}
-          sx={{
-            marginBottom: theme.spacing(3),
-          }}
+          color="primary"
+          variant="h3"
+          component="h1"
         >
-          {t('description')}
+          Travel App
         </Typography>
+
+        <Stack
+          alignItems="center"
+        >
+          <Typography
+            variant="body1"
+            component="p"
+            color={theme.palette.grey[800]}
+            sx={{
+              marginBottom: theme.spacing(3),
+            }}
+          >
+            {t('description')}
+          </Typography>
+        </Stack>
+
+        <Button
+          variant="contained"
+          onClick={() => navigate(Pages.REGISTER.getRedirectLink())}
+        >
+          {t('register')}
+        </Button>
+
+        <Button
+          variant="contained"
+          onClick={() => navigate(Pages.LOGIN.getRedirectLink())}
+        >
+          {t('login')}
+        </Button>
       </Stack>
-
-      <Button
-        variant="contained"
-        onClick={() => navigate(Pages.REGISTER.getRedirectLink())}
-      >
-        {t('register')}
-      </Button>
-
-      <Button
-        variant="contained"
-        onClick={() => navigate(Pages.LOGIN.getRedirectLink())}
-      >
-        {t('login')}
-      </Button>
     </Stack>
   )
 }
