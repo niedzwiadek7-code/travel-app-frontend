@@ -4,6 +4,7 @@ import React, {
 import { Fade } from 'react-slideshow-image'
 import 'react-slideshow-image/dist/styles.css'
 import { Box, Modal, Stack } from '@mui/material'
+import * as Image from '../Image'
 
 type Props = {
   buttonComponent: ReactNode,
@@ -75,7 +76,9 @@ const Slider: React.FC<Props> = (props) => {
                       maxHeight: '100%',
                     }}
                   >
-                    <img
+                    <Image.Component
+                      alt=""
+                      src={image}
                       style={{
                         minWidth: '50%',
                         minHeight: '50%',
@@ -83,8 +86,6 @@ const Slider: React.FC<Props> = (props) => {
                         maxHeight: '100%',
                         objectFit: 'cover',
                       }}
-                      src={image}
-                      alt=""
                     />
                   </Stack>
                 ))

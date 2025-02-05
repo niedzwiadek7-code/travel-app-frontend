@@ -15,6 +15,7 @@ import { useAppDispatch } from '../../../../app/hooks'
 import { cancelTravelElementInstance } from '../../../../features/travelInstance/travelInstanceSlice'
 import { useDependencies, useAuth } from '../../../../context'
 import * as Slider from '../../../../components/UI/Slider'
+import * as Image from '../../../../components/UI/Image'
 import * as PassActivity from '../../../../components/Activity/PassActivity'
 import * as RateActivity from '../../../../components/Activity/RateActivity'
 import { DateHandler } from '../../../../utils/Date'
@@ -137,7 +138,8 @@ const TripDayElem: React.FC<Props> = (props) => {
                         background: 'none',
                       }}
                     >
-                      <img
+                      <Image.Component
+                        alt=""
                         src={photo}
                         style={{
                           width: '100%',
@@ -145,7 +147,6 @@ const TripDayElem: React.FC<Props> = (props) => {
                           objectFit: 'cover',
                           borderRadius: '5px',
                         }}
-                        alt=""
                       />
                     </button>
                   )}

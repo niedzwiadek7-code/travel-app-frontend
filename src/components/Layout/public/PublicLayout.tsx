@@ -2,6 +2,7 @@ import React, { ReactNode } from 'react'
 import { Grid } from '@mui/material'
 import Styles from './PublicLayout.module.scss'
 import Theme from '../../../assets/theme/basic.jpg'
+import * as Image from '../../UI/Image'
 
 type Props = {
   children: ReactNode,
@@ -14,9 +15,9 @@ const PublicLayout: React.FC<Props> = (props) => (
     className={Styles.container}
   >
     <Grid item xs={12} lg={6} className={Styles.content}>
-      <img
-        src={Theme}
+      <Image.Component
         alt=""
+        src={Theme}
         className={Styles.img}
       />
     </Grid>

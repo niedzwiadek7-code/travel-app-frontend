@@ -2,6 +2,7 @@ import React from 'react'
 import {
   Grid, Stack, Typography, useTheme,
 } from '@mui/material'
+import * as Image from '../UI/Image'
 
 type Props = {
   text: string
@@ -48,7 +49,8 @@ const Rating: React.FC<Props> = (props) => {
               key={url}
               xs={2}
             >
-              <img
+              <Image.Component
+                alt=""
                 src={url}
                 style={{
                   width: '100%',
@@ -56,7 +58,6 @@ const Rating: React.FC<Props> = (props) => {
                   objectFit: 'cover',
                   borderRadius: '5px',
                 }}
-                alt=""
               />
             </Grid>
           ))

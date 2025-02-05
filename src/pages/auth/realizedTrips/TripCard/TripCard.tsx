@@ -10,6 +10,7 @@ import { TravelInstance } from '../../../../model'
 import MenuComponent from './Menu'
 import { Pages } from '../../../pages'
 import * as Slider from '../../../../components/UI/Slider'
+import * as Image from '../../../../components/UI/Image'
 import { DateHandler } from '../../../../utils/Date'
 
 type Props = {
@@ -125,7 +126,8 @@ const TripCard: React.FC<Props> = (props) => {
                           background: 'none',
                         }}
                       >
-                        <img
+                        <Image.Component
+                          alt=""
                           src={photo}
                           style={{
                             width: '100%',
@@ -133,7 +135,6 @@ const TripCard: React.FC<Props> = (props) => {
                             objectFit: 'cover',
                             borderRadius: '5px',
                           }}
-                          alt=""
                         />
                       </button>
                     )}

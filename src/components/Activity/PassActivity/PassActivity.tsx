@@ -10,6 +10,7 @@ import * as Modal from '../../../components/UI/Modal'
 import { useDependencies, useAuth } from '../../../context'
 import { useAppDispatch } from '../../../app/hooks'
 import { passTravelElementInstance } from '../../../features/travelInstance/travelInstanceSlice'
+import * as Image from '../../UI/Image'
 
 type Props = {
   travelElement: ElementTravelInstance
@@ -88,7 +89,8 @@ const PassElementTravelModal: React.FC<Props> = (props) => {
                         key={url}
                         xs={4}
                       >
-                        <img
+                        <Image.Component
+                          alt=""
                           src={url}
                           style={{
                             width: '100%',
@@ -96,7 +98,6 @@ const PassElementTravelModal: React.FC<Props> = (props) => {
                             objectFit: 'cover',
                             borderRadius: '5px',
                           }}
-                          alt=""
                         />
                       </Grid>
                     ))
