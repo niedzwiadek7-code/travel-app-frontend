@@ -1,28 +1,39 @@
 import React, { useState } from 'react'
 import {
-  Button, Pagination, Stack,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemSecondaryAction,
+  IconButton,
+  Typography,
+  Divider,
+  Paper,
+  Stack,
+  CircularProgress,
+  Pagination,
+  Button,
+  Box, ListItemIcon,
 } from '@mui/material'
-import { DownhillSkiing } from '@mui/icons-material'
+import { AddCircleOutline, Info } from '@mui/icons-material'
 import { useTranslation } from 'react-i18next'
+import DoneIcon from '@mui/icons-material/Done'
+import DeleteIcon from '@mui/icons-material/Delete'
 import { useDependencies, useAuth } from '../../../context'
 import { Paginate } from '../../../model'
 import { ExtendedActivityFormat } from '../../../services/backend/Activity/types'
-import { Pages } from '../../pages'
-import * as ActivityCard from './ActivityCard'
-import * as Header from '../../../components/Header'
 import { usePagination, useRouter } from '../../../hooks'
 import { StateDto } from './dto/state.dto'
+import { Pages } from '../../pages'
+import * as SaveActivityModal from '../../../components/SaveActivityModal'
+import * as SaveInstanceActivityModal from '../../../components/SaveInstanceActivityModal'
+import ActivityCard from './ActivityCard/ActivityCard'
 
 type QueryParams = {
   page?: string,
 }
 
 const ListActivity: React.FC = () => {
-  const {
-    state,
-    query,
-    navigate,
-  } = useRouter<StateDto, QueryParams, Record<string, any>>()
+  const { state, query, navigate } = useRouter<StateDto, QueryParams, Record<string, any>>()
   const { t } = useTranslation('translation', { keyPrefix: 'activity_list_page' })
 
   const { getApiService, getToastUtils } = useDependencies()
@@ -31,12 +42,13 @@ const ListActivity: React.FC = () => {
   const apiService = getApiService()
   const [activityService] = useState(apiService.getActivity(token))
 
+  // Funkcja pobierająca dane aktywności z backendu
   const fetchData = async (
     page: number,
     pageSize: number,
   ): Promise<Paginate<ExtendedActivityFormat>> => {
     try {
-      return activityService.getAll(
+      return await activityService.getAll(
         state.source || 'all',
         page,
         pageSize,
@@ -47,10 +59,7 @@ const ListActivity: React.FC = () => {
         toastUtils.types.ERROR,
         t('error'),
       )
-      return {
-        data: [],
-        total: 0,
-      }
+      return { data: [], total: 0 }
     }
   }
 
@@ -93,34 +102,68 @@ const ListActivity: React.FC = () => {
     }
   }
 
-  if (loading) {
-    return (
-      <div> Loading... </div>
-    )
+  const handleViewDetails = (activity: ExtendedActivityFormat) => {
+    navigate(`${Pages.ACTIVITY_DETAILS.getRedirectLink()}/${activity.id}`, { state: { activity } })
   }
 
   const goToPageLocally = (page: number) => {
     goToPage(page)
-    navigate(
-      `${Pages.LIST_ACTIVITY.getRedirectLink()}?page=${page}`,
-      {
-        state,
-      },
+    navigate(`${Pages.LIST_ACTIVITY.getRedirectLink()}?page=${page}`, { state })
+  }
+
+  if (loading) {
+    return (
+      <Stack sx={{
+        display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 4,
+      }}
+      >
+        <CircularProgress />
+      </Stack>
     )
   }
 
+  // const getAllImages: (activity: ExtendedActivityFormat) => Array<string> = (
+  //   activity: ExtendedActivityFormat,
+  // ) => {
+  //   const allImages: string[] = []
+  //   activity.ratings.forEach((rating) => {
+  //     rating.photos.forEach((photo) => {
+  //       allImages.push(photo)
+  //     })
+  //   })
+  //   return allImages
+  // }
+
+  // eslint-disable-next-line no-unused-vars
+  const getPrimaryImage: (activity: ExtendedActivityFormat) => string | null = (
+    activity: ExtendedActivityFormat,
+  ) => {
+    if (activity?.ratings[0]?.photos[0]) {
+      return activity.ratings[0].photos[0]
+    }
+    return null
+  }
+
   return (
-    <Stack
-      gap={2}
-    >
-      <Header.Component
-        title={state.admin ? t('activity_manage') : t('activity_list')}
-        icon={(
-          <DownhillSkiing
-            fontSize="large"
-          />
-        )}
-      />
+    <Stack spacing={2} sx={{ p: 2 }}>
+      <Typography variant="h4" component="h1" align="center" gutterBottom>
+        {state.admin ? t('activity_manage') : t('activity_list')}
+      </Typography>
+      <Paper elevation={3}>
+        <List>
+          {data.map((activity, index) => (
+            <React.Fragment key={activity.id}>
+              <ActivityCard
+                activity={activity}
+                state={state}
+                acceptElement={() => acceptElement(activity.id)}
+                deleteElement={() => deleteElement(activity.id)}
+              />
+              {index < data.length - 1 && <Divider />}
+            </React.Fragment>
+          ))}
+        </List>
+      </Paper>
 
       <Stack
         direction="row"
@@ -134,33 +177,12 @@ const ListActivity: React.FC = () => {
         </Button>
       </Stack>
 
-      <Stack
-        gap={2}
-      >
-        {data.map((activity) => (
-          <ActivityCard.Component
-            key={activity.id}
-            activity={activity}
-            state={state}
-            acceptElement={() => acceptElement(activity.id)}
-            deleteElement={() => deleteElement(activity.id)}
-          />
-        ))}
-      </Stack>
-
-      <Stack
-        direction="row"
-        justifyContent="center"
-        sx={{
-          marginTop: 1,
-          marginBottom: 1,
-        }}
-      >
+      <Stack direction="row" justifyContent="center" sx={{ mt: 2 }}>
         <Pagination
           count={totalPages}
+          page={currentPage}
           color="primary"
           onChange={(event, page) => goToPageLocally(page)}
-          page={currentPage}
         />
       </Stack>
     </Stack>

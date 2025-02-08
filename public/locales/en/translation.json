@@ -170,6 +170,11 @@
       "delete": "Delete"
     },
     "activities": {
+      "Restaurant": "Restaurant",
+      "Attraction": "Attraction",
+      "Accommodation": "Accommodation",
+      "Trip": "Trip",
+      "price": "Price",
       "day": "day",
       "rating": "Ratings",
       "add_to_travel": "Add to Trip",

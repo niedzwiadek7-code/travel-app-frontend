@@ -169,6 +169,11 @@
       "delete": "Usuń"
     },
     "activities": {
+      "Accommodation": "Nocleg",
+      "Attraction": "Atrakcja",
+      "Restaurant": "Restauracja",
+      "Trip": "Podróż",
+      "price": "Cena",
       "day": "dzień",
       "rating": "Opinie",
       "add_to_travel": "Dodaj do wycieczki",

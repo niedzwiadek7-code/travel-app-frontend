@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ReactNode } from 'react'
 import { useForm } from 'react-hook-form'
 import { Button, Stack } from '@mui/material'
 import { useTranslation } from 'react-i18next'
@@ -18,6 +18,7 @@ import { useRouter } from '../../hooks'
 import * as Input from '../UI/Input'
 
 type Props = {
+  button: ReactNode
   activity: ExtendedActivityFormat
   date: string
 }
@@ -127,44 +128,8 @@ const SaveInstanceActivityModal: React.FC<Props> = (props) => {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Modal.Component
-        buttonComponent={(
-          <Button
-            type="button"
-            variant="contained"
-            sx={{ width: '100%' }}
-          >
-            {t('add_to_trip')}
-          </Button>
-        )}
+        buttonComponent={props.button}
         title={`${t('pick_hours')}: ${props.activity.name}`}
-        content={(
-          <Stack
-            gap={2}
-            sx={{
-              width: 'min(70vw, 400px)',
-            }}
-          >
-            <Input.Component
-              variant={Input.Variant.OUTLINED}
-              type={activityScope === 'Locally' ? Input.Type.TIME : Input.Type.DATE}
-              label={t('from')}
-              register={register}
-              name="from"
-              validation={['required']}
-              error={errors.from?.message || ''}
-            />
-
-            <Input.Component
-              variant={Input.Variant.OUTLINED}
-              type={activityScope === 'Locally' ? Input.Type.TIME : Input.Type.DATE}
-              label={t('to')}
-              register={register}
-              name="to"
-              validation={['required']}
-              error={errors.to?.message || ''}
-            />
-          </Stack>
-        )}
         actions={[
           {
             name: t('add_activity'),
@@ -172,7 +137,34 @@ const SaveInstanceActivityModal: React.FC<Props> = (props) => {
             type: 'submit',
           },
         ]}
-      />
+      >
+        <Stack
+          gap={2}
+          sx={{
+            width: 'min(70vw, 400px)',
+          }}
+        >
+          <Input.Component
+            variant={Input.Variant.OUTLINED}
+            type={activityScope === 'Locally' ? Input.Type.TIME : Input.Type.DATE}
+            label={t('from')}
+            register={register}
+            name="from"
+            validation={['required']}
+            error={errors.from?.message || ''}
+          />
+
+          <Input.Component
+            variant={Input.Variant.OUTLINED}
+            type={activityScope === 'Locally' ? Input.Type.TIME : Input.Type.DATE}
+            label={t('to')}
+            register={register}
+            name="to"
+            validation={['required']}
+            error={errors.to?.message || ''}
+          />
+        </Stack>
+      </Modal.Component>
     </form>
   )
 }
