@@ -1,5 +1,6 @@
 export type Action = {
   name: string,
-  onClick: () => void,
+  onClick: () => Promise<void> | void,
   type?: 'submit' | 'button'
+  hideAfterClick?: boolean
 }

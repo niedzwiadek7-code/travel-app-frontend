@@ -49,7 +49,8 @@
     "pass": {
       "error": "Wystąpił nieoczekiwany błąd",
       "pass": "Zapisz odbycie",
-      "add_photos": "Dodaj zdjęcia z aktywności"
+      "add_photos": "Dodaj zdjęcia z aktywności",
+      "delete": "Usuń zdjęcie"
     }
   },
   "modal": {

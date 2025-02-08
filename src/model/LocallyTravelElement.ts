@@ -21,10 +21,15 @@ class LocallyTravelElement {
   photos: string[]
 
   constructor(obj: any) {
+    const transformHour = (hour: string) => {
+      const [hours, minutes] = hour.split(':')
+      return `${hours}:${minutes}`
+    }
+
     this.id = obj.id
     this.dayCount = obj.dayCount
-    this.from = obj.from
-    this.to = obj.to
+    this.from = transformHour(obj.from)
+    this.to = transformHour(obj.to)
     this.activity = obj.activity
     this.numberOfPeople = obj.numberOfPeople
     this.price = obj.price

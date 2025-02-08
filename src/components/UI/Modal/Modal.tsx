@@ -2,10 +2,11 @@ import React, {
   cloneElement, ReactElement, ReactNode, useState,
 } from 'react'
 import {
-  Box, Button, Modal, Stack, Typography,
+  Box, IconButton, Modal, Stack, Typography,
 } from '@mui/material'
-import { useTranslation } from 'react-i18next'
+import CloseIcon from '@mui/icons-material/Close'
 import { Action } from '.'
+import ButtonComponent from './Button'
 
 type Props = {
   buttonComponent: ReactNode,
@@ -18,12 +19,6 @@ const ModalComponent: React.FC<Props> = (props) => {
   const [open, setOpen] = useState<boolean>(false)
   const showModal = () => setOpen(true)
   const hideModal = () => setOpen(false)
-  const { t } = useTranslation('translation', { keyPrefix: 'modal' })
-
-  const buttonOnChange = (action: Action) => {
-    action.onClick()
-    hideModal()
-  }
 
   return (
     <div>
@@ -34,50 +29,54 @@ const ModalComponent: React.FC<Props> = (props) => {
       >
         <Box
           sx={{
-            position: 'absolute' as 'absolute',
+            position: 'absolute',
             top: '50%',
             left: '50%',
             transform: 'translate(-50%, -50%)',
-            width: 400,
             bgcolor: 'background.paper',
-            border: '2px solid #000',
+            borderRadius: 2,
             boxShadow: 24,
             p: 4,
           }}
         >
+          <IconButton
+            onClick={hideModal}
+            sx={{
+              position: 'absolute',
+              top: 5,
+              right: 5,
+            }}
+            aria-label="close"
+          >
+            <CloseIcon />
+          </IconButton>
+
           <Typography variant="h6" component="h2">
             {props.title}
           </Typography>
 
-          <Stack
-            sx={{ marginTop: '.8em' }}
-          >
+          <Stack sx={{ marginTop: '.8em' }}>
             {props.content}
           </Stack>
 
           <Stack
-            direction="row"
             justifyContent="flex-end"
             gap={1}
-            sx={{ marginTop: '1.2em' }}
+            sx={{
+              marginTop: '1.2em',
+              flexDirection: {
+                xs: 'column',
+                sm: 'row',
+              },
+            }}
           >
             {props.actions && props.actions.map((action) => (
-              <Button
+              <ButtonComponent
                 key={action.name}
-                variant="contained"
-                type={action?.type || 'button'}
-                onClick={() => buttonOnChange(action)}
-              >
-                {action.name}
-              </Button>
+                action={action}
+                hideModal={hideModal}
+              />
             ))}
-
-            <Button
-              variant="outlined"
-              onClick={hideModal}
-            >
-              {t('back')}
-            </Button>
           </Stack>
         </Box>
       </Modal>

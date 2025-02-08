@@ -49,7 +49,8 @@
     "pass": {
       "error": "An unexpected error occurred",
       "pass": "Save Pass",
-      "add_photos": "Add photos of activity"
+      "add_photos": "Add photos of activity",
+      "delete": "Delete Image"
     }
   },
   "modal": {
