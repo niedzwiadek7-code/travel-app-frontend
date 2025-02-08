@@ -198,83 +198,7 @@ const SaveActivityModal: React.FC<Props> = (props) => {
     <form onSubmit={handleSubmit(onSubmit)}>
       <Modal.Component
         buttonComponent={props.button}
-        title={props.activity.name}
-        content={(
-          <Stack
-            gap={2}
-          >
-            <Input.Component
-              variant={Input.Variant.OUTLINED}
-              type={activityScope === 'Locally' ? Input.Type.TIME : Input.Type.NUMBER}
-              label={t('from')}
-              register={register}
-              name="from"
-              default={getDefaultRangeProp(props.travelElement?.from)}
-              validation={[
-                'required',
-                ...(activityScope === 'Globally'
-                  ? ['minNum:1', `maxNum:${travelRecipe.countDays}`]
-                  : []
-                ),
-              ]}
-              onChange={calculatePrice}
-              error={errors.from?.message || ''}
-            />
-
-            <Input.Component
-              variant={Input.Variant.OUTLINED}
-              type={activityScope === 'Locally' ? Input.Type.TIME : Input.Type.NUMBER}
-              label={t('to')}
-              register={register}
-              name="to"
-              default={getDefaultRangeProp(props.travelElement?.to)}
-              validation={[
-                'required',
-                ...(activityScope === 'Globally'
-                  ? ['minNum:1', `maxNum:${travelRecipe.countDays}`]
-                  : []
-                ),
-              ]}
-              onChange={calculatePrice}
-              error={errors.to?.message || ''}
-            />
-
-            {/* TODO: move number of people to travel recipe class */}
-            <Input.Component
-              variant={Input.Variant.OUTLINED}
-              type={Input.Type.NUMBER}
-              label={t('people')}
-              register={register}
-              default={props.travelElement?.numberOfPeople}
-              name="numberOfPeople"
-              validation={['required']}
-              onChange={calculatePrice}
-              error={errors.numberOfPeople?.message || ''}
-            />
-
-            <Input.Component
-              variant={Input.Variant.OUTLINED}
-              type={Input.Type.TEXT}
-              label={t('additional_info')}
-              rows={Infinity}
-              register={register}
-              default={props.travelElement?.description}
-              name="description"
-              error={errors.description?.message || ''}
-            />
-
-            <Input.Component
-              variant={Input.Variant.OUTLINED}
-              type={Input.Type.NUMBER}
-              label={t('price')}
-              register={register}
-              default={props.travelElement?.price || 0}
-              name="price"
-              validation={['required', 'minNum:0']}
-              error={errors.price?.message || ''}
-            />
-          </Stack>
-        )}
+        title={`${t('details')}: ${props.activity.name}`}
         actions={[
           {
             name: props.travelElement ? t('edit') : t('create'),
@@ -282,7 +206,85 @@ const SaveActivityModal: React.FC<Props> = (props) => {
             type: 'submit',
           },
         ]}
-      />
+      >
+        <Stack
+          gap={2}
+          sx={{
+            width: 'min(70vw, 400px)',
+          }}
+        >
+          <Input.Component
+            variant={Input.Variant.OUTLINED}
+            type={activityScope === 'Locally' ? Input.Type.TIME : Input.Type.NUMBER}
+            label={t('from')}
+            register={register}
+            name="from"
+            default={getDefaultRangeProp(props.travelElement?.from)}
+            validation={[
+              'required',
+              ...(activityScope === 'Globally'
+                ? ['minNum:1', `maxNum:${travelRecipe.countDays}`]
+                : []
+              ),
+            ]}
+            onChange={calculatePrice}
+            error={errors.from?.message || ''}
+          />
+
+          <Input.Component
+            variant={Input.Variant.OUTLINED}
+            type={activityScope === 'Locally' ? Input.Type.TIME : Input.Type.NUMBER}
+            label={t('to')}
+            register={register}
+            name="to"
+            default={getDefaultRangeProp(props.travelElement?.to)}
+            validation={[
+              'required',
+              ...(activityScope === 'Globally'
+                ? ['minNum:1', `maxNum:${travelRecipe.countDays}`]
+                : []
+              ),
+            ]}
+            onChange={calculatePrice}
+            error={errors.to?.message || ''}
+          />
+
+          {/* TODO: move number of people to travel recipe class */}
+          <Input.Component
+            variant={Input.Variant.OUTLINED}
+            type={Input.Type.NUMBER}
+            label={t('people')}
+            register={register}
+            default={props.travelElement?.numberOfPeople}
+            name="numberOfPeople"
+            validation={['required']}
+            onChange={calculatePrice}
+            error={errors.numberOfPeople?.message || ''}
+          />
+
+          <Input.Component
+            variant={Input.Variant.OUTLINED}
+            type={Input.Type.TEXT}
+            label={t('additional_info')}
+            rows={Infinity}
+            register={register}
+            default={props.travelElement?.description}
+            name="description"
+            error={errors.description?.message || ''}
+          />
+
+          <Input.Component
+            variant={Input.Variant.OUTLINED}
+            type={Input.Type.NUMBER}
+            label={t('price')}
+            register={register}
+            default={props.travelElement?.price || 0}
+            name="price"
+            validation={['required', 'minNum:0']}
+            error={errors.price?.message || ''}
+          />
+        </Stack>
+      </Modal.Component>
     </form>
   )
 }

@@ -136,7 +136,7 @@ const SaveInstanceActivityModal: React.FC<Props> = (props) => {
             {t('add_to_trip')}
           </Button>
         )}
-        title={props.activity.name}
+        title={`${t('pick_hours')}: ${props.activity.name}`}
         content={(
           <Stack
             gap={2}

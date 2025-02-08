@@ -1,6 +1,4 @@
-import React, {
-  useRef,
-} from 'react'
+import React from 'react'
 import { useForm } from 'react-hook-form'
 import {
   Stack,
@@ -68,23 +66,6 @@ const PassElementTravelModal: React.FC<Props> = (props) => {
           </LoadingButton>
         )}
         title={t('pass')}
-        content={(
-          <Stack
-            sx={{
-              width: 'min(70vw, 400px)',
-            }}
-          >
-            <Dropzone.Component
-              name="images"
-              register={register}
-              accept="image/*"
-              value={images}
-              onChange={(files) => {
-                setValue('images', files)
-              }}
-            />
-          </Stack>
-        )}
         actions={[
           {
             name: t('pass'),
@@ -92,7 +73,23 @@ const PassElementTravelModal: React.FC<Props> = (props) => {
             onClick: handleSubmit(onSubmit),
           },
         ]}
-      />
+      >
+        <Stack
+          sx={{
+            width: 'min(70vw, 400px)',
+          }}
+        >
+          <Dropzone.Component
+            name="images"
+            register={register}
+            accept="image/*"
+            value={images}
+            onChange={(files) => {
+              setValue('images', files)
+            }}
+          />
+        </Stack>
+      </Modal.Component>
     </form>
   )
 }

@@ -11,7 +11,7 @@ import ButtonComponent from './Button'
 type Props = {
   buttonComponent: ReactNode,
   title: string,
-  content: ReactNode,
+  children: ReactNode,
   actions?: Action[]
 }
 
@@ -56,7 +56,7 @@ const ModalComponent: React.FC<Props> = (props) => {
           </Typography>
 
           <Stack sx={{ marginTop: '.8em' }}>
-            {props.content}
+            {props.children}
           </Stack>
 
           <Stack

@@ -38,64 +38,63 @@ const Slider: React.FC<Props> = (props) => {
       <Modal.Component
         buttonComponent={props.buttonComponent}
         title="Slider"
-        content={(
-          <Box
-            sx={{
-              position: 'absolute',
-              top: '50%',
-              left: '50%',
-              transform: 'translate(-50%, -50%)',
+      >
+        <Box
+          sx={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            maxWidth: '100%',
+            maxHeight: '100%',
+            overflow: 'hidden',
+          }}
+        >
+          <div
+            className="slide-container"
+            style={{
+              minWidth: '50%',
+              minHeight: '50%',
               maxWidth: '100%',
               maxHeight: '100%',
               overflow: 'hidden',
             }}
           >
-            <div
-              className="slide-container"
-              style={{
-                minWidth: '50%',
-                minHeight: '50%',
-                maxWidth: '100%',
-                maxHeight: '100%',
-                overflow: 'hidden',
-              }}
+            <Fade
+              autoplay={false}
             >
-              <Fade
-                autoplay={false}
-              >
-                {
-                  photos.map((image) => (
-                    <Stack
-                      key={image}
-                      alignItems="center"
-                      justifyContent="center"
+              {
+                photos.map((image) => (
+                  <Stack
+                    key={image}
+                    alignItems="center"
+                    justifyContent="center"
+                    style={{
+                      minWidth: '50%',
+                      minHeight: '50%',
+                      maxWidth: '100%',
+                      maxHeight: '100%',
+                    }}
+                  >
+                    <Image.Component
+                      alt=""
+                      src={image}
                       style={{
                         minWidth: '50%',
                         minHeight: '50%',
                         maxWidth: '100%',
                         maxHeight: '100%',
+                        objectFit: 'cover',
                       }}
-                    >
-                      <Image.Component
-                        alt=""
-                        src={image}
-                        style={{
-                          minWidth: '50%',
-                          minHeight: '50%',
-                          maxWidth: '100%',
-                          maxHeight: '100%',
-                          objectFit: 'cover',
-                        }}
-                      />
-                    </Stack>
-                  ))
-                }
+                    />
+                  </Stack>
+                ))
+              }
 
-              </Fade>
-            </div>
-          </Box>
-        )}
-      />
+            </Fade>
+          </div>
+        </Box>
+      </Modal.Component>
     </div>
   )
 }

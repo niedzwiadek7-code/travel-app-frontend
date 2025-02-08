@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import {
-  Button, Checkbox, FormControlLabel, Stack,
+  Checkbox, FormControlLabel, Stack,
 } from '@mui/material'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
@@ -74,26 +74,6 @@ const RateActivity: React.FC<Props> = (props) => {
           </LoadingButton>
         )}
         title={`${t('rate')} "${props.name}"`}
-        content={(
-          <Stack>
-            <Input.Component
-              variant={Input.Variant.OUTLINED}
-              type={Input.Type.TEXT}
-              label={t('your_opinion')}
-              rows={10}
-              register={register}
-              name="text"
-              validation={['min:3', 'max:1000']}
-              default={rating && rating.text}
-            />
-
-            <FormControlLabel
-              control={<Checkbox />}
-              label={t('share_photos')}
-              {...register('sharePhotos')}
-            />
-          </Stack>
-        )}
         actions={[
           {
             name: t('add_rating'),
@@ -101,7 +81,26 @@ const RateActivity: React.FC<Props> = (props) => {
             onClick: handleSubmit(onSubmit),
           },
         ]}
-      />
+      >
+        <Stack>
+          <Input.Component
+            variant={Input.Variant.OUTLINED}
+            type={Input.Type.TEXT}
+            label={t('your_opinion')}
+            rows={10}
+            register={register}
+            name="text"
+            validation={['min:3', 'max:1000']}
+            default={rating && rating.text}
+          />
+
+          <FormControlLabel
+            control={<Checkbox />}
+            label={t('share_photos')}
+            {...register('sharePhotos')}
+          />
+        </Stack>
+      </Modal.Component>
     </form>
   )
 }

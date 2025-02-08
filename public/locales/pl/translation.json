@@ -1,8 +1,9 @@
 {
   "sign_up_for_trip": {
-    "go_to_travel": "Wybierz się na wycieczkę",
+    "plan_travel": "Zaplanuj wycieczkę",
     "error": "Wystąpił nieoczekiwany błąd",
     "save_to_travel": "Zapisz się na wycieczkę",
+    "details": "Szczegóły wycieczki",
     "start_date": "Podaj datę początkową"
   },
   "register_page": {
@@ -30,6 +31,7 @@
     "error": "Wystąpił nieoczekiwany błąd",
     "add_to_trip": "Dodaj do wycieczki",
     "add_activity": "Dodaj aktywność",
+    "pick_hours": "Wybierz godziny dla aktywności",
     "from": "Od",
     "to": "Do"
   },
@@ -152,7 +154,8 @@
       "additional_info": "Dodatkowe informacje",
       "price": "Cena całkowita",
       "from": "Od",
-      "to": "Do"
+      "to": "Do",
+      "details": "Szczegóły aktywności"
     }
   },
   "activity_list_page": {

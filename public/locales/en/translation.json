@@ -1,7 +1,8 @@
 {
   "sign_up_for_trip": {
-    "go_to_travel": "Join the trip",
+    "plan_travel": "Plan your trip",
     "error": "An unexpected error occurred",
+    "details": "Travel details",
     "save_to_travel": "Save to trip",
     "start_date": "Enter start date"
   },
@@ -30,6 +31,7 @@
     "error": "An unexpected error occurred",
     "add_to_trip": "Add to trip",
     "add_activity": "Add activity",
+    "pick_hours": "Pick hours for activity",
     "from": "From",
     "to": "To"
   },
@@ -153,7 +155,8 @@
       "additional_info": "Additional Information",
       "price": "Total Price",
       "from": "From",
-      "to": "To"
+      "to": "To",
+      "details": "Activity Details"
     }
   },
   "activity_list_page": {

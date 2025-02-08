@@ -1,5 +1,6 @@
 import React from 'react'
 import { Button, Stack } from '@mui/material'
+import { useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import * as Modal from '../UI/Modal'
@@ -65,33 +66,32 @@ const SignUpForTrip: React.FC<Props> = (props) => {
             style={{ width: '100%' }}
             onClick={() => {}}
           >
-            {t('go_to_travel')}
+            {t('plan_travel')}
           </Button>
         )}
-        title={`${t('save_to_travel')}: ${props.name}`}
-        content={(
-          <Stack
-            sx={{
-              maxWidth: 'min(70vw, 400px)',
-            }}
-          >
-            <Input.Component
-              variant={Input.Variant.OUTLINED}
-              type={Input.Type.DATE}
-              label={t('start_date')}
-              register={register}
-              name="startDate"
-            />
-          </Stack>
-        )}
+        title={`${t('details')}: ${props.name}`}
         actions={[
           {
-            name: t('go_to_travel'),
+            name: t('plan_travel'),
             type: 'submit',
             onClick: handleSubmit(onSubmit),
           },
         ]}
-      />
+      >
+        <Stack
+          sx={{
+            maxWidth: 'min(70vw, 400px)',
+          }}
+        >
+          <Input.Component
+            variant={Input.Variant.OUTLINED}
+            type={Input.Type.DATE}
+            label={t('start_date')}
+            register={register}
+            name="startDate"
+          />
+        </Stack>
+      </Modal.Component>
     </form>
   )
 }
