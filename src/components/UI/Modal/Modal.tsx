@@ -59,25 +59,29 @@ const ModalComponent: React.FC<Props> = (props) => {
             {props.children}
           </Stack>
 
-          <Stack
-            justifyContent="flex-end"
-            gap={1}
-            sx={{
-              marginTop: '1.2em',
-              flexDirection: {
-                xs: 'column',
-                sm: 'row',
-              },
-            }}
-          >
-            {props.actions && props.actions.map((action) => (
-              <ButtonComponent
-                key={action.name}
-                action={action}
-                hideModal={hideModal}
-              />
-            ))}
-          </Stack>
+          {
+            props.actions?.length && props.actions?.length > 0 && (
+              <Stack
+                justifyContent="flex-end"
+                gap={1}
+                sx={{
+                  marginTop: '1.2em',
+                  flexDirection: {
+                    xs: 'column',
+                    sm: 'row',
+                  },
+                }}
+              >
+                {props.actions && props.actions.map((action) => (
+                  <ButtonComponent
+                    key={action.name}
+                    action={action}
+                    hideModal={hideModal}
+                  />
+                ))}
+              </Stack>
+            )
+          }
         </Box>
       </Modal>
     </div>
