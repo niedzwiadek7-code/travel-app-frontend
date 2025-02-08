@@ -48,9 +48,7 @@
     },
     "pass": {
       "error": "Wystąpił nieoczekiwany błąd",
-      "pass": "Zapisz odbycie",
-      "add_photos": "Dodaj zdjęcia z aktywności",
-      "delete": "Usuń zdjęcie"
+      "pass": "Zapisz odbycie"
     }
   },
   "modal": {
@@ -258,5 +256,10 @@
     "browse": "Przeglądaj wycieczkę",
     "edit_plan": "Edytuj plan",
     "delete_plan": "Usuń plan"
+  },
+  "dropzone": {
+    "drop_files": "Upuść pliki tutaj",
+    "preview": "Podgląd",
+    "image_info": "* Jeśli chcesz usunąć zdjęcie, kliknij na nie"
   }
 }

@@ -28,7 +28,6 @@ const RateActivity: React.FC<Props> = (props) => {
   const apiService = getApiService()
   const ratingService = apiService.getRating(token)
   const { t } = useTranslation('translation', { keyPrefix: 'activity.rating' })
-  const [loading, setLoading] = useState(false)
 
   const {
     register, handleSubmit,
@@ -45,7 +44,6 @@ const RateActivity: React.FC<Props> = (props) => {
 
   const onSubmit = async (data: Inputs) => {
     try {
-      setLoading(true)
       await ratingService.putRating({
         text: data.text,
         sharePhotos: data.sharePhotos,
@@ -55,7 +53,6 @@ const RateActivity: React.FC<Props> = (props) => {
         toastUtils.types.INFO,
         t('saved'),
       )
-      setLoading(false)
     } catch (err) {
       toastUtils.Toast.showToast(
         toastUtils.types.ERROR,
@@ -72,7 +69,6 @@ const RateActivity: React.FC<Props> = (props) => {
             type="button"
             variant="contained"
             color="primary"
-            loading={loading}
           >
             {t('rate')}
           </LoadingButton>

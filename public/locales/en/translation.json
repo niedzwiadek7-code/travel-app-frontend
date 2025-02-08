@@ -49,8 +49,7 @@
     "pass": {
       "error": "An unexpected error occurred",
       "pass": "Save Pass",
-      "add_photos": "Add photos of activity",
-      "delete": "Delete Image"
+      "add_photos": "Add photos of activity"
     }
   },
   "modal": {
@@ -260,5 +259,10 @@
     "browse": "Browse Trip",
     "edit_plan": "Edit Plan",
     "delete_plan": "Delete Plan"
+  },
+  "dropzone": {
+    "drop_files": "Drop files here",
+    "preview": "Preview",
+    "image_info": "* If you want to delete the image, click on it"
   }
 }
