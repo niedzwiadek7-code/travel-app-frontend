@@ -137,12 +137,12 @@ const SaveInstanceActivityModal: React.FC<Props> = (props) => {
             type: 'submit',
           },
         ]}
+        sx={{
+          width: 'min(70vw, 400px)',
+        }}
       >
         <Stack
           gap={2}
-          sx={{
-            width: 'min(70vw, 400px)',
-          }}
         >
           <Input.Component
             variant={Input.Variant.OUTLINED}

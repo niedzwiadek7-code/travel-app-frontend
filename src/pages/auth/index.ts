@@ -4,6 +4,7 @@ export * as TravelDay from './travelDay'
 export * as ListActivity from './listActivity'
 
 export * as ActivityForm from './activity/form'
+export * as ActivityGet from './activity/get'
 
 export * as TravelRecipesStore from './travelRecipes/store'
 export * as TravelRecipesGet from './travelRecipes/get'

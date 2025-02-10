@@ -77,12 +77,11 @@ const SignUpForTrip: React.FC<Props> = (props) => {
             onClick: handleSubmit(onSubmit),
           },
         ]}
+        sx={{
+          maxWidth: 'min(70vw, 400px)',
+        }}
       >
-        <Stack
-          sx={{
-            maxWidth: 'min(70vw, 400px)',
-          }}
-        >
+        <Stack>
           <Input.Component
             variant={Input.Variant.OUTLINED}
             type={Input.Type.DATE}

@@ -58,10 +58,10 @@
     "back": "Back"
   },
   "categories": {
-    "attraction": "Attraction",
-    "accommodation": "Accommodation",
-    "restaurant": "Restaurant",
-    "trip": "Trip"
+    "Attraction": "Attraction",
+    "Accommodation": "Accommodation",
+    "Restaurant": "Restaurant",
+    "Trip": "Trip"
   },
   "welcome": {
     "description": "Join our community and start traveling with our app",
@@ -179,7 +179,12 @@
       "rating": "Ratings",
       "add_to_travel": "Add to Trip",
       "entry": "entry",
-      "hour": "hour"
+      "hour": "hour",
+      "details": "Details",
+      "per_hour": "per hour",
+      "per_entry": "per entry",
+      "accept": "Accept",
+      "reject": "Reject"
     }
   },
   "realized_trips_page": {
@@ -272,5 +277,14 @@
     "drop_files": "Drop files here",
     "preview": "Preview",
     "image_info": "* If you want to delete the image, click on it"
+  },
+  "activity_get": {
+    "back": "Back",
+    "details": "Details",
+    "per_hour": "per hour",
+    "per_entry": "per entry",
+    "ratings": "Ratings",
+    "add_review": "Add Review",
+    "photos": "Photos"
   }
 }

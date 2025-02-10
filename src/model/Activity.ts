@@ -1,10 +1,12 @@
-import User from './User'
 import { ActivityType } from './ActivityType'
+import { ActivityFormat } from '../services/backend/Activity/types'
+import User from './User'
 
-interface Rating {
+export interface Rating {
   text: string
   photos: string[]
   author: User
+  createdAt: Date
 }
 
 class Activity {
@@ -43,6 +45,10 @@ class Activity {
     this.to = obj.to
     this.place = obj.place
     this.priceType = obj.priceType
+  }
+
+  public static fromActivityFormat(obj: ActivityFormat): Activity {
+    return new Activity(obj)
   }
 }
 

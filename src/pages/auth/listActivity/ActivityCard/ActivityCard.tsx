@@ -1,147 +1,234 @@
-import React, { useEffect } from 'react'
+// ActivityCard.tsx
+import React from 'react'
 import {
+  Avatar,
+  Stack,
+  Typography,
+  IconButton,
+  Tooltip,
+  useTheme,
   Chip,
-  IconButton, ListItem, ListItemAvatar, ListItemSecondaryAction, ListItemText, Stack, Typography,
 } from '@mui/material'
-import { AddCircleOutline, Info } from '@mui/icons-material'
-import DoneIcon from '@mui/icons-material/Done'
-import DeleteIcon from '@mui/icons-material/Delete'
+import {
+  AddCircleOutline,
+  Info,
+  Done,
+  Place,
+  AccessTime,
+  MonetizationOn,
+  Clear,
+} from '@mui/icons-material'
 import { useTranslation } from 'react-i18next'
-import { StateDto } from '../dto/state.dto'
+import { useRouter } from '../../../../hooks'
+import { Pages } from '../../../pages'
 import { ExtendedActivityFormat } from '../../../../services/backend/Activity/types'
-import * as SaveActivityModal from '../../../../components/SaveActivityModal'
+import { getActivityTypeIcon } from '../../../../model'
+import { StateDto } from '../dto/state.dto'
 import * as SaveInstanceActivityModal from '../../../../components/SaveInstanceActivityModal'
-import { ActivityType, getActivityTypeIcon } from '../../../../model'
+import * as SaveActivityModal from '../../../../components/SaveActivityModal'
 
 type Props = {
   activity: ExtendedActivityFormat
-  state: StateDto
-  acceptElement: () => any
-  deleteElement: () => any
+  acceptElement: () => void
+  deleteElement: () => void
 }
 
-const ChipComponent: React.FC<{ type: ActivityType }> = ({ type }) => {
+const ActivityCard: React.FC<Props> = ({ activity, acceptElement, deleteElement }) => {
+  const theme = useTheme()
+  const { navigate, state } = useRouter<
+    StateDto,
+    Record<string, any>,
+    Record<string, any>
+  >()
   const { t } = useTranslation('translation', { keyPrefix: 'activity_list_page.activities' })
-  const Icon = getActivityTypeIcon(type)
+  const Icon = getActivityTypeIcon(activity.activityType)
+  const primaryImage = activity.ratings[0]?.photos[0]
 
-  return (
-    <Chip
-      label={t(type)}
-      color="primary"
-      icon={<Icon />}
-      size="small"
-      sx={{
-        paddingX: 1,
-      }}
-    />
-  )
-}
-
-const ActivityCard: React.FC<Props> = (props) => {
-  const [primaryImage, setPrimaryImage] = React.useState<string | null>()
-  const { t } = useTranslation('translation', { keyPrefix: 'activity_list_page.activities' })
-
-  useEffect(() => {
-    if (props.activity.ratings[0]?.photos[0]) {
-      setPrimaryImage(props.activity.ratings[0].photos[0])
+  const getDetails = () => {
+    switch (activity.activityType) {
+      case 'Trip':
+        return {
+          icon: <AccessTime fontSize="small" />,
+          text: `${activity.from} - ${activity.to}`,
+        }
+      case 'Attraction':
+        return {
+          icon: <MonetizationOn fontSize="small" />,
+          text: `${activity.price}zł / ${t(activity.priceType || '')}`,
+        }
+      case 'Accommodation':
+        return {
+          icon: <MonetizationOn fontSize="small" />,
+          text: `${activity.price}zł / ${t('day')}`,
+        }
+      default:
+        return null
     }
-  }, [])
+  }
+
+  const details = getDetails()
 
   return (
-    <ListItem>
-      {primaryImage && (
-        <ListItemAvatar>
-          <img
-            src={primaryImage}
-            alt={`Activity ${props.activity.name}`}
-            style={{
-              width: 80,
-              height: 80,
-              objectFit: 'cover',
-              borderRadius: 8,
-            }}
-          />
-        </ListItemAvatar>
-      )}
-      <ListItemText
-        primary={(
-          <Typography variant="h6">
-            {props.activity.name}
-          </Typography>
-        )}
-        secondary={(
-          <Stack
-            display="flex"
-            flexDirection="column"
-            gap={0.5}
-            alignItems="flex-start"
-            sx={{
-              marginTop: 1,
-            }}
-          >
-            {
-              props.activity.price && (
-                <Typography variant="body2" color="textSecondary">
-                  {t('price')}: {props.activity.price}zł
-                </Typography>
-              )
-            }
-            <ChipComponent type={props.activity.activityType} />
-          </Stack>
-        )}
-      />
-      <ListItemSecondaryAction
+    <Stack
+      direction="row"
+      spacing={2}
+      sx={{
+        p: 3,
+        alignItems: 'center',
+        position: 'relative',
+        '&:hover': {
+          '& .action-buttons': {
+            opacity: 1,
+          },
+        },
+      }}
+    >
+      <Avatar
+        variant="rounded"
+        src={primaryImage}
         sx={{
-          display: 'flex',
-          flexDirection: 'row',
-          gap: 1,
+          width: 100,
+          height: 100,
+          borderRadius: 2,
+          boxShadow: theme.shadows[2],
+          flexShrink: 0,
         }}
       >
-        {props.state?.travelRecipe && (
-          <SaveActivityModal.Component
-            button={(
-              <IconButton edge="end" color="primary">
-                <AddCircleOutline />
-              </IconButton>
-            )}
-            activity={props.activity}
-            countDay={props.state?.countDay || ''}
+        {!primaryImage && <Icon fontSize="large" />}
+      </Avatar>
+
+      <Stack sx={{ flexGrow: 1, minWidth: 0 }}>
+        <Stack direction="row" alignItems="center" mb={1} gap={1}>
+          <Typography
+            variant="h6"
+            sx={{
+              fontWeight: 600,
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            {activity.name}
+          </Typography>
+
+          <Chip
+            label={t(activity.activityType)}
+            color="primary"
+            size="small"
+            icon={<Icon fontSize="small" />}
+            sx={{ borderRadius: 1 }}
           />
-        )}
-        {props.state?.travelInstance && (
-          <SaveInstanceActivityModal.Component
-            button={(
-              <IconButton edge="end" color="primary">
-                <AddCircleOutline />
-              </IconButton>
-            )}
-            activity={props.activity}
-            date={props.state.date}
-          />
-        )}
-        {props.state?.admin && (
+        </Stack>
+
+        <Stack direction="row" spacing={2} alignItems="center" flexWrap="wrap">
+          {activity.place && (
+            <Stack direction="row" spacing={1} alignItems="center">
+              <Place fontSize="small" color="action" />
+              <Typography variant="body2" color="text.secondary">
+                {activity.place}
+              </Typography>
+            </Stack>
+          )}
+
+          {details && (
+            <Stack direction="row" spacing={1} alignItems="center">
+              {details.icon}
+              <Typography variant="body2" color="text.secondary">
+                {details.text}
+              </Typography>
+            </Stack>
+          )}
+        </Stack>
+      </Stack>
+
+      <Stack
+        direction="row"
+        spacing={1}
+        className="action-buttons"
+        sx={{
+          opacity: { xs: 1, md: 0.7 },
+          transition: 'opacity 0.2s',
+          flexShrink: 0,
+          '&:hover': {
+            opacity: '1 !important',
+          },
+        }}
+      >
+        {state?.admin && (
           <>
-            <IconButton
-              edge="end"
-              color="success"
-              onClick={props.acceptElement}
-            >
-              <DoneIcon />
-            </IconButton>
-            <IconButton
-              edge="end"
-              color="error"
-              onClick={props.deleteElement}
-            >
-              <DeleteIcon />
-            </IconButton>
+            <Tooltip title={t('accept')}>
+              <IconButton
+                color="success"
+                onClick={acceptElement}
+                sx={{ bgcolor: `${theme.palette.success.light}20` }}
+              >
+                <Done fontSize="small" />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title={t('reject')}>
+              <IconButton
+                color="error"
+                onClick={deleteElement}
+                sx={{ bgcolor: `${theme.palette.error.light}20` }}
+              >
+                <Clear fontSize="small" />
+              </IconButton>
+            </Tooltip>
           </>
         )}
-        <IconButton edge="end" color="secondary">
-          <Info />
-        </IconButton>
-      </ListItemSecondaryAction>
-    </ListItem>
+
+        {
+          state?.travelRecipe && (
+            <SaveActivityModal.Component
+              button={(
+                <Tooltip title={t('add_to_travel')}>
+                  <IconButton
+                    color="primary"
+                    sx={{ bgcolor: `${theme.palette.primary.light}20` }}
+                  >
+                    <AddCircleOutline fontSize="small" />
+                  </IconButton>
+                </Tooltip>
+              )}
+              activity={activity}
+              countDay={state?.countDay || ''}
+            />
+          )
+         }
+
+        {
+          state?.travelInstance && (
+            <SaveInstanceActivityModal.Component
+              button={(
+                <Tooltip title={t('add_to_travel')}>
+                  <IconButton
+                    color="primary"
+                    sx={{ bgcolor: `${theme.palette.primary.light}20` }}
+                  >
+                    <AddCircleOutline fontSize="small" />
+                  </IconButton>
+                </Tooltip>
+              )}
+              activity={activity}
+              date={state?.date || ''}
+            />
+          )
+        }
+
+        <Tooltip title={t('details')}>
+          <IconButton
+            color="info"
+            sx={{ bgcolor: `${theme.palette.info.light}20` }}
+            onClick={() => navigate(
+              Pages.ACTIVITY_GET.getRedirectLink({ id: activity.id.toString() }),
+              { state },
+            )}
+          >
+            <Info fontSize="small" />
+          </IconButton>
+        </Tooltip>
+      </Stack>
+    </Stack>
   )
 }
 

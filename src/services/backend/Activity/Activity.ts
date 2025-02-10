@@ -1,5 +1,6 @@
 import ApiService from '../ApiService'
 import {
+  Activity,
   Paginate,
 } from '../../../model'
 import {
@@ -14,13 +15,14 @@ import {
   TripFormat,
 } from './types'
 
-class Activity {
+class ActivityService {
   private activityUrl = '/activity'
 
   private apiService: ApiService
 
-  public async get<T extends ActivityFormat = ActivityFormat>(id: string): Promise<T> {
-    return this.apiService.get<T>(`${this.activityUrl}/find/${id}`)
+  public async get(id: string): Promise<Activity> {
+    const result = await this.apiService.get<ActivityFormat>(`${this.activityUrl}/find/${id}`)
+    return Activity.fromActivityFormat(result)
   }
 
   public async getAll(
@@ -112,4 +114,4 @@ class Activity {
   }
 }
 
-export default Activity
+export default ActivityService

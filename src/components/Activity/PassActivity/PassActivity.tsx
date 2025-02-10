@@ -73,12 +73,11 @@ const PassElementTravelModal: React.FC<Props> = (props) => {
             onClick: handleSubmit(onSubmit),
           },
         ]}
+        sx={{
+          width: 'min(70vw, 400px)',
+        }}
       >
-        <Stack
-          sx={{
-            width: 'min(70vw, 400px)',
-          }}
-        >
+        <Stack>
           <Dropzone.Component
             name="images"
             register={register}

@@ -47,6 +47,10 @@ export const Pages: Record<string, Page> = {
     '/activity/edit/:id',
     <Auth.ActivityForm.Component />,
   ),
+  ACTIVITY_GET: new Page(
+    '/activity/get/:id',
+    <Auth.ActivityGet.Component />,
+  ),
 
   TRAVEL_RECIPES_STORE: new Page(
     '/travel-recipes',

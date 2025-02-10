@@ -1,52 +1,42 @@
-import React, { useState } from 'react'
+// ListActivity.tsx
+import React from 'react'
 import {
-  List,
-  ListItem,
-  ListItemText,
-  ListItemSecondaryAction,
-  IconButton,
   Typography,
-  Divider,
-  Paper,
   Stack,
-  CircularProgress,
   Pagination,
   Button,
-  Box, ListItemIcon,
+  useTheme,
+  Paper, Box,
 } from '@mui/material'
-import { AddCircleOutline, Info } from '@mui/icons-material'
 import { useTranslation } from 'react-i18next'
-import DoneIcon from '@mui/icons-material/Done'
-import DeleteIcon from '@mui/icons-material/Delete'
+import { ArrowBack } from '@mui/icons-material'
 import { useDependencies, useAuth } from '../../../context'
-import { Paginate } from '../../../model'
 import { ExtendedActivityFormat } from '../../../services/backend/Activity/types'
 import { usePagination, useRouter } from '../../../hooks'
 import { StateDto } from './dto/state.dto'
 import { Pages } from '../../pages'
-import * as SaveActivityModal from '../../../components/SaveActivityModal'
-import * as SaveInstanceActivityModal from '../../../components/SaveInstanceActivityModal'
 import ActivityCard from './ActivityCard/ActivityCard'
+import Loading from '../../../components/UI/Loading/Loading'
 
 type QueryParams = {
-  page?: string,
+  page?: string
 }
 
 const ListActivity: React.FC = () => {
-  const { state, query, navigate } = useRouter<StateDto, QueryParams, Record<string, any>>()
+  const theme = useTheme()
+  const { state, query, navigate } = useRouter<StateDto, QueryParams, {}>()
   const { t } = useTranslation('translation', { keyPrefix: 'activity_list_page' })
 
   const { getApiService, getToastUtils } = useDependencies()
   const toastUtils = getToastUtils()
   const { token } = useAuth()
   const apiService = getApiService()
-  const [activityService] = useState(apiService.getActivity(token))
+  const [activityService] = React.useState(apiService.getActivity(token))
 
-  // Funkcja pobierająca dane aktywności z backendu
   const fetchData = async (
     page: number,
     pageSize: number,
-  ): Promise<Paginate<ExtendedActivityFormat>> => {
+  ): Promise<{ data: ExtendedActivityFormat[]; total: number }> => {
     try {
       return await activityService.getAll(
         state.source || 'all',
@@ -55,10 +45,7 @@ const ListActivity: React.FC = () => {
         state.types,
       )
     } catch (err) {
-      toastUtils.Toast.showToast(
-        toastUtils.types.ERROR,
-        t('error'),
-      )
+      toastUtils.Toast.showToast(toastUtils.types.ERROR, t('error'))
       return { data: [], total: 0 }
     }
   }
@@ -76,116 +63,96 @@ const ListActivity: React.FC = () => {
     initialPageSize: 10,
   })
 
-  const acceptElement = async (id: number) => {
+  const handleAccept = async (id: number) => {
     try {
       await activityService.acceptActivity(id)
-      const activitiesTemp = data.filter((elem) => elem.id !== id)
-      setData(activitiesTemp)
+      setData(data.filter((elem) => elem.id !== id))
     } catch (err) {
-      toastUtils.Toast.showToast(
-        toastUtils.types.ERROR,
-        t('error'),
-      )
+      toastUtils.Toast.showToast(toastUtils.types.ERROR, t('error'))
     }
   }
 
-  const deleteElement = async (id: number) => {
+  const handleDelete = async (id: number) => {
     try {
       await activityService.restoreActivity(id)
-      const activitiesTemp = data.filter((elem) => elem.id !== id)
-      setData(activitiesTemp)
+      setData(data.filter((elem) => elem.id !== id))
     } catch (err) {
-      toastUtils.Toast.showToast(
-        toastUtils.types.ERROR,
-        t('error'),
-      )
+      toastUtils.Toast.showToast(toastUtils.types.ERROR, t('error'))
     }
   }
 
-  const handleViewDetails = (activity: ExtendedActivityFormat) => {
-    navigate(`${Pages.ACTIVITY_DETAILS.getRedirectLink()}/${activity.id}`, { state: { activity } })
-  }
-
-  const goToPageLocally = (page: number) => {
+  const handlePageChange = (page: number) => {
     goToPage(page)
     navigate(`${Pages.LIST_ACTIVITY.getRedirectLink()}?page=${page}`, { state })
   }
 
-  if (loading) {
-    return (
-      <Stack sx={{
-        display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 4,
-      }}
-      >
-        <CircularProgress />
-      </Stack>
-    )
-  }
-
-  // const getAllImages: (activity: ExtendedActivityFormat) => Array<string> = (
-  //   activity: ExtendedActivityFormat,
-  // ) => {
-  //   const allImages: string[] = []
-  //   activity.ratings.forEach((rating) => {
-  //     rating.photos.forEach((photo) => {
-  //       allImages.push(photo)
-  //     })
-  //   })
-  //   return allImages
-  // }
-
-  // eslint-disable-next-line no-unused-vars
-  const getPrimaryImage: (activity: ExtendedActivityFormat) => string | null = (
-    activity: ExtendedActivityFormat,
-  ) => {
-    if (activity?.ratings[0]?.photos[0]) {
-      return activity.ratings[0].photos[0]
-    }
-    return null
-  }
-
   return (
-    <Stack spacing={2} sx={{ p: 2 }}>
-      <Typography variant="h4" component="h1" align="center" gutterBottom>
+    <Box
+      // spacing={3}
+      sx={{ maxWidth: 1200, margin: '0 auto', p: 3 }}
+    >
+      <Button
+        startIcon={<ArrowBack />}
+        onClick={() => navigate(state.previousPage)}
+      >
+        {t('back')}
+      </Button>
+
+      <Typography
+        variant="h4"
+        component="h1"
+        sx={{
+          fontWeight: 700,
+          color: theme.palette.text.primary,
+          textAlign: 'center',
+          mb: 4,
+        }}
+      >
         {state.admin ? t('activity_manage') : t('activity_list')}
       </Typography>
-      <Paper elevation={3}>
-        <List>
-          {data.map((activity, index) => (
-            <React.Fragment key={activity.id}>
+
+      {loading ? (
+        <Loading />
+      ) : (
+        <Stack spacing={2}>
+          {data.map((activity) => (
+            <Paper
+              key={activity.id}
+              elevation={2}
+              // sx={{
+              //   transition: 'all 0.2s',
+                // '&:hover': {
+                  // transform: 'translateX(5px)',
+                  // boxShadow: theme.shadows[4],
+                  // borderLeft: `4px solid ${theme.palette.primary.main}`,
+                // }
+              // }}
+            >
               <ActivityCard
                 activity={activity}
-                state={state}
-                acceptElement={() => acceptElement(activity.id)}
-                deleteElement={() => deleteElement(activity.id)}
+                acceptElement={() => handleAccept(activity.id)}
+                deleteElement={() => handleDelete(activity.id)}
               />
-              {index < data.length - 1 && <Divider />}
-            </React.Fragment>
+            </Paper>
           ))}
-        </List>
-      </Paper>
+        </Stack>
+      )}
 
-      <Stack
-        direction="row"
-        justifyContent="flex-end"
-      >
-        <Button
-          variant="outlined"
-          onClick={() => navigate(state.previousPage)}
-        >
-          {t('back')}
-        </Button>
-      </Stack>
-
-      <Stack direction="row" justifyContent="center" sx={{ mt: 2 }}>
+      <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mt: 4 }}>
         <Pagination
           count={totalPages}
           page={currentPage}
+          onChange={(_, page) => handlePageChange(page)}
+          shape="rounded"
           color="primary"
-          onChange={(event, page) => goToPageLocally(page)}
+          sx={{
+            '& .MuiPaginationItem-root': {
+              fontWeight: 500,
+            },
+          }}
         />
       </Stack>
-    </Stack>
+    </Box>
   )
 }
 

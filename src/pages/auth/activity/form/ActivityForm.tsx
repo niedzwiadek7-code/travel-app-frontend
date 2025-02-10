@@ -15,7 +15,7 @@ import * as Loading from '../../../../components/UI/Loading'
 import SaveActivityModal from './SaveActivityModal'
 import * as SaveInstanceActivityModal from '../../../../components/SaveInstanceActivityModal'
 import * as Header from '../../../../components/Header'
-import { ActivityType } from '../../../../model'
+import { Activity, ActivityType } from '../../../../model'
 import {
   ExtendedActivityFormat,
 } from '../../../../services/backend/Activity/types'
@@ -65,9 +65,9 @@ const ActivityForm: React.FC = () => {
   const activityService = apiService.getActivity(token)
   const toastUtils = getToastUtils()
 
-  const fetchData = async (): Promise<ExtendedActivityFormat | undefined> => {
+  const fetchData = async (): Promise<Activity | undefined> => {
     if (id) {
-      return activityService.get<ExtendedActivityFormat>(id)
+      return activityService.get(id)
     }
     return undefined
   }
@@ -275,6 +275,14 @@ const ActivityForm: React.FC = () => {
       {
         state.travelInstance && activity && (
           <SaveInstanceActivityModal.Component
+            button={(
+              <Button
+                type="button"
+                variant="contained"
+              >
+                {t('add')}
+              </Button>
+            )}
             activity={activity}
             date={state.date}
           />

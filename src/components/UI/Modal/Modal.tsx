@@ -2,7 +2,7 @@ import React, {
   cloneElement, ReactElement, ReactNode, useState,
 } from 'react'
 import {
-  Box, IconButton, Modal, Stack, Typography,
+  Box, IconButton, Modal, Stack, SxProps, Typography,
 } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close'
 import { Action } from '.'
@@ -13,6 +13,7 @@ type Props = {
   title: string,
   children: ReactNode,
   actions?: Action[]
+  sx?: SxProps
 }
 
 const ModalComponent: React.FC<Props> = (props) => {
@@ -37,6 +38,7 @@ const ModalComponent: React.FC<Props> = (props) => {
             borderRadius: 2,
             boxShadow: 24,
             p: 4,
+            ...props.sx,
           }}
         >
           <IconButton
@@ -51,7 +53,9 @@ const ModalComponent: React.FC<Props> = (props) => {
             <CloseIcon />
           </IconButton>
 
-          <Typography variant="h6" component="h2">
+          <Typography
+            variant="h6"
+          >
             {props.title}
           </Typography>
 
@@ -90,6 +94,7 @@ const ModalComponent: React.FC<Props> = (props) => {
 
 ModalComponent.defaultProps = {
   actions: [],
+  sx: {},
 }
 
 export default ModalComponent

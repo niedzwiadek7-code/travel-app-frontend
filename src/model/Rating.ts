@@ -21,6 +21,10 @@ class Rating {
 
   sharePhotos: boolean
 
+  createdAt: Date
+
+  updatedAt: Date
+
   constructor(obj: Record<string, any>) {
     this.id = obj.id
     this.text = obj.text
@@ -28,6 +32,8 @@ class Rating {
     this.elementTravelId = obj.elementTravelId
     this.sharePhotos = obj.sharePhotos
     this.authorId = obj.authorId
+    this.createdAt = obj.created_at
+    this.updatedAt = obj.updated_at
 
     if (obj.activity) {
       this.activity = new Activity(obj.activity)
