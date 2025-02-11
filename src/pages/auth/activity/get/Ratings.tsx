@@ -133,7 +133,7 @@ const Ratings: React.FC<Props> = ({
                                   justifyContent: 'center',
                                 }}
                               >
-                                <Typography variant="caption" color="white">
+                                <Typography variant="body1" color="white !important">
                                   +{rating.photos.length - 5}
                                 </Typography>
                               </Box>

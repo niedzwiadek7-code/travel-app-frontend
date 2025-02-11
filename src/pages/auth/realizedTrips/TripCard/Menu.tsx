@@ -1,5 +1,6 @@
 import React from 'react'
 import {
+  CalendarMonth, Delete,
   Menu as MenuIcon,
 } from '@mui/icons-material'
 import { useTranslation } from 'react-i18next'
@@ -19,6 +20,7 @@ const MenuComponent: React.FC<Props> = (props) => {
     {
       name: t('delete_trip'),
       action: props.deleteTravelInstance,
+      Icon: Delete,
     },
   ]
 
@@ -26,6 +28,7 @@ const MenuComponent: React.FC<Props> = (props) => {
     options.unshift({
       name: t('edit_start_date'),
       action: () => {},
+      Icon: CalendarMonth,
     })
   }
 

@@ -1,32 +1,39 @@
+import React from 'react'
 import {
   Button,
-  Card, CardContent, CardHeader, Grid, Stack, Typography, useTheme,
+  Card,
+  CardContent,
+  CardHeader,
+  Stack,
+  Typography,
+  useTheme,
+  Box, LinearProgress, alpha,
 } from '@mui/material'
 import { grey, green } from '@mui/material/colors'
-import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
+import { TravelExplore } from '@mui/icons-material'
 import { TravelInstance } from '../../../../model'
 import MenuComponent from './Menu'
 import { Pages } from '../../../pages'
 import * as Slider from '../../../../components/UI/Slider'
-import * as Image from '../../../../components/UI/Image'
 import { DateHandler } from '../../../../utils/Date'
+import Image from '../../../../components/UI/Image/Image'
 
 type Props = {
-  travelInstance: TravelInstance
-  deleteTravelInstance: () => void
-}
+  travelInstance: TravelInstance;
+  deleteTravelInstance: () => void;
+};
 
 type RealizationTrip = {
-  passed: number
-  all: number
-}
+  passed: number;
+  all: number;
+};
 
-const TripCard: React.FC<Props> = (props) => {
+const TripCard: React.FC<Props> = ({ travelInstance, deleteTravelInstance }) => {
   const navigate = useNavigate()
-  const isWaitingTrip = () => DateHandler.diff(new DateHandler().toISOString(), props.travelInstance.from, 'day') < 0
-  const isCompletedTrip = () => DateHandler.diff(new DateHandler().toISOString(), props.travelInstance.from, 'day') > 0
+  const isWaitingTrip = () => DateHandler.diff(new DateHandler().toISOString(), travelInstance.from, 'day') < 0
+  const isCompletedTrip = () => DateHandler.diff(new DateHandler().toISOString(), travelInstance.from, 'day') > 0
   const theme = useTheme()
   const { t } = useTranslation('translation', { keyPrefix: 'realized_trips_page.trip_card' })
 
@@ -48,7 +55,7 @@ const TripCard: React.FC<Props> = (props) => {
       all: 0,
     }
 
-    props.travelInstance.travelElements.forEach((elem) => {
+    travelInstance.travelElements.forEach((elem) => {
       result.all += 1
       if (elem.passed) {
         result.passed += 1
@@ -59,101 +66,180 @@ const TripCard: React.FC<Props> = (props) => {
   }
 
   const realizationTrip = calculateRealizationTrip()
+  const progress = (realizationTrip.passed / realizationTrip.all) * 100
 
-  const allPhotos = props.travelInstance.travelElements
+  const allPhotos = travelInstance.travelElements
     .map((elem) => elem.photos)
     .flat()
 
   return (
-    <Card>
+    <Card
+      sx={{
+        borderRadius: '12px',
+        boxShadow: theme.shadows[2],
+        transition: 'all 0.3s ease',
+        '&:hover': {
+          boxShadow: theme.shadows[4],
+        },
+      }}
+    >
       <CardHeader
+        sx={{
+          backgroundColor: getBackgroundCardHeader(),
+          color: theme.palette.common.white,
+          borderTopLeftRadius: '12px',
+          borderTopRightRadius: '12px',
+          padding: theme.spacing(2),
+        }}
         title={(
-          <Typography>
-            { props.travelInstance.travelRecipe.name }
+          <Typography variant="h6" fontWeight={700}>
+            {travelInstance.travelRecipe.name}
           </Typography>
         )}
-        style={{
-          backgroundColor: getBackgroundCardHeader(),
-          color: 'white',
-        }}
         action={(
           <MenuComponent
             isWaitingTrip={isWaitingTrip()}
-            deleteTravelInstance={props.deleteTravelInstance}
+            deleteTravelInstance={deleteTravelInstance}
           />
         )}
       />
 
       <CardContent>
         <Stack gap={2}>
-          <Stack>
-            <Typography variant="body1">
-              {/* TODO: Add date format */}
-              {t('date_range')}
-              <b> {new DateHandler(props.travelInstance.from).format('DD-MM-YYYY')} </b> -
-              <b> {new DateHandler(props.travelInstance.to).format('DD-MM-YYYY')} </b>
+          <Typography variant="body1" color="text.secondary">
+            {t('date_range')}{' '}
+            <Typography component="span" fontWeight={600} color="text.primary">
+              {new DateHandler(travelInstance.from).format('DD-MM-YYYY')} -{' '}
+              {new DateHandler(travelInstance.to).format('DD-MM-YYYY')}
             </Typography>
+          </Typography>
 
-            <Typography variant="body1">
+          <Box>
+            <Typography variant="body1" color="text.secondary">
               {t('realized')}:
-              <b> { realizationTrip.passed }/{realizationTrip.all} </b>
-              (<b> {((realizationTrip.passed / realizationTrip.all) * 100).toFixed(2)}% </b>)
             </Typography>
-          </Stack>
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: theme.spacing(1),
+                width: '100%',
+              }}
+            >
+              <LinearProgress
+                variant="determinate"
+                value={progress}
+                sx={{
+                  flexGrow: 1,
+                  height: '10px',
+                  borderRadius: '5px',
+                  backgroundColor: alpha(theme.palette.primary.main, 0.1),
+                  '& .MuiLinearProgress-bar': {
+                    borderRadius: '5px',
+                    backgroundColor: theme.palette.primary.main,
+                  },
+                }}
+              />
+              <Box
+                // variant="body1"
+                fontWeight={600}
+                color="text.primary"
+                sx={{
+                  minWidth: '60px',
+                  textAlign: 'right',
+                }}
+              >
+                {`${progress.toFixed(2)}%`}
+              </Box>
+            </Box>
+          </Box>
 
-          <Grid
-            container
-            spacing={2}
-          >
-            {
-              allPhotos.map((photo, index) => (
-                <Grid
-                  item
-                  key={photo}
-                  xs={2}
-                >
-                  <Slider.Component
-                    buttonComponent={(
-                      <button
-                        type="button"
-                        style={{
-                          margin: 0,
-                          padding: 0,
-                          border: 0,
-                          width: '100%',
-                          height: '100%',
-                          cursor: 'pointer',
-                          background: 'none',
-                        }}
-                      >
-                        <Image.Component
-                          alt=""
-                          src={photo}
-                          style={{
-                            width: '100%',
-                            height: '100%',
-                            objectFit: 'cover',
-                            borderRadius: '5px',
+          {allPhotos.length > 0 && (
+            <Stack spacing={1}>
+              <Typography variant="caption" color="text.secondary">
+                {t('photos')} ({allPhotos.length})
+              </Typography>
+              <Stack direction="row" spacing={1} rowGap={1} flexWrap="wrap">
+                {
+                  allPhotos.slice(0, 5).map((photo, index) => (
+                    <Slider.Component
+                      key={photo}
+                      buttonComponent={(
+                        <Box
+                          sx={{
+                            position: 'relative',
+                            flexShrink: 0,
+                            borderRadius: 1,
+                            overflow: 'hidden',
+                            width: 100,
+                            height: 100,
+                            cursor: 'pointer',
                           }}
-                        />
-                      </button>
+                        >
+                          <Image
+                            src={photo}
+                            alt={`Review ${index + 1}`}
+                            style={{
+                              width: '100%',
+                              height: '100%',
+                              objectFit: 'cover',
+                            }}
+                          />
+                          {index === 4 && allPhotos.length > 5 && (
+                          <Box
+                            sx={{
+                              position: 'absolute',
+                              top: 0,
+                              left: 0,
+                              right: 0,
+                              bottom: 0,
+                              bgcolor: 'rgba(0,0,0,0.5)',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                            }}
+                          >
+                            <Typography variant="body1" color="white !important">
+                              +{allPhotos.length - 5}
+                            </Typography>
+                          </Box>
+                          )}
+                        </Box>
                     )}
-                    startIndex={index}
-                    images={allPhotos}
-                  />
-                </Grid>
-              ))
-            }
-          </Grid>
+                      images={allPhotos}
+                      startIndex={index}
+                    />
+                  ))
+                }
+              </Stack>
+            </Stack>
+          )}
 
-          <Button
-            variant="contained"
-            onClick={() => navigate(Pages.TAKING_TRIP.getRedirectLink({
-              id: props.travelInstance.id.toString(),
-            }))}
+          <Stack
+            display="flex"
+            gap={1}
+            justifyContent={{
+              xs: 'flex-start',
+              md: 'flex-end',
+            }}
+            flexDirection={{
+              xs: 'column',
+              md: 'row',
+            }}
           >
-            {t('go')}
-          </Button>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => navigate(
+                Pages.TAKING_TRIP.getRedirectLink({
+                  id: travelInstance.id.toString(),
+                }),
+              )}
+              startIcon={<TravelExplore />}
+            >
+              {t('browse')}
+            </Button>
+          </Stack>
         </Stack>
       </CardContent>
     </Card>

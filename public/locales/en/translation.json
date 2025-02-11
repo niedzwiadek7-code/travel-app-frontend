@@ -191,12 +191,18 @@
     "error": "An unexpected error occurred",
     "back": "Back to Homepage",
     "title": "Trip List",
+    "no_trips_found": "No trips found",
+    "your_trips": "Your trips",
     "trip_card": {
       "date_range": "Trip Date Range",
       "realized": "Realized",
       "go": "Go",
       "edit_start_date": "Edit Start Date",
-      "delete_trip": "Delete Trip"
+      "delete_trip": "Delete Trip",
+      "photos": "Photos",
+      "browse": "Browse trip",
+      "delete_success": "Trip has been successfully deleted",
+      "delete_error": "An unexpected error occurred"
     }
   },
   "taking_trip_page": {
@@ -262,7 +268,7 @@
     "activity": "Activity",
     "people": "Number of People",
     "plan_travel": "Plan your trip",
-    "no_activities": "No activities planned for this day",
+    "no_activities": "No activities planned for this day"
   },
   "travel_recipes_store_page": {
     "back_to_dashboard": "Back to Homepage",
@@ -279,7 +285,8 @@
     "delete_success": "Travel plan has been successfully deleted",
     "show_more": "Show more",
     "show_less": "Show less",
-    "plan_travel": "Plan your trip"
+    "plan_travel": "Plan your trip",
+    "no_recipes_found": "No travel plans found"
   },
   "dropzone": {
     "drop_files": "Drop files here",

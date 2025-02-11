@@ -190,12 +190,18 @@
     "error": "Wystąpił nieoczekiwany błąd",
     "back": "Powrót do strony głównej",
     "title": "Lista wycieczek",
+    "no_trips_found": "Nie znaleziono żadnych wycieczek",
+    "your_trips": "Twoje wycieczki",
     "trip_card": {
       "date_range": "Termin wycieczki",
       "realized": "Zrealizowano",
       "go": "Przejdź",
       "edit_start_date": "Edytuj datę rozpoczęcia",
-      "delete_trip": "Usuń wycieczkę"
+      "delete_trip": "Usuń wycieczkę",
+      "photos": "Zdjęcia",
+      "browse": "Przeglądaj wycieczkę",
+      "delete_success": "Wycieczka została usunięta pomyślnie",
+      "delete_error": "Wystąpił nieoczekiwany błąd podczas usuwania wycieczki"
     }
   },
   "taking_trip_page": {
@@ -276,7 +282,8 @@
     "delete_success": "Plan wycieczki został usunięty pomyślnie",
     "show_more": "Pokaż więcej",
     "show_less": "Pokaż mniej",
-    "plan_travel": "Zaplanuj wycieczkę"
+    "plan_travel": "Zaplanuj wycieczkę",
+    "no_recipes_found": "Nie znaleziono żadnych planów wycieczek"
   },
   "dropzone": {
     "drop_files": "Upuść pliki tutaj",
