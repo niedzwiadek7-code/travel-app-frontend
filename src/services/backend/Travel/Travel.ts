@@ -121,6 +121,10 @@ class Travel {
     )
   }
 
+  public async restoreTravelRecipe(id: number) {
+    return this.apiService.delete<number>(`${this.travelUrl}/restore/${id}`)
+  }
+
   constructor(token: string) {
     this.apiService = new ApiService(token)
   }

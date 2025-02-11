@@ -53,7 +53,23 @@ const SplitButton: React.FC<Props> = (props) => {
             key={option.name}
             onClick={option.action}
           >
-            {option.name}
+            <Stack
+              display="flex"
+              alignItems="center"
+              flexDirection="row"
+              gap={1}
+            >
+              {
+                option.Icon && (
+                  <option.Icon
+                    sx={{
+                      marginRight: 1,
+                    }}
+                  />
+                )
+              }
+              {option.name}
+            </Stack>
           </MenuItem>
         ))}
       </Menu>

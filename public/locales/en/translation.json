@@ -271,7 +271,13 @@
     "planned_activities": "List of planned activities for this trip",
     "browse": "Browse Trip",
     "edit_plan": "Edit Plan",
-    "delete_plan": "Delete Plan"
+    "delete_plan": "Delete Plan",
+    "your_travel_recipes": "Your travel plans",
+    "delete_error": "An unexpected error occurred",
+    "delete_success": "Travel plan has been successfully deleted",
+    "show_more": "Show more",
+    "show_less": "Show less",
+    "plan_travel": "Plan your trip"
   },
   "dropzone": {
     "drop_files": "Drop files here",

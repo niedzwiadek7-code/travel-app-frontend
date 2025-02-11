@@ -11,7 +11,9 @@ interface FetchHookProps<T> {
 
 interface FetchHookResult<T> {
   data: DataType<T>
-  loading: boolean
+  loading: boolean,
+  // eslint-disable-next-line no-unused-vars
+  setData: (data: DataType<T>) => void
 }
 
 const useFetch = <T>({
@@ -39,6 +41,7 @@ const useFetch = <T>({
 
   return {
     data,
+    setData,
     loading,
   }
 }

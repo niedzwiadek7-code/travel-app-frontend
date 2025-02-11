@@ -1,13 +1,24 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
   Button,
-  Card, CardContent, CardHeader, List, ListItem,
-  ListItemIcon, ListItemText, Stack, Typography, useTheme,
+  Card,
+  CardContent,
+  CardHeader,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Stack,
+  Typography,
+  useTheme,
+  alpha,
 } from '@mui/material'
 import {
   Restaurant as RestaurantIcon,
   Attractions as AttractionIcon,
   AirplanemodeActive as TravelIcon,
+  ExpandLess as ExpandLessIcon,
+  ExpandMore as ExpandMoreIcon, TravelExplore, EventAvailable,
 } from '@mui/icons-material'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
@@ -18,10 +29,16 @@ import * as SignUpForTrip from '../../../../../components/SignUpForTrip'
 import * as CopyToClipboard from '../../../../../components/UI/CopyToClipboard'
 
 type Props = {
-  userTravelRecipe: TravelRecipe
-}
+  userTravelRecipe: TravelRecipe;
+  deleteTravelRecipe: () => void;
+};
 
-const TravelRecipeCard: React.FC<Props> = (props) => {
+const TravelRecipeCard: React.FC<Props> = ({
+  userTravelRecipe,
+  deleteTravelRecipe,
+}) => {
+  const AVAILABLE_ACTIVITIES_PER_TRAVEL = 3
+
   const navigate = useNavigate()
   const theme = useTheme()
   const formatter = Intl.NumberFormat('pl-PL', {
@@ -30,13 +47,20 @@ const TravelRecipeCard: React.FC<Props> = (props) => {
   })
   const { t } = useTranslation('translation', { keyPrefix: 'travel_recipes_store_page' })
 
+  const [showAllActivities, setShowAllActivities] = useState(false)
+  const activities = userTravelRecipe.travelElements
+  const showMoreButton = activities.length > AVAILABLE_ACTIVITIES_PER_TRAVEL
+  const displayedActivities = showAllActivities
+    ? activities
+    : activities.slice(0, AVAILABLE_ACTIVITIES_PER_TRAVEL)
+
   const calculateTotalPrice = () => {
-    const activityPrice = props.userTravelRecipe.travelElements.reduce(
+    const activityPrice = userTravelRecipe.travelElements.reduce(
       (acc, elem) => acc + elem.price,
       0,
     )
 
-    const accommodationPrice = props.userTravelRecipe.accommodations.reduce(
+    const accommodationPrice = userTravelRecipe.accommodations.reduce(
       (acc, elem) => acc + elem.price,
       0,
     )
@@ -58,83 +82,156 @@ const TravelRecipeCard: React.FC<Props> = (props) => {
   }
 
   return (
-    <Card>
+    <Card
+      sx={{
+        borderRadius: '12px',
+        boxShadow: theme.shadows[2],
+        transition: 'all 0.3s ease',
+        '&:hover': {
+          boxShadow: theme.shadows[4],
+        },
+      }}
+    >
       <CardHeader
+        sx={{
+          backgroundColor: alpha(theme.palette.primary.main, 0.9),
+          color: theme.palette.common.white,
+          borderTopLeftRadius: '12px',
+          borderTopRightRadius: '12px',
+          padding: theme.spacing(2),
+        }}
         title={(
-          <Typography>
-            { props.userTravelRecipe.name }
+          <Typography variant="h6" fontWeight={700}>
+            {userTravelRecipe.name}
           </Typography>
         )}
-        style={{
-          backgroundColor: theme.palette.primary.main,
-          color: 'white',
-        }}
         action={(
-          <Stack
-            direction="row"
-          >
+          <Stack direction="row" alignItems="center" gap={1}>
             <CopyToClipboard.Component
               color="white"
               fontSize="small"
-              text={`${window.location.host}/travel-recipe/${props.userTravelRecipe.id}`}
+              text={`${window.location.host}/travel-recipe/${userTravelRecipe.id}`}
             />
             <MenuComponent
-              travelRecipeId={props.userTravelRecipe.id.toString()}
+              travelRecipeId={userTravelRecipe.id.toString()}
+              deleteTravelRecipe={deleteTravelRecipe}
             />
           </Stack>
         )}
       />
 
       <CardContent>
-        <Stack>
-          <Typography variant="body1">
-            {t('travel_planned_to')} <b> {props.userTravelRecipe.countDays} {t('days')} </b>
+        <Stack gap={2}>
+          <Typography variant="body1" color="text.secondary">
+            {t('travel_planned_to')}{' '}
+            <Typography component="span" fontWeight={600} color="text.primary">
+              {userTravelRecipe.countDays} {t('days')}
+            </Typography>
           </Typography>
 
-          <Typography variant="body1">
-            {t('budget')} <b> {calculateTotalPrice()} </b>
+          <Typography variant="body1" color="text.secondary">
+            {t('budget')}{' '}
+            <Typography component="span" fontWeight={600} color="text.primary">
+              {calculateTotalPrice()}
+            </Typography>
           </Typography>
 
-          <Typography
-            variant="body1"
-            style={{ marginTop: '.5em' }}
-          >
-            {t('planned_activities')}:
-          </Typography>
-
-          <List>
-            {
-              props.userTravelRecipe.travelElements.map((elem) => (
-                <ListItem
-                  key={elem.activity.name}
-                  style={{ margin: 0, padding: 0 }}
+          {
+            displayedActivities.length > 0 && (
+              <Stack>
+                <Typography
+                  variant="body1"
+                  fontWeight={600}
+                  color="text.primary"
                 >
-                  <ListItemIcon>
-                    { getIcon(elem.activity.activityType) }
-                  </ListItemIcon>
-                  <ListItemText> {elem.activity.name} </ListItemText>
-                </ListItem>
-              ))
-            }
-          </List>
+                  {t('planned_activities')}:
+                </Typography>
 
-          <Button
-            type="button"
-            variant="contained"
-            color="primary"
-            style={{ width: '100%', marginTop: '.7em', marginBottom: '.7em' }}
-            onClick={() => navigate(Pages.TRAVEL_RECIPES_GET.getRedirectLink({
-              id: props.userTravelRecipe.id.toString(),
-            }))}
+                <List dense>
+                  {displayedActivities.map((elem) => (
+                    <ListItem key={elem.activity.name} sx={{ px: 0 }}>
+                      <ListItemIcon sx={{ minWidth: '40px' }}>
+                        {getIcon(elem.activity.activityType)}
+                      </ListItemIcon>
+                      <ListItemText
+                        primary={elem.activity.name}
+                        primaryTypographyProps={{ variant: 'body2' }}
+                      />
+                    </ListItem>
+                  ))}
+                  {
+                    showMoreButton && (
+                      <ListItem
+                        sx={{ px: 0, cursor: 'pointer' }}
+                        onClick={() => setShowAllActivities(!showAllActivities)}
+                      >
+                        <ListItemIcon sx={{ minWidth: '40px' }}>
+                          {showAllActivities ? (
+                            <ExpandLessIcon color="primary" />
+                          ) : (
+                            <ExpandMoreIcon color="primary" />
+                          )}
+                        </ListItemIcon>
+                        <ListItemText
+                          primary={
+                            showAllActivities ? t('show_less') : t('show_more')
+                          }
+                          primaryTypographyProps={{
+                            variant: 'body2',
+                            color: 'primary',
+                            fontWeight: 500,
+                          }}
+                        />
+                      </ListItem>
+                    )
+                  }
+                </List>
+              </Stack>
+            )
+          }
+
+          <Stack
+            display="flex"
+            gap={1}
+            justifyContent={{
+              xs: 'flex-start',
+              md: 'flex-end',
+            }}
+            flexDirection={{
+              xs: 'column',
+              md: 'row',
+            }}
           >
-            {t('browse')}
-          </Button>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => navigate(
+                Pages.TRAVEL_RECIPES_GET.getRedirectLink({
+                  id: userTravelRecipe.id.toString(),
+                }),
+              )}
+              startIcon={<TravelExplore />}
+            >
+              {t('browse')}
+            </Button>
 
-          <SignUpForTrip.Component
-            id={props.userTravelRecipe.id}
-            name={props.userTravelRecipe.name}
-          />
-
+            <SignUpForTrip.Component
+              id={userTravelRecipe.id}
+              name={userTravelRecipe.name}
+              button={(
+                <Button
+                  type="button"
+                  variant="contained"
+                  color="primary"
+                  sx={{ width: '100%' }}
+                  startIcon={<EventAvailable />}
+                  onClick={() => {}}
+                >
+                  {t('plan_travel')}
+                </Button>
+              )}
+            />
+          </Stack>
         </Stack>
       </CardContent>
     </Card>

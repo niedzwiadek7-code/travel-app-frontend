@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ReactNode } from 'react'
 import { Button, Stack } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
@@ -17,6 +17,7 @@ type ModalInputs = {
 type Props = {
   id: number
   name: string
+  button: ReactNode
 }
 
 const SignUpForTrip: React.FC<Props> = (props) => {
@@ -58,17 +59,7 @@ const SignUpForTrip: React.FC<Props> = (props) => {
       onSubmit={handleSubmit(onSubmit)}
     >
       <Modal.Component
-        buttonComponent={(
-          <Button
-            type="button"
-            variant="contained"
-            color="primary"
-            style={{ width: '100%' }}
-            onClick={() => {}}
-          >
-            {t('plan_travel')}
-          </Button>
-        )}
+        buttonComponent={props.button}
         title={`${t('details')}: ${props.name}`}
         actions={[
           {

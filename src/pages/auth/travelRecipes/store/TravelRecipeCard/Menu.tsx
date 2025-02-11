@@ -1,5 +1,7 @@
 import React from 'react'
 import {
+  Delete,
+  Edit,
   Menu as MenuIcon,
 } from '@mui/icons-material'
 import { useTranslation } from 'react-i18next'
@@ -9,6 +11,7 @@ import { useRouter } from '../../../../../hooks'
 
 type Props = {
   travelRecipeId: string
+  deleteTravelRecipe: () => void
 }
 
 const MenuComponent: React.FC<Props> = (props) => {
@@ -24,20 +27,22 @@ const MenuComponent: React.FC<Props> = (props) => {
           <MenuIcon
             sx={{
               paddingX: 1,
-              paddingTop: 0.75,
+              // paddingTop: 0.75,
             }}
           />
         )}
         options={[
           {
             name: t('edit_plan'),
+            Icon: Edit,
             action: () => navigate(Pages.EDIT_TRAVEL.getRedirectLink({
               id: props.travelRecipeId,
             })),
           },
           {
             name: t('delete_plan'),
-            action: () => {},
+            Icon: Delete,
+            action: props.deleteTravelRecipe,
           },
         ]}
       />

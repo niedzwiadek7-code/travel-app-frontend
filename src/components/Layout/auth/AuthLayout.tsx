@@ -295,10 +295,12 @@ const PublicLayout: React.FC<{ children: ReactNode }> = ({ children }) => {
         component="main"
         sx={{
           flexGrow: 1,
-          px: 10,
-          py: 3,
+          px: { xs: 1, md: 10 },
+          pt: 12,
           mt: 8,
-          // ml: { md: '280px' },
+          overflowX: 'hidden',
+          maxWidth: '1000px',
+          margin: '0 auto',
           width: { md: 'calc(100% - 280px)' },
         }}
       >

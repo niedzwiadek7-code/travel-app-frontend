@@ -268,7 +268,13 @@
     "planned_activities": "Lista zaplanowanych aktywności na tę wycieczkę",
     "browse": "Przeglądaj wycieczkę",
     "edit_plan": "Edytuj plan",
-    "delete_plan": "Usuń plan"
+    "delete_plan": "Usuń plan",
+    "your_travel_recipes": "Twoje plany wycieczek",
+    "delete_error": "Wystąpił nieoczekiwany błąd podczas usuwania planu wycieczki",
+    "delete_success": "Plan wycieczki został usunięty pomyślnie",
+    "show_more": "Pokaż więcej",
+    "show_less": "Pokaż mniej",
+    "plan_travel": "Zaplanuj wycieczkę"
   },
   "dropzone": {
     "drop_files": "Upuść pliki tutaj",

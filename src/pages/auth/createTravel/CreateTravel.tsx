@@ -66,7 +66,7 @@ const CreateTravel: React.FC = () => {
 
   const fetchData = async (): Promise<TravelRecipe | undefined> => {
     if (params.id) {
-      if (!travelRecipe.id) {
+      if (!travelRecipe.id || travelRecipe.id.toString() !== params.id) {
         const travelRecipeTemp = await travelService.get(params.id)
         dispatch(setNewTravelRecipe(travelRecipeTemp))
         return travelRecipeTemp
@@ -126,15 +126,6 @@ const CreateTravel: React.FC = () => {
     <Stack
       gap={3}
     >
-      <Header.Component
-        title={t('title')}
-        icon={(
-          <CreateIcon
-            fontSize="large"
-          />
-        )}
-      />
-
       <Stack
         direction="row"
         alignItems="center"
