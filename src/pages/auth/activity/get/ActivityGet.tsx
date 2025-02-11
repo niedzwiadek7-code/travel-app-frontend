@@ -6,24 +6,25 @@ import {
   Chip,
   Divider,
   Button,
-  Avatar,
   Skeleton,
-  Paper,
+  Paper, Tooltip, IconButton, useTheme,
 } from '@mui/material'
 import {
   Info,
-  ArrowBack, Reviews,
+  ArrowBack, Done, Clear, AddCircleOutline,
 } from '@mui/icons-material'
 import { useTranslation } from 'react-i18next'
 import { useAuth, useDependencies } from '../../../../context'
 import { useFetch, useRouter } from '../../../../hooks'
 import { getActivityTypeIcon, Activity as ActivityModel } from '../../../../model'
-import * as Slider from '../../../../components/UI/Slider'
 import Details from './Details'
 import Ratings from './Ratings'
+import { StateDto } from './dto/state.dto'
+import StateButtons from '../../../../components/StateButtons/StateButtons'
 
 const Activity: React.FC = () => {
-  const { params, navigate } = useRouter<{}, {}, { id: string }>()
+  const theme = useTheme()
+  const { params, navigate } = useRouter<StateDto, {}, { id: string }>()
   const { t } = useTranslation('translation', { keyPrefix: 'activity_get' })
   const { t: tCategories } = useTranslation('translation', { keyPrefix: 'categories' })
   const { token } = useAuth()
@@ -58,13 +59,60 @@ const Activity: React.FC = () => {
 
   return (
     <Box sx={{ p: 3, maxWidth: 1200, mx: 'auto' }}>
-      <Button
-        startIcon={<ArrowBack />}
-        onClick={() => navigate(-1)}
-        sx={{ mb: 3 }}
+      <Stack
+        display="flex"
+        flexDirection="row"
+        justifyContent="space-between"
       >
-        {t('back')}
-      </Button>
+        <Button
+          startIcon={<ArrowBack />}
+          onClick={() => navigate(-1)}
+          sx={{ mb: 3 }}
+        >
+          {t('back')}
+        </Button>
+
+        <Stack
+          display="flex"
+          flexDirection="row"
+          alignItems="center"
+          gap={2}
+        >
+          <StateButtons
+            acceptButton={(
+              <Tooltip title={t('accept')}>
+                <IconButton
+                  color="success"
+                  sx={{ bgcolor: `${theme.palette.success.light}20` }}
+                >
+                  <Done fontSize="small" />
+                </IconButton>
+              </Tooltip>
+            )}
+            deleteButton={(
+              <Tooltip title={t('reject')}>
+                <IconButton
+                  color="error"
+                  sx={{ bgcolor: `${theme.palette.error.light}20` }}
+                >
+                  <Clear fontSize="small" />
+                </IconButton>
+              </Tooltip>
+            )}
+            addButton={(
+              <Tooltip title={t('add_to_travel')}>
+                <IconButton
+                  color="primary"
+                  sx={{ bgcolor: `${theme.palette.primary.light}20` }}
+                >
+                  <AddCircleOutline fontSize="small" />
+                </IconButton>
+              </Tooltip>
+            )}
+            activity={activity}
+          />
+        </Stack>
+      </Stack>
 
       <Stack spacing={3} sx={{ position: 'relative' }}>
         <Stack spacing={2} sx={{ textAlign: 'center' }}>

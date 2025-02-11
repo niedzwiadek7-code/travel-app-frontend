@@ -138,7 +138,7 @@ const ListActivity: React.FC = () => {
         </Stack>
       )}
 
-      <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mt: 4 }}>
+      <Stack direction="row" justifyContent="center" alignItems="center" sx={{ mt: 4 }}>
         <Pagination
           count={totalPages}
           page={currentPage}

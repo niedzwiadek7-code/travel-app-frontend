@@ -282,6 +282,13 @@
     "per_entry": "za wejście",
     "ratings": "Oceny",
     "add_review": "Dodaj ocenę",
-    "photos": "Zdjęcia"
+    "photos": "Zdjęcia",
+    "add_to_travel": "Dodaj do wycieczki",
+    "accept": "Zaakceptuj",
+    "reject": "Odrzuć"
+  },
+  "state_buttons": {
+    "accept_message": "Przeglądana aktywność została zaakceptowana",
+    "reject_message": "Przeglądana aktywność została odrzucona"
   }
 }

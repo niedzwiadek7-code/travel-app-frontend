@@ -285,6 +285,13 @@
     "per_entry": "per entry",
     "ratings": "Ratings",
     "add_review": "Add Review",
-    "photos": "Photos"
+    "photos": "Photos",
+    "add_to_travel": "Add to Trip",
+    "accept": "Accept",
+    "reject": "Reject"
+  },
+  "state_buttons": {
+    "accept_message": "The reviewed activity has been accepted",
+    "reject_message": "The reviewed activity has been rejected"
   }
 }
