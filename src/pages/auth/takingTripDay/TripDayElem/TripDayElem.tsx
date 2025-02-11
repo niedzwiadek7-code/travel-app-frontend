@@ -1,12 +1,22 @@
 import React, { useState } from 'react'
 import {
-  Button, Grid, Stack, Typography, useTheme,
+  Button,
+  Stack,
+  Typography,
+  useTheme,
+  Card,
+  Box,
+  alpha,
 } from '@mui/material'
 import { green } from '@mui/material/colors'
 import {
   Restaurant as RestaurantIcon,
   Attractions as AttractionIcon,
   AirplanemodeActive as TravelIcon,
+  Grade,
+  QuestionAnswer,
+  Save,
+  Cancel,
 } from '@mui/icons-material'
 import { useTranslation } from 'react-i18next'
 import { LoadingButton } from '@mui/lab'
@@ -21,10 +31,10 @@ import * as RateActivity from '../../../../components/Activity/RateActivity'
 import { DateHandler } from '../../../../utils/Date'
 
 type Props = {
-  travelElement: ElementTravelInstance
-}
+  travelElement: ElementTravelInstance;
+};
 
-const TripDayElem: React.FC<Props> = (props) => {
+const TripDayElem: React.FC<Props> = ({ travelElement }) => {
   const theme = useTheme()
   const dispatch = useAppDispatch()
   const { t } = useTranslation('translation', { keyPrefix: 'taking_trip_day_page' })
@@ -52,19 +62,16 @@ const TripDayElem: React.FC<Props> = (props) => {
   const cancelTravelElementInstanceFn = async () => {
     try {
       setCancelLoading(true)
-      await travelService.cancelTravelElementInstance(props.travelElement.id)
-      dispatch(cancelTravelElementInstance(props.travelElement.id))
+      await travelService.cancelTravelElementInstance(travelElement.id)
+      dispatch(cancelTravelElementInstance(travelElement.id))
       setCancelLoading(false)
     } catch (err) {
-      toastUtils.Toast.showToast(
-        toastUtils.types.ERROR,
-        t('error'),
-      )
+      toastUtils.Toast.showToast(toastUtils.types.ERROR, t('error'))
     }
   }
 
   const getPlaceString = () => {
-    const { activity } = props.travelElement
+    const { activity } = travelElement
     if (activity.place) {
       return activity.place
     }
@@ -72,114 +79,139 @@ const TripDayElem: React.FC<Props> = (props) => {
   }
 
   return (
-    <Stack
-      direction="column"
-      gap={1}
-      style={{
-        padding: '.8em',
-        backgroundColor: props.travelElement.passed ? green[50] : theme.palette.grey[200],
-        borderRadius: '.8em',
+    <Card
+      sx={{
+        backgroundColor: travelElement.passed
+          ? alpha(green[500], 0.1)
+          : alpha(theme.palette.grey[300], 0.2),
+        borderRadius: '12px',
+        boxShadow: theme.shadows[1],
+        transition: 'all 0.3s ease',
+        '&:hover': {
+          boxShadow: theme.shadows[3],
+        },
+        padding: theme.spacing(2),
       }}
     >
-      <Stack
-        direction="row"
-        justifyContent="space-between"
-      >
-        <Stack
-          direction="row"
-          alignItems="center"
-          gap={1}
-          sx={{ fontWeight: 'bold', fontSize: '1.2em' }}
-        >
-          {getIcon(props.travelElement.activity.activityType)}
-          {props.travelElement.activity.name.toUpperCase()}
+      <Stack direction="column" gap={2}>
+        {/* Header Section */}
+        <Stack direction="row" justifyContent="space-between" alignItems="center">
+          <Stack direction="row" alignItems="center" gap={1}>
+            {getIcon(travelElement.activity.activityType)}
+            <Typography variant="h6" fontWeight={700} color="text.primary">
+              {travelElement.activity.name.toUpperCase()}
+            </Typography>
+          </Stack>
+          <Typography variant="body2" color="text.secondary">
+            {new DateHandler(travelElement.from).format('HH:mm')} -{' '}
+            {new DateHandler(travelElement.to).format('HH:mm')}
+          </Typography>
         </Stack>
 
-        <Typography>
-          {new DateHandler(props.travelElement.from).format('HH:mm')} - {new DateHandler(props.travelElement.to).format('HH:mm')}
-        </Typography>
-      </Stack>
-
-      <Typography>
-        {t('place')}: {getPlaceString()}
-      </Typography>
-
-      {
-        props.travelElement.elementTravel && (
-          <Typography>
-            {props.travelElement.elementTravel.description}
+        {/* Place Section */}
+        <Typography variant="body1" color="text.secondary">
+          {t('place')}:{' '}
+          <Typography component="span" fontWeight={600} color="text.primary">
+            {getPlaceString()}
           </Typography>
-        )
-      }
+        </Typography>
 
-      {
-        props.travelElement.passed && (
-          <Grid
-            container
-            spacing={2}
-          >
-            {props.travelElement.photos.map((photo, index) => (
-              <Grid
-                item
+        {/* Description Section */}
+        {travelElement.elementTravel && (
+          <Typography variant="body1" color="text.secondary">
+            {travelElement.elementTravel.description}
+          </Typography>
+        )}
+
+        {/* Photos Section */}
+        {travelElement.passed && travelElement.photos.length > 0 && (
+          <Stack direction="row" spacing={1} rowGap={1} flexWrap="wrap">
+            {travelElement.photos.slice(0, 5).map((photo, index) => (
+              <Slider.Component
                 key={photo}
-                xs={2}
-              >
-                <Slider.Component
-                  buttonComponent={(
-                    <button
-                      type="button"
+                buttonComponent={(
+                  <Box
+                    sx={{
+                      position: 'relative',
+                      flexShrink: 0,
+                      borderRadius: 1,
+                      overflow: 'hidden',
+                      width: 100,
+                      height: 100,
+                      cursor: 'pointer',
+                    }}
+                  >
+                    <Image.Component
+                      src={photo}
+                      alt={`Review ${index + 1}`}
                       style={{
-                        margin: 0,
-                        padding: 0,
-                        border: 0,
                         width: '100%',
                         height: '100%',
-                        cursor: 'pointer',
-                        background: 'none',
+                        objectFit: 'cover',
                       }}
-                    >
-                      <Image.Component
-                        alt=""
-                        src={photo}
-                        style={{
-                          width: '100%',
-                          height: '100%',
-                          objectFit: 'cover',
-                          borderRadius: '5px',
+                    />
+                    {index === 4 && travelElement.photos.length > 5 && (
+                      <Box
+                        sx={{
+                          position: 'absolute',
+                          top: 0,
+                          left: 0,
+                          right: 0,
+                          bottom: 0,
+                          bgcolor: 'rgba(0,0,0,0.5)',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
                         }}
-                      />
-                    </button>
-                  )}
-                  images={props.travelElement.photos}
-                  startIndex={index}
-                />
-              </Grid>
+                      >
+                        <Typography variant="body1" color="white !important">
+                          +{travelElement.photos.length - 5}
+                        </Typography>
+                      </Box>
+                    )}
+                  </Box>
+                )}
+                images={travelElement.photos}
+                startIndex={index}
+              />
             ))}
-          </Grid>
-        )
-      }
+          </Stack>
+        )}
 
-      <Stack
-        direction="row"
-        justifyContent="flex-end"
-        gap={1}
-      >
-        {
-          props.travelElement.passed ? (
+        {/* Actions Section */}
+        <Stack
+          display="flex"
+          gap={1}
+          justifyContent={{
+            xs: 'flex-start',
+            md: 'flex-end',
+          }}
+          flexDirection={{
+            xs: 'column',
+            md: 'row',
+          }}
+        >
+          {travelElement.passed ? (
             <>
               <RateActivity.Component
-                elemId={props.travelElement.id}
-                name={props.travelElement.activity.name}
+                elemId={travelElement.id}
+                name={travelElement.activity.name}
+                button={(
+                  <LoadingButton
+                    type="button"
+                    variant="contained"
+                    color="primary"
+                    startIcon={<Grade />}
+                  >
+                    {t('rate')}
+                  </LoadingButton>
+                )}
               />
-
               <Button
-                type="button"
                 variant="contained"
                 color="primary"
-                onClick={() => toastUtils.Toast.showToast(
-                  toastUtils.types.INFO,
-                  t('unavailable_fn'),
-                )}
+                onClick={() => toastUtils.Toast.showToast(toastUtils.types.INFO, t('unavailable_fn'))}
+                startIcon={<QuestionAnswer />}
               >
                 {t('answer_for_questions')}
               </Button>
@@ -187,23 +219,33 @@ const TripDayElem: React.FC<Props> = (props) => {
           ) : (
             <>
               <PassActivity.Component
-                travelElement={props.travelElement}
+                travelElement={travelElement}
+                button={(
+                  <LoadingButton
+                    type="button"
+                    variant="contained"
+                    color="success"
+                    startIcon={<Save />}
+                  >
+                    {t('pass')}
+                  </LoadingButton>
+                )}
               />
-
               <LoadingButton
                 type="button"
                 variant="contained"
                 color="error"
                 onClick={cancelTravelElementInstanceFn}
                 loading={cancelLoading}
+                startIcon={<Cancel />}
               >
                 {t('cancel')}
               </LoadingButton>
             </>
-          )
-        }
+          )}
+        </Stack>
       </Stack>
-    </Stack>
+    </Card>
   )
 }
 

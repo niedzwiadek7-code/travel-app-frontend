@@ -237,7 +237,10 @@
     "error": "An unexpected error occurred",
     "unavailable_fn": "This functionality is currently unavailable",
     "answer_for_questions": "Answer Questions",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "rate": "Rate activity",
+    "pass": "Pass activity",
+    "back": "Back"
   },
   "travel_day_page": {
     "day": "Day",

@@ -1,11 +1,12 @@
 import React from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { Button, Stack } from '@mui/material'
-import { Map } from '@mui/icons-material'
+import {
+  Box, Button, Stack, Typography, useTheme,
+} from '@mui/material'
+import { ArrowBack } from '@mui/icons-material'
 import { useTranslation } from 'react-i18next'
 import { useAppSelector } from '../../../app/hooks'
 import { RootState } from '../../../app/store'
-import * as Header from '../../../components/Header'
 import { Pages } from '../../pages'
 import * as UnexpectedError from '../../../components/UI/UnexpectedError'
 import * as TripDayElem from './TripDayElem'
@@ -18,6 +19,7 @@ const TakingTripDay: React.FC = () => {
   const { date } = useParams()
   const navigate = useNavigate()
   const { t } = useTranslation('translation', { keyPrefix: 'taking_trip_day_page' })
+  const theme = useTheme()
 
   if (!date) {
     return (
@@ -44,16 +46,52 @@ const TakingTripDay: React.FC = () => {
 
   return (
     <Stack
-      gap={2}
+      gap={3}
+      sx={{
+        padding: theme.spacing(3),
+        borderRadius: '12px',
+        backgroundColor: theme.palette.background.paper,
+        boxShadow: theme.shadows[1],
+        transition: 'all 0.3s ease',
+        '&:hover': {
+          boxShadow: theme.shadows[3],
+        },
+      }}
     >
-      <Header.Component
-        title={`${travelInstance.travelRecipe.name} - ${date}`}
-        icon={(
-          <Map
-            fontSize="large"
-          />
-        )}
-      />
+      <Stack
+        display="flex"
+        justifyContent="flex-start"
+        alignItems="center"
+        flexDirection="row"
+        sx={{ width: '100%' }}
+      >
+        <Button
+          startIcon={<ArrowBack />}
+          onClick={() => navigate(Pages.TAKING_TRIP.getRedirectLink({
+            id: travelInstance.id.toString(),
+          }))}
+        >
+          {t('back')}
+        </Button>
+      </Stack>
+
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          gap: 1,
+        }}
+      >
+        <Typography variant="h4">
+          {`${travelInstance.travelRecipe.name} - ${date}`}
+        </Typography>
+
+        <AddActivityButton
+          travelInstanceId={travelInstance.id.toString()}
+          date={date}
+        />
+      </Box>
 
       <Stack
         gap={2}
@@ -67,21 +105,6 @@ const TakingTripDay: React.FC = () => {
           ))
         }
       </Stack>
-
-      <AddActivityButton
-        travelInstanceId={travelInstance.id.toString()}
-        date={date}
-      />
-
-      <Button
-        type="button"
-        variant="outlined"
-        onClick={() => navigate(Pages.TAKING_TRIP.getRedirectLink({
-          id: travelInstance.id.toString(),
-        }))}
-      >
-        {t('back_to_trip')}
-      </Button>
     </Stack>
   )
 }

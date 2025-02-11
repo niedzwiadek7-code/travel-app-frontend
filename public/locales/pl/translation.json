@@ -237,7 +237,10 @@
     "error": "Wystąpił nieoczekiwany błąd",
     "unavailable_fn": "Ta funkcjonalność nie jest obecnie dostępna",
     "answer_for_questions": "Odpowiedz na pytania",
-    "cancel": "Odwołaj"
+    "cancel": "Odwołaj",
+    "rate": "Oceń aktywność",
+    "pass": "Zapisz odbycie",
+    "back": "Powrót"
   },
   "travel_day_page": {
     "day": "Dzień",
