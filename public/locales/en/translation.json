@@ -293,5 +293,15 @@
   "state_buttons": {
     "accept_message": "The reviewed activity has been accepted",
     "reject_message": "The reviewed activity has been rejected"
+  },
+  "auth_layout": {
+    "en": "English",
+    "pl": "Polish",
+    "home": "Home",
+    "trip_creator": "Trip Creator",
+    "trip_plans": "Trip Plans",
+    "ongoing_trips": "Ongoing Trips",
+    "manage_activities": "Manage Activities",
+    "logout": "Logout"
   }
 }

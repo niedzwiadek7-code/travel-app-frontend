@@ -88,7 +88,7 @@ const RealizedTrips: React.FC = () => {
       <Button
         type="button"
         variant="outlined"
-        onClick={() => navigate(Pages.DASHBOARD.getRedirectLink())}
+        onClick={() => navigate(Pages.TRAVEL_RECIPES_STORE.getRedirectLink())}
       >
         {t('back')}
       </Button>

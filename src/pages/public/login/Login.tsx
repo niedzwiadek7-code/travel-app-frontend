@@ -45,7 +45,7 @@ const Login: React.FC = () => {
       const userService = apiService.getUser(token)
       const user = await userService.get()
       setRoles(user.roles)
-      navigate(Pages.DASHBOARD.getRedirectLink())
+      navigate(Pages.TRAVEL_RECIPES_STORE.getRedirectLink())
     } catch (err) {
       setBtnLoading(false)
       toastUtils.Toast.showToast(

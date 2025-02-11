@@ -93,14 +93,14 @@ const CreateTravel: React.FC = () => {
           toastUtils.types.INFO,
           t('edit_travel_success'),
         )
-        navigate(Pages.DASHBOARD.getRedirectLink())
+        navigate(Pages.TRAVEL_RECIPES_STORE.getRedirectLink())
       } else {
         await travelService.createTravelRecipe(travelRecipe)
         toastUtils.Toast.showToast(
           toastUtils.types.SUCCESS,
           t('create_travel_success'),
         )
-        navigate(Pages.DASHBOARD.getRedirectLink())
+        navigate(Pages.TRAVEL_RECIPES_STORE.getRedirectLink())
       }
       setBtnLoading(false)
     } catch (err) {
@@ -245,7 +245,7 @@ const CreateTravel: React.FC = () => {
       <Button
         type="button"
         variant="outlined"
-        onClick={() => navigate(Pages.DASHBOARD.getRedirectLink())}
+        onClick={() => navigate(Pages.TRAVEL_RECIPES_STORE.getRedirectLink())}
       >
         {t('back')}
       </Button>

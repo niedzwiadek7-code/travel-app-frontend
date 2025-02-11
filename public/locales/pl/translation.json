@@ -290,5 +290,15 @@
   "state_buttons": {
     "accept_message": "Przeglądana aktywność została zaakceptowana",
     "reject_message": "Przeglądana aktywność została odrzucona"
+  },
+  "auth_layout": {
+    "en": "Angielski",
+    "pl": "Polski",
+    "home": "Strona główna",
+    "trip_creator": "Kreator wycieczek",
+    "trip_plans": "Plany wycieczek",
+    "ongoing_trips": "Trwające wycieczki",
+    "manage_activities": "Zarządzaj aktywnościami",
+    "logout": "Wyloguj się"
   }
 }

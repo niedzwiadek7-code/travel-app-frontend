@@ -55,7 +55,7 @@ const Register: React.FC = () => {
       }
       const token = await authService.register(registerData)
       setToken(token)
-      navigate(Pages.DASHBOARD.getRedirectLink())
+      navigate(Pages.TRAVEL_RECIPES_STORE.getRedirectLink())
     } catch (err) {
       setBtnLoading(false)
       const error = err as unknown as AxiosError
