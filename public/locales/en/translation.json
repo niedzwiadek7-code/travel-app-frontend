@@ -213,8 +213,6 @@
     "place": "Place",
     "add_button": "Add Accommodation",
     "add_accommodation": "Add Your Own Accommodation",
-
-
     "pick_accommodation": "Choose from Proposed Accommodations",
     "pick_your_accommodation": "Choose from Your Accommodations",
     "unavailable_fn": "This functionality is currently unavailable",
@@ -224,7 +222,10 @@
       "day": "Day",
       "activities_end": "Completed Activities",
       "browse": "Browse"
-    }
+    },
+    "rate": "Rate activity",
+    "pass": "Pass activity",
+    "back": "Back"
   },
   "taking_trip_day_page": {
     "back_to_trip": "Back to Trip",

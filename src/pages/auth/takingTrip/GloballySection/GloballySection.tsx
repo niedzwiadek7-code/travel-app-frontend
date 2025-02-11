@@ -26,9 +26,20 @@ const ActivitySection: React.FC<Props> = (props) => {
     <Stack
       gap={1}
     >
-      <Typography variant="h5" component="h5">
-        {props.title}
-      </Typography>
+      <Stack
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        flexDirection="row"
+      >
+        <Typography variant="h5" component="h5">
+          {props.title}
+        </Typography>
+
+        <AddActivityButton
+          activityType={props.activityType}
+        />
+      </Stack>
 
       {
         travelElements.map((elem) => (
@@ -38,10 +49,6 @@ const ActivitySection: React.FC<Props> = (props) => {
           />
         ))
       }
-
-      <AddActivityButton
-        activityType={props.activityType}
-      />
     </Stack>
   )
 }

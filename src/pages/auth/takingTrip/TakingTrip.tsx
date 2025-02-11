@@ -1,6 +1,19 @@
 import React from 'react'
-import { Map } from '@mui/icons-material'
-import { Button, Stack, Typography } from '@mui/material'
+import {
+  ArrowBack,
+  EventAvailable,
+  Map,
+} from '@mui/icons-material'
+import {
+  Box,
+  Button,
+  IconButton,
+  Stack,
+  Tooltip,
+  Typography,
+  useTheme,
+  Paper,
+} from '@mui/material'
 import { useTranslation } from 'react-i18next'
 import { useDependencies, useAuth } from '../../../context'
 import * as Loading from '../../../components/UI/Loading'
@@ -8,7 +21,6 @@ import { useAppDispatch, useAppSelector } from '../../../app/hooks'
 import { RootState } from '../../../app/store'
 import { setNewTravelInstance } from '../../../features/travelInstance/travelInstanceSlice'
 import * as UnexpectedError from '../../../components/UI/UnexpectedError'
-import * as Header from '../../../components/Header'
 import { Pages } from '../../pages'
 import * as TripTable from './TripTable'
 import * as GloballySection from './GloballySection'
@@ -16,18 +28,14 @@ import { useFetch, useRouter } from '../../../hooks'
 import { TravelInstance } from '../../../model'
 
 type Params = {
-  id: string
-}
+  id: string;
+};
 
 const TakingTrip: React.FC = () => {
   const {
     params: { id },
     navigate,
-  } = useRouter<
-    Record<string, any>,
-    Record<string, any>,
-    Params
-  >()
+  } = useRouter<Record<string, any>, Record<string, any>, Params>()
 
   const { getApiService } = useDependencies()
   const apiService = getApiService()
@@ -37,6 +45,7 @@ const TakingTrip: React.FC = () => {
 
   const travelInstance = useAppSelector((state: RootState) => state.travelInstance)
   const dispatch = useAppDispatch()
+  const theme = useTheme()
 
   const fetchData = async (): Promise<TravelInstance> => {
     const travelInstanceTemp = await travelService.getTravelInstance(id)
@@ -44,58 +53,74 @@ const TakingTrip: React.FC = () => {
     return travelInstanceTemp
   }
 
-  const {
-    loading,
-  } = useFetch<TravelInstance>({
+  const { loading } = useFetch<TravelInstance>({
     fetchData,
     defaultData: undefined,
   })
 
   if (!id) {
-    return (
-      <UnexpectedError.Component />
-    )
+    return <UnexpectedError.Component />
   }
 
   if (loading) {
-    return (
-      <Loading.Component />
-    )
+    return <Loading.Component />
   }
 
   return (
     <Stack
-      gap={2}
+      gap={3}
+      sx={{
+        padding: theme.spacing(3),
+        borderRadius: '12px',
+        backgroundColor: theme.palette.background.paper,
+        boxShadow: theme.shadows[1],
+        transition: 'all 0.3s ease',
+        '&:hover': {
+          boxShadow: theme.shadows[3],
+        },
+      }}
     >
-      <Header.Component
-        title={travelInstance.travelRecipe.name}
-        icon={(
-          <Map
-            fontSize="large"
-          />
-        )}
-      />
+      {/* Back Button */}
+      <Stack
+        display="flex"
+        justifyContent="flex-start"
+        alignItems="center"
+        flexDirection="row"
+        sx={{ width: '100%' }}
+      >
+        <Button
+          startIcon={<ArrowBack />}
+          onClick={() => navigate(Pages.REALIZED_TRIPS.getRedirectLink())}
+        >
+          {t('back')}
+        </Button>
+      </Stack>
+
+      {/* Title Section */}
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          gap: 1,
+        }}
+      >
+        <Typography variant="h4">
+          {travelInstance.travelRecipe.name}
+        </Typography>
+      </Box>
 
       <GloballySection.Component
         title={t('accommodations')}
         activityType="Accommodation"
       />
 
-      <Stack>
-        <Typography variant="h5" component="h5">
+      <Box>
+        <Typography variant="h5" fontWeight={700} color="text.primary" gutterBottom>
           {t('browse_trip')}
         </Typography>
-
         <TripTable.Component />
-      </Stack>
-
-      <Button
-        type="button"
-        variant="outlined"
-        onClick={() => navigate(Pages.REALIZED_TRIPS.getRedirectLink())}
-      >
-        {t('back_to_realized_trips')}
-      </Button>
+      </Box>
     </Stack>
   )
 }

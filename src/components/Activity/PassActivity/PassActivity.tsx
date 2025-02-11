@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ReactNode } from 'react'
 import { useForm } from 'react-hook-form'
 import {
   Stack,
@@ -14,6 +14,7 @@ import * as Dropzone from '../../UI/Dropzone'
 
 type Props = {
   travelElement: ElementTravelInstance
+  button: ReactNode
 }
 
 type Inputs = {
@@ -56,15 +57,7 @@ const PassElementTravelModal: React.FC<Props> = (props) => {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Modal.Component
-        buttonComponent={(
-          <LoadingButton
-            type="button"
-            variant="contained"
-            color="success"
-          >
-            {t('pass')}
-          </LoadingButton>
-        )}
+        buttonComponent={props.button}
         title={t('pass')}
         actions={[
           {

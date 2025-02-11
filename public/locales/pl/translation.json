@@ -220,8 +220,12 @@
     "trip_table": {
       "day": "Dzień",
       "activities_end": "Zakończone aktywności",
-      "browse": "Przeglądaj"
-    }
+      "browse": "Przeglądaj",
+      "actions": "Akcje"
+    },
+    "rate": "Oceń aktywność",
+    "pass": "Zapisz odbycie",
+    "back": "Powrót"
   },
   "taking_trip_day_page": {
     "back_to_trip": "Powrót do wycieczki",

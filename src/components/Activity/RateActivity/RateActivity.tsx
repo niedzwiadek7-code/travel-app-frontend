@@ -1,10 +1,9 @@
-import React from 'react'
+import React, { ReactNode } from 'react'
 import {
   Checkbox, FormControlLabel, Stack,
 } from '@mui/material'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { LoadingButton } from '@mui/lab'
 import { useDependencies, useAuth } from '../../../context'
 import * as Modal from '../../../components/UI/Modal'
 import * as Input from '../../../components/UI/Input'
@@ -14,11 +13,13 @@ import { useFetch } from '../../../hooks'
 type Props = {
   elemId: number
   name: string
+  button: ReactNode
 }
 
 type Inputs = {
   text: string
   sharePhotos: boolean,
+
 }
 
 const RateActivity: React.FC<Props> = (props) => {
@@ -64,15 +65,7 @@ const RateActivity: React.FC<Props> = (props) => {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Modal.Component
-        buttonComponent={(
-          <LoadingButton
-            type="button"
-            variant="contained"
-            color="primary"
-          >
-            {t('rate')}
-          </LoadingButton>
-        )}
+        buttonComponent={props.button}
         title={`${t('rate')} "${props.name}"`}
         actions={[
           {
