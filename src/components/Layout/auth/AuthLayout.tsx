@@ -297,6 +297,7 @@ const PublicLayout: React.FC<{ children: ReactNode }> = ({ children }) => {
           flexGrow: 1,
           px: { xs: 1, md: 10 },
           pt: 12,
+          pb: 4,
           mt: 8,
           overflowX: 'hidden',
           maxWidth: '1000px',

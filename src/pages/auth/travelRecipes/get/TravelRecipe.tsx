@@ -1,11 +1,19 @@
 import React from 'react'
 import {
-  Button, Stack, Typography, useTheme,
+  Button,
+  Stack,
+  Typography,
+  useTheme,
+  styled,
+  Box,
+  Paper, IconButton, Tooltip,
 } from '@mui/material'
-import { ReceiptLong } from '@mui/icons-material'
+import {
+  ArrowBack,
+  Done, EventAvailable, ReceiptLong, Share,
+} from '@mui/icons-material'
 import { useTranslation } from 'react-i18next'
 import * as UnexpectedError from '../../../../components/UI/UnexpectedError'
-import * as Header from '../../../../components/Header'
 import { useDependencies, useAuth } from '../../../../context'
 import { useAppDispatch, useAppSelector } from '../../../../app/hooks'
 import { RootState } from '../../../../app/store'
@@ -20,18 +28,14 @@ import { useFetch, useRouter } from '../../../../hooks'
 import { TravelRecipe } from '../../../../model'
 
 type Params = {
-  id: string
-}
+  id: string;
+};
 
 const TravelRecipeComponent: React.FC = () => {
   const {
     params: { id },
     navigate,
-  } = useRouter<
-    Record<string, any>,
-    Record<string, any>,
-    Params
-  >()
+  } = useRouter<Record<string, any>, Record<string, any>, Params>()
   const { getApiService } = useDependencies()
   const apiService = getApiService()
   const { token } = useAuth()
@@ -55,101 +59,109 @@ const TravelRecipeComponent: React.FC = () => {
   })
 
   if (!id) {
-    return (
-      <UnexpectedError.Component />
-    )
+    return <UnexpectedError.Component />
   }
 
   if (loading) {
-    return (
-      <Loading.Component />
-    )
+    return <Loading.Component />
   }
 
   return (
     <Stack
-      gap={2}
+      gap={3}
+      sx={{
+        padding: theme.spacing(3),
+        borderRadius: '12px',
+        backgroundColor: theme.palette.background.paper,
+        boxShadow: theme.shadows[1],
+        transition: 'all 0.3s ease',
+        '&:hover': {
+          boxShadow: theme.shadows[3],
+        },
+      }}
     >
-      <Header.Component
-        title={travelRecipe.name}
-        icon={(
-          <ReceiptLong
-            fontSize="large"
-          />
-        )}
-      />
-
       <Stack
-        style={{
-          marginTop: '0',
-          marginBottom: '0',
-        }}
-        direction="row"
+        display="flex"
+        justifyContent="flex-start"
         alignItems="center"
-        justifyContent="flex-end"
-        gap={1}
+        flexDirection="row"
+        sx={{
+          width: '100%',
+        }}
       >
-        <Typography>
-          {t('share')}
+        <Button
+          startIcon={<ArrowBack />}
+          onClick={() => navigate(Pages.TRAVEL_RECIPES_STORE.getRedirectLink())}
+        >
+          {t('back')}
+        </Button>
+      </Stack>
+
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          gap: 1,
+        }}
+      >
+
+        <Typography variant="h4">
+          {travelRecipe.name}
         </Typography>
-        <CopyToClipboard.Component
-          color={theme.palette.primary.main}
-          text={window.location.href}
-          fontSize="small"
-        />
-      </Stack>
-
-      <Stack>
-        <h2
-          style={{ marginTop: 0 }}
-        >
-          {t('accommodations')}
-        </h2>
-
-        <AccommodationTable.Component />
-      </Stack>
-
-      <Stack>
-        <h2
-          style={{ marginTop: 0, marginBottom: 0 }}
-        >
-          {t('day_schedule')}
-        </h2>
-
         <Stack
-          gap={2}
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          flexDirection="row"
+          gap={1}
         >
-          {
-            Array.apply(0, Array(travelRecipe.countDays)).map((x, i) => (
-              // eslint-disable-next-line react/no-array-index-key
-              <Stack key={i}>
-                <h3
-                  style={{ marginTop: '1' }}
+          <SignUpForTrip.Component
+            id={travelRecipe.id}
+            name={travelRecipe.name}
+            button={(
+              <Tooltip title={t('plan_travel')}>
+                <IconButton
+                  color="primary"
                 >
-                  {t('day')} {i + 1}
-                </h3>
+                  <EventAvailable fontSize="medium" />
+                </IconButton>
+              </Tooltip>
+            )}
+          />
 
-                <TravelDayTable.Component
-                  countDay={i + 1}
-                />
-              </Stack>
-            ))
-          }
+          <CopyToClipboard.Component
+            color={theme.palette.primary.main}
+            fontSize="medium"
+            text={`${window.location.host}/travel-recipe/${id}`}
+          />
         </Stack>
-      </Stack>
+      </Box>
 
-      <SignUpForTrip.Component
-        id={travelRecipe.id}
-        name={travelRecipe.name}
-      />
+      {/* Accommodations Section */}
+      <Box>
+        <Typography variant="h5" fontWeight={700} color="text.primary" gutterBottom>
+          {t('accommodations')}
+        </Typography>
+        <AccommodationTable.Component />
+      </Box>
 
-      <Button
-        type="button"
-        variant="outlined"
-        onClick={() => navigate(Pages.TRAVEL_RECIPES_STORE.getRedirectLink())}
-      >
-        {t('back_to_trips')}
-      </Button>
+      {/* Day Schedule Section */}
+      <Box>
+        <Typography variant="h5" fontWeight={700} color="text.primary" gutterBottom>
+          {t('day_schedule')}
+        </Typography>
+        <Stack gap={3}>
+          {Array.from({ length: travelRecipe.countDays }, (_, i) => (
+            <Box key={i}>
+              <Typography variant="h6" fontWeight={600} color="text.primary" gutterBottom>
+                {t('day')} {i + 1}
+              </Typography>
+              <TravelDayTable.Component countDay={i + 1} />
+            </Box>
+          ))}
+        </Stack>
+      </Box>
     </Stack>
   )
 }

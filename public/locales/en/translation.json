@@ -253,14 +253,16 @@
     "accommodations": "Accommodations",
     "day_schedule": "Day Schedule",
     "day": "Day",
-    "back_to_trips": "Back to Trip List",
+    "back": "Back",
     "name": "Name",
     "place": "Place",
     "days_range": "Days Range",
     "cost": "Cost",
     "time_range": "Timeframe",
     "activity": "Activity",
-    "people": "Number of People"
+    "people": "Number of People",
+    "plan_travel": "Plan your trip",
+    "no_activities": "No activities planned for this day",
   },
   "travel_recipes_store_page": {
     "back_to_dashboard": "Back to Homepage",

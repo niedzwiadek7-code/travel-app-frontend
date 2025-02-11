@@ -250,14 +250,16 @@
     "accommodations": "Noclegi",
     "day_schedule": "Rozkład dni",
     "day": "Dzień",
-    "back_to_trips": "Powrót do listy wycieczek",
+    "back": "Powrót",
     "name": "Nazwa",
     "place": "Miejsce",
     "days_range": "Zakres dni",
     "cost": "Koszt",
     "time_range": "Ramy czasowe",
     "activity": "Aktywność",
-    "people": "Ilość osób"
+    "people": "Ilość osób",
+    "plan_travel": "Zaplanuj wycieczkę",
+    "no_activities": "Brak zaplanowanych aktywności na ten dzień"
   },
   "travel_recipes_store_page": {
     "back_to_dashboard": "Powrót do strony głównej",
