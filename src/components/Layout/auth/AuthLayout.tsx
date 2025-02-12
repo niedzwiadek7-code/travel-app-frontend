@@ -147,7 +147,10 @@ const PublicLayout: React.FC<{ children: ReactNode }> = ({ children }) => {
                   : theme.palette.action.hover,
               },
             }}
-            onClick={() => navigate(item.path, { state: item.state || undefined })}
+            onClick={() => {
+              navigate(item.path, { state: item.state || undefined })
+              handleClose()
+            }}
           >
             <ListItemIcon
               sx={{

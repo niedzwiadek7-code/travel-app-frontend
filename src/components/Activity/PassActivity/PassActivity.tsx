@@ -1,10 +1,11 @@
-import React, { ReactNode } from 'react'
+import React from 'react'
 import { useForm } from 'react-hook-form'
 import {
+  Button,
   Stack,
 } from '@mui/material'
 import { useTranslation } from 'react-i18next'
-import { LoadingButton } from '@mui/lab'
+import { Save } from '@mui/icons-material'
 import { ElementTravelInstance } from '../../../model'
 import * as Modal from '../../../components/UI/Modal'
 import { useDependencies, useAuth } from '../../../context'
@@ -14,7 +15,6 @@ import * as Dropzone from '../../UI/Dropzone'
 
 type Props = {
   travelElement: ElementTravelInstance
-  button: ReactNode
 }
 
 type Inputs = {
@@ -55,9 +55,26 @@ const PassElementTravelModal: React.FC<Props> = (props) => {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+    >
       <Modal.Component
-        buttonComponent={props.button}
+        buttonComponent={(
+          <Button
+            type="button"
+            variant="contained"
+            color="success"
+            startIcon={<Save />}
+            sx={{
+              width: {
+                xs: '100%',
+                md: 'auto',
+              },
+            }}
+          >
+            {t('pass')}
+          </Button>
+        )}
         title={t('pass')}
         actions={[
           {

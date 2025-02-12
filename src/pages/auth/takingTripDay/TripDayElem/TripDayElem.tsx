@@ -15,7 +15,6 @@ import {
   AirplanemodeActive as TravelIcon,
   Grade,
   QuestionAnswer,
-  Save,
   Cancel,
 } from '@mui/icons-material'
 import { useTranslation } from 'react-i18next'
@@ -196,16 +195,6 @@ const TripDayElem: React.FC<Props> = ({ travelElement }) => {
               <RateActivity.Component
                 elemId={travelElement.id}
                 name={travelElement.activity.name}
-                button={(
-                  <LoadingButton
-                    type="button"
-                    variant="contained"
-                    color="primary"
-                    startIcon={<Grade />}
-                  >
-                    {t('rate')}
-                  </LoadingButton>
-                )}
               />
               <Button
                 variant="contained"
@@ -220,16 +209,6 @@ const TripDayElem: React.FC<Props> = ({ travelElement }) => {
             <>
               <PassActivity.Component
                 travelElement={travelElement}
-                button={(
-                  <LoadingButton
-                    type="button"
-                    variant="contained"
-                    color="success"
-                    startIcon={<Save />}
-                  >
-                    {t('pass')}
-                  </LoadingButton>
-                )}
               />
               <LoadingButton
                 type="button"

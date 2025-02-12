@@ -163,6 +163,7 @@
     "activity_list": "Lista aktywności",
     "activity_manage": "Zarządzaj aktywnościami",
     "back": "Powrót",
+    "no_activities_found": "Nie znaleziono żadnych aktywności",
     "admin_buttons": {
       "accept": "Zaakceptuj",
       "edit": "Edytuj",

@@ -44,33 +44,12 @@ const ActivityCard: React.FC<Props> = ({ activity, acceptElement, deleteElement 
   const Icon = getActivityTypeIcon(activity.activityType)
   const primaryImage = activity.ratings[0]?.photos[0]
 
-  const getDetails = () => {
-    switch (activity.activityType) {
-      case 'Trip':
-        return {
-          icon: <AccessTime fontSize="small" />,
-          text: `${activity.from} - ${activity.to}`,
-        }
-      case 'Attraction':
-        return {
-          icon: <MonetizationOn fontSize="small" />,
-          text: `${activity.price}zł / ${t(activity.priceType || '')}`,
-        }
-      case 'Accommodation':
-        return {
-          icon: <MonetizationOn fontSize="small" />,
-          text: `${activity.price}zł / ${t('day')}`,
-        }
-      default:
-        return null
-    }
-  }
-
-  const details = getDetails()
-
   return (
     <Stack
-      direction="row"
+      direction={{
+        xs: 'column',
+        md: 'row',
+      }}
       spacing={2}
       sx={{
         p: 3,
@@ -83,61 +62,93 @@ const ActivityCard: React.FC<Props> = ({ activity, acceptElement, deleteElement 
         },
       }}
     >
-      <Avatar
-        variant="rounded"
-        src={primaryImage}
-        sx={{
-          width: 100,
-          height: 100,
-          borderRadius: 2,
-          boxShadow: theme.shadows[2],
-          flexShrink: 0,
-        }}
+      <Stack
+        display="flex"
+        flexDirection="row"
+        alignItems="center"
+        justifyContent="flex-start"
+        sx={{ flexGrow: 1, width: '100%' }}
+        gap={2}
       >
-        {!primaryImage && <Icon fontSize="large" />}
-      </Avatar>
+        <Avatar
+          variant="rounded"
+          src={primaryImage}
+          sx={{
+            width: 100,
+            height: 100,
+            borderRadius: 2,
+            boxShadow: theme.shadows[2],
+            flexShrink: 0,
+          }}
+        >
+          {!primaryImage && <Icon fontSize="large" />}
+        </Avatar>
 
-      <Stack sx={{ flexGrow: 1, minWidth: 0 }}>
-        <Stack direction="row" alignItems="center" mb={1} gap={1}>
+        <Stack
+          sx={{ flexGrow: 1, minWidth: 0 }}
+          gap={1}
+        >
           <Typography
             variant="h6"
             sx={{
               fontWeight: 600,
               overflow: 'hidden',
               textOverflow: 'ellipsis',
-              whiteSpace: 'nowrap',
+            // whiteSpace: 'nowrap',
             }}
           >
             {activity.name}
           </Typography>
 
-          <Chip
-            label={t(activity.activityType)}
-            color="primary"
-            size="small"
-            icon={<Icon fontSize="small" />}
-            sx={{ borderRadius: 1 }}
-          />
-        </Stack>
+          <Stack
+            display="flex"
+            justifyContent="flex-start"
+            alignItems="center"
+            flexDirection="row"
+          >
+            <Chip
+              label={t(activity.activityType)}
+              color="primary"
+              size="small"
+              icon={<Icon fontSize="small" />}
+              sx={{
+                borderRadius: 1,
+              }}
+            />
+          </Stack>
 
-        <Stack direction="row" spacing={2} alignItems="center" flexWrap="wrap">
           {activity.place && (
-            <Stack direction="row" spacing={1} alignItems="center">
-              <Place fontSize="small" color="action" />
-              <Typography variant="body2" color="text.secondary">
-                {activity.place}
-              </Typography>
-            </Stack>
+          <Stack direction="row" spacing={1} alignItems="center">
+            <Place fontSize="small" color="action" />
+            <Typography variant="body2" color="text.secondary">
+              {activity.place}
+            </Typography>
+          </Stack>
           )}
 
-          {details && (
+          {
+          activity.from && activity.to && (
             <Stack direction="row" spacing={1} alignItems="center">
-              {details.icon}
+              <AccessTime fontSize="small" color="action" />
               <Typography variant="body2" color="text.secondary">
-                {details.text}
+                {activity.from} - {activity.to}
               </Typography>
             </Stack>
-          )}
+          )
+        }
+
+          {
+          activity.price && (
+            <Stack direction="row" spacing={1} alignItems="center">
+              <MonetizationOn fontSize="small" color="action" />
+              <Typography variant="body2" color="text.secondary">
+                {activity.price}zł {' '}
+                { activity.priceType && `(${t(activity.priceType)})`}
+                { activity.activityType === 'Accommodation' && `(${t('day')})`}
+              </Typography>
+            </Stack>
+          )
+        }
         </Stack>
       </Stack>
 

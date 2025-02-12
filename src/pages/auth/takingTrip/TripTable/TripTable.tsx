@@ -96,8 +96,20 @@ const TripTable: React.FC = () => {
                   <Typography variant="body1">{date}</Typography>
                 </TableCell>
                 <TableCell>
-                  <Stack direction="row" alignItems="center" gap={2}>
-                    <Typography variant="body1">
+                  <Stack
+                    direction="row"
+                    alignItems="center"
+                    gap={2}
+                  >
+                    <Typography
+                      variant="body1"
+                      // sx={{
+                      //   display: {
+                      //     xs: 'none',
+                      //     md: 'block',
+                      //   },
+                      // }}
+                    >
                       {travelElements[date].passed} / {travelElements[date].count}
                     </Typography>
                     <LinearProgress
@@ -114,7 +126,16 @@ const TripTable: React.FC = () => {
                         },
                       }}
                     />
-                    <Typography variant="body1" fontWeight={600}>
+                    <Typography
+                      variant="body1"
+                      fontWeight={600}
+                      sx={{
+                        display: {
+                          xs: 'none',
+                          md: 'block',
+                        },
+                      }}
+                    >
                       {`${progress.toFixed(2)}%`}
                     </Typography>
                   </Stack>

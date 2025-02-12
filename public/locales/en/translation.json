@@ -164,6 +164,7 @@
     "activity_list": "Activity List",
     "activity_manage": "Manage Activities",
     "back": "Back",
+    "no_activities_found": "No activities found",
     "admin_buttons": {
       "accept": "Accept",
       "edit": "Edit",

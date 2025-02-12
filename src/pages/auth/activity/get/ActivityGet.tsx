@@ -1,12 +1,10 @@
 import React from 'react'
 import {
-  Box,
   Typography,
   Stack,
   Chip,
   Divider,
   Button,
-  Skeleton,
   Paper, Tooltip, IconButton, useTheme,
 } from '@mui/material'
 import {
@@ -21,6 +19,7 @@ import Details from './Details'
 import Ratings from './Ratings'
 import { StateDto } from './dto/state.dto'
 import StateButtons from '../../../../components/StateButtons/StateButtons'
+import Loading from '../../../../components/UI/Loading/Loading'
 
 const Activity: React.FC = () => {
   const theme = useTheme()
@@ -43,22 +42,24 @@ const Activity: React.FC = () => {
 
   if (loading || !activity) {
     return (
-      <Box sx={{ p: 3, maxWidth: 1200, mx: 'auto' }}>
-        <Stack spacing={3}>
-          <Skeleton variant="rectangular" width={200} height={40} />
-          <Skeleton variant="rectangular" height={400} sx={{ borderRadius: 3 }} />
-          <Stack spacing={2}>
-            <Skeleton variant="rounded" height={80} />
-            <Skeleton variant="rounded" height={80} />
-            <Skeleton variant="rounded" height={80} />
-          </Stack>
-        </Stack>
-      </Box>
+      <Loading />
     )
   }
 
   return (
-    <Box sx={{ p: 3, maxWidth: 1200, mx: 'auto' }}>
+    <Stack
+      gap={3}
+      sx={{
+        padding: theme.spacing(3),
+        borderRadius: '12px',
+        backgroundColor: theme.palette.background.paper,
+        boxShadow: theme.shadows[1],
+        transition: 'all 0.3s ease',
+        '&:hover': {
+          boxShadow: theme.shadows[3],
+        },
+      }}
+    >
       <Stack
         display="flex"
         flexDirection="row"
@@ -71,54 +72,61 @@ const Activity: React.FC = () => {
         >
           {t('back')}
         </Button>
-
-        <Stack
-          display="flex"
-          flexDirection="row"
-          alignItems="center"
-          gap={2}
-        >
-          <StateButtons
-            acceptButton={(
-              <Tooltip title={t('accept')}>
-                <IconButton
-                  color="success"
-                  sx={{ bgcolor: `${theme.palette.success.light}20` }}
-                >
-                  <Done fontSize="small" />
-                </IconButton>
-              </Tooltip>
-            )}
-            deleteButton={(
-              <Tooltip title={t('reject')}>
-                <IconButton
-                  color="error"
-                  sx={{ bgcolor: `${theme.palette.error.light}20` }}
-                >
-                  <Clear fontSize="small" />
-                </IconButton>
-              </Tooltip>
-            )}
-            addButton={(
-              <Tooltip title={t('add_to_travel')}>
-                <IconButton
-                  color="primary"
-                  sx={{ bgcolor: `${theme.palette.primary.light}20` }}
-                >
-                  <AddCircleOutline fontSize="small" />
-                </IconButton>
-              </Tooltip>
-            )}
-            activity={activity}
-          />
-        </Stack>
       </Stack>
 
       <Stack spacing={3} sx={{ position: 'relative' }}>
         <Stack spacing={2} sx={{ textAlign: 'center' }}>
-          <Typography variant="h3" sx={{ fontWeight: 700 }}>
-            {activity.name}
-          </Typography>
+          <Stack
+            display="flex"
+            alignItems="center"
+            justifyContent="space-between"
+            flexDirection="row"
+          >
+            <Typography variant="h3" sx={{ fontWeight: 700 }}>
+              {activity.name}
+            </Typography>
+
+            <Stack
+              display="flex"
+              flexDirection="row"
+              alignItems="center"
+              gap={2}
+            >
+              <StateButtons
+                acceptButton={(
+                  <Tooltip title={t('accept')}>
+                    <IconButton
+                      color="success"
+                      sx={{ bgcolor: `${theme.palette.success.light}20` }}
+                    >
+                      <Done fontSize="small" />
+                    </IconButton>
+                  </Tooltip>
+                )}
+                deleteButton={(
+                  <Tooltip title={t('reject')}>
+                    <IconButton
+                      color="error"
+                      sx={{ bgcolor: `${theme.palette.error.light}20` }}
+                    >
+                      <Clear fontSize="small" />
+                    </IconButton>
+                  </Tooltip>
+                )}
+                addButton={(
+                  <Tooltip title={t('add_to_travel')}>
+                    <IconButton
+                      color="primary"
+                      sx={{ bgcolor: `${theme.palette.primary.light}20` }}
+                    >
+                      <AddCircleOutline fontSize="small" />
+                    </IconButton>
+                  </Tooltip>
+                )}
+                activity={activity}
+              />
+            </Stack>
+          </Stack>
 
           <Chip
             label={tCategories(activity.activityType)}
@@ -178,7 +186,7 @@ const Activity: React.FC = () => {
           )
         }
       </Stack>
-    </Box>
+    </Stack>
   )
 }
 

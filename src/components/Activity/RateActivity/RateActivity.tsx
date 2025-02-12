@@ -1,9 +1,11 @@
-import React, { ReactNode } from 'react'
+import React from 'react'
 import {
+  Button,
   Checkbox, FormControlLabel, Stack,
 } from '@mui/material'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
+import { Grade } from '@mui/icons-material'
 import { useDependencies, useAuth } from '../../../context'
 import * as Modal from '../../../components/UI/Modal'
 import * as Input from '../../../components/UI/Input'
@@ -13,7 +15,6 @@ import { useFetch } from '../../../hooks'
 type Props = {
   elemId: number
   name: string
-  button: ReactNode
 }
 
 type Inputs = {
@@ -65,7 +66,17 @@ const RateActivity: React.FC<Props> = (props) => {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Modal.Component
-        buttonComponent={props.button}
+        buttonComponent={(
+          <Button
+            type="button"
+            variant="contained"
+            color="primary"
+            startIcon={<Grade />}
+            sx={{ width: '100% !important' }}
+          >
+            {t('rate')}
+          </Button>
+        )}
         title={`${t('rate')} "${props.name}"`}
         actions={[
           {
