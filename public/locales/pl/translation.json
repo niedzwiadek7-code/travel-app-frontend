@@ -88,10 +88,12 @@
     "edit_travel": "Edytuj plan wycieczkę",
     "create_travel": "Zapisz plan wycieczki",
     "reset": "Resetuj plan wycieczki",
-    "back": "Powrót na stronę główną",
+    "back": "Powrót do listy planów wycieczek",
     "create_travel_success": "Plan wycieczki został edytowany pomyślnie",
     "edit_travel_success": "Plan wycieczki został utworzony pomyślnie",
     "error": "Wystąpił nieoczekiwany błąd",
+    "edit": "Edytuj wycieczkę",
+    "create": "Stwórz wycieczkę",
     "summary_table": {
       "category": "Kategoria",
       "time": "Spędzony czas",
@@ -111,7 +113,11 @@
       "actions": "Akcje",
       "day": "dnia",
       "from": "Od",
-      "to": "do"
+      "to": "do",
+      "no_accommodations": "Nie zaplanowano jeszcze żadnych noclegów",
+      "edit": "Edytuj",
+      "delete": "Usuń",
+      "add": "Dodaj nocleg"
     },
     "browse_trip": "Przeglądaj dni swojej wycieczki",
     "browse_trip_table": {
@@ -121,8 +127,11 @@
       "time": "Czas do zaplanowania",
       "count_activities": "Liczba aktywności",
       "time_to_plan": "Czas do zaplanowania",
-      "actions": "Akcje"
-    }
+      "actions": "Akcje",
+      "review": "Przeglądaj",
+      "delete": "Usuń"
+    },
+    "add_day": "Dodaj dodatkowy dzień"
   },
   "activity_page": {
     "pick_activity_type": "Wybierz typ aktywności",

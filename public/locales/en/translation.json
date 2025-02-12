@@ -89,10 +89,12 @@
     "edit_travel": "Edit Travel Plan",
     "create_travel": "Save Travel Plan",
     "reset": "Reset Travel Plan",
-    "back": "Back to Homepage",
+    "back": "Back to Travel Plans",
     "create_travel_success": "Travel plan has been successfully edited",
     "edit_travel_success": "Travel plan has been successfully created",
     "error": "An unexpected error occurred",
+    "edit": "Edit Travel",
+    "create": "Create Travel",
     "summary_table": {
       "category": "Category",
       "time": "Time Spent",
@@ -112,7 +114,11 @@
       "actions": "Actions",
       "day": "day",
       "from": "From",
-      "to": "To"
+      "to": "To",
+      "no_accommodations": "No accommodations planned for this trip",
+      "edit": "Edit",
+      "delete": "Delete",
+      "add": "Add Accommodation"
     },
     "browse_trip": "Browse Days of Your Trip",
     "browse_trip_table": {
@@ -122,8 +128,11 @@
       "time": "Time to Plan",
       "count_activities": "Number of Activities",
       "time_to_plan": "Time to Plan",
-      "actions": "Actions"
-    }
+      "actions": "Actions",
+      "review": "Review",
+      "delete": "Delete"
+    },
+    "add_day": "Add Day"
   },
   "activity_page": {
     "pick_activity_type": "Select Activity Type",
@@ -328,9 +337,9 @@
     "en": "English",
     "pl": "Polish",
     "home": "Home",
-    "trip_creator": "Trip Creator",
-    "trip_plans": "Trip Plans",
-    "ongoing_trips": "Ongoing Trips",
+    "trip_creator": "Travel Creator",
+    "trip_plans": "Travel Plans",
+    "ongoing_trips": "Ongoing Travels",
     "manage_activities": "Manage Activities",
     "logout": "Logout"
   }

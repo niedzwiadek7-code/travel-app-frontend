@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import {
-  Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
+  alpha, IconButton,
+  Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip, useTheme,
 } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import { Visibility, Delete } from '@mui/icons-material'
@@ -25,6 +26,7 @@ const TravelDaysTable: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true)
   const [sortedTravelElements, setSortedTravelElements] = useState<TravelDay[]>([])
   const { t } = useTranslation('translation', { keyPrefix: 'travel_page.browse_trip_table' })
+  const theme = useTheme()
 
   const deleteDay = (dayNumber: number) => {
     dispatch(deleteDayFromTravel(dayNumber))
@@ -69,10 +71,24 @@ const TravelDaysTable: React.FC = () => {
   }
 
   return (
-    <TableContainer>
+    <TableContainer
+      sx={{
+        borderRadius: '8px',
+        boxShadow: `0 4px 12px ${alpha(theme.palette.common.black, 0.1)}`,
+        backgroundColor: theme.palette.background.paper,
+      }}
+    >
       <Table>
         <TableHead>
-          <TableRow>
+          <TableRow
+            sx={{
+              fontWeight: 700,
+              color: theme.palette.primary.dark,
+              backgroundColor: alpha(theme.palette.primary.main, 0.1),
+              borderBottom: `2px solid ${theme.palette.primary.main}`,
+              textTransform: 'uppercase',
+            }}
+          >
             <TableCell> {t('trip_day')} </TableCell>
             <TableCell> {t('activities')} </TableCell>
             <TableCell> {t('time')} </TableCell>
@@ -94,27 +110,39 @@ const TravelDaysTable: React.FC = () => {
                     alignItems="center"
                     justifyContent="flex-end"
                   >
-                    <Visibility
-                      color="primary"
-                      onClick={() => {
-                        navigate(Pages.TRAVEL_DAY.getRedirectLink({
-                          countDay: elem.countDay.toString(),
-                        }))
-                      }}
-                      sx={{
-                        cursor: 'pointer',
-                      }}
-                    />
-
-                    {
-                      sortedTravelElements.length === elem.countDay && (
-                        <Delete
-                          color="error"
-                          onClick={() => deleteDay(elem.countDay)}
+                    <Tooltip title={t('review')}>
+                      <IconButton
+                        sx={{ bgcolor: `${theme.palette.primary.light}20` }}
+                      >
+                        <Visibility
+                          color="primary"
+                          onClick={() => {
+                            navigate(Pages.TRAVEL_DAY.getRedirectLink({
+                              countDay: elem.countDay.toString(),
+                            }))
+                          }}
                           sx={{
                             cursor: 'pointer',
                           }}
                         />
+                      </IconButton>
+                    </Tooltip>
+
+                    {
+                      sortedTravelElements.length === elem.countDay && (
+                        <Tooltip title={t('delete')}>
+                          <IconButton
+                            sx={{ bgcolor: `${theme.palette.error.light}20` }}
+                          >
+                            <Delete
+                              color="error"
+                              onClick={() => deleteDay(elem.countDay)}
+                              sx={{
+                                cursor: 'pointer',
+                              }}
+                            />
+                          </IconButton>
+                        </Tooltip>
                       )
                     }
                   </Stack>

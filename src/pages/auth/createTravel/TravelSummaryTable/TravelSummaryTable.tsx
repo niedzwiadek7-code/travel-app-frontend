@@ -1,6 +1,7 @@
 import {
+  alpha,
   Stack,
-  Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TableRow,
+  Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TableRow, useTheme,
 } from '@mui/material'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
@@ -19,12 +20,13 @@ const TravelSummaryTable: React.FC = () => {
   const accommodations = useAppSelector((state: RootState) => state.travelRecipe.accommodations)
   const { t: tGlob } = useTranslation('translation')
   const { t } = useTranslation('translation', { keyPrefix: 'travel_page.summary_table' })
+  const theme = useTheme()
 
   const activityTypes: Record<ActivityType, string> = {
-    Restaurant: tGlob('categories.restaurant'),
-    Trip: tGlob('categories.trip'),
-    Accommodation: tGlob('categories.accommodation'),
-    Attraction: tGlob('categories.attraction'),
+    Restaurant: tGlob('categories.Restaurant'),
+    Trip: tGlob('categories.Trip'),
+    Accommodation: tGlob('categories.Accommodation'),
+    Attraction: tGlob('categories.Attraction'),
   }
 
   const getTime = (activityType?: ActivityType) => {
@@ -78,10 +80,24 @@ const TravelSummaryTable: React.FC = () => {
   }
 
   return (
-    <TableContainer>
+    <TableContainer
+      sx={{
+        borderRadius: '8px',
+        boxShadow: `0 4px 12px ${alpha(theme.palette.common.black, 0.1)}`,
+        backgroundColor: theme.palette.background.paper,
+      }}
+    >
       <Table>
         <TableHead>
-          <TableRow>
+          <TableRow
+            sx={{
+              fontWeight: 700,
+              color: theme.palette.primary.dark,
+              backgroundColor: alpha(theme.palette.primary.main, 0.1),
+              borderBottom: `2px solid ${theme.palette.primary.main}`,
+              textTransform: 'uppercase',
+            }}
+          >
             <TableCell> {t('category')} </TableCell>
             <TableCell> {t('time')} </TableCell>
             <TableCell> {t('cost')} </TableCell>

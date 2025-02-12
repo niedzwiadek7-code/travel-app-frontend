@@ -16,7 +16,9 @@ type Props = {
 const Collapse: React.FC<Props> = (props) => {
   const [open, setOpen] = useState(props.defaultOpen || false)
   return (
-    <Stack>
+    <Stack
+      gap={1}
+    >
       <Typography
         variant="h5"
         component="h5"
@@ -33,10 +35,21 @@ const Collapse: React.FC<Props> = (props) => {
             gap={1}
           >
             {props.title}
-            <KeyboardArrowDown
-              onClick={() => setOpen(!open)}
-              sx={{ cursor: 'pointer' }}
-            />
+            {
+              open
+                ? (
+                  <KeyboardArrowDown
+                    onClick={() => setOpen(!open)}
+                    sx={{ cursor: 'pointer' }}
+                  />
+                )
+                : (
+                  <KeyboardArrowDown
+                    onClick={() => setOpen(!open)}
+                    sx={{ cursor: 'pointer', transform: 'rotate(180deg)' }}
+                  />
+                )
+            }
           </Stack>
 
           <Stack>

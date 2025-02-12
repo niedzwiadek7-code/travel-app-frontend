@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
 import {
-  Button, Stack,
+  Button, IconButton, Stack, Tooltip, Typography, useTheme,
 } from '@mui/material'
-import { AddCircle, Create as CreateIcon } from '@mui/icons-material'
+import {
+  AddCircle, ArrowBack, Create as CreateIcon, Restore, Save,
+} from '@mui/icons-material'
 import { LoadingButton } from '@mui/lab'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
@@ -22,6 +24,7 @@ import * as TravelGloballyElem from './TravelGloballyElem'
 import { useRouter, useFetch } from '../../../hooks'
 import { TravelRecipe } from '../../../model'
 import * as Collapse from '../../../components/UI/Collapse'
+import AddActivityButton from '../travelDay/AddActivityButton'
 
 type Params = {
   id: string | undefined
@@ -56,6 +59,7 @@ const CreateTravel: React.FC = () => {
   const travelService = apiService.getTravel(token)
   const toastUtils = getToastUtils()
   const { t } = useTranslation('translation', { keyPrefix: 'travel_page' })
+  const theme = useTheme()
 
   const planNextDay = () => {
     dispatch(addCountDays(1))
@@ -125,7 +129,78 @@ const CreateTravel: React.FC = () => {
   return (
     <Stack
       gap={3}
+      sx={{
+        padding: theme.spacing(3),
+        borderRadius: '12px',
+        backgroundColor: theme.palette.background.paper,
+        boxShadow: theme.shadows[1],
+        transition: 'all 0.3s ease',
+        '&:hover': {
+          boxShadow: theme.shadows[3],
+        },
+      }}
     >
+      {
+        travelRecipe.id && (
+          <Stack
+            display="flex"
+            justifyContent="flex-start"
+            alignItems="center"
+            flexDirection="row"
+            sx={{ width: '100%' }}
+          >
+            <Button
+              startIcon={<ArrowBack />}
+              onClick={() => navigate(Pages.TRAVEL_RECIPES_STORE.getRedirectLink())}
+            >
+              {t('back')}
+            </Button>
+          </Stack>
+        )
+      }
+
+      <Stack
+        display="flex"
+        alignItems="center"
+        justifyContent="space-between"
+        flexDirection="row"
+      >
+        <Typography variant="h4" fontWeight={700} color="text.primary">
+          {travelRecipe.id ? t('edit') : t('create')}
+        </Typography>
+
+        <Stack
+          display="flex"
+          flexDirection="row"
+          alignItems="center"
+          gap={1}
+        >
+          <Tooltip title={travelRecipe.id ? t('edit_travel') : t('create_travel')}>
+            <IconButton
+              color="primary"
+              sx={{ bgcolor: `${theme.palette.primary.light}20` }}
+              onClick={putTravel}
+            >
+              <Save />
+            </IconButton>
+          </Tooltip>
+
+          {
+            !travelRecipe.id && (
+              <Tooltip title={t('reset')}>
+                <IconButton
+                  color="error"
+                  sx={{ bgcolor: `${theme.palette.error.light}20` }}
+                  onClick={putTravel}
+                >
+                  <Restore />
+                </IconButton>
+              </Tooltip>
+            )
+          }
+        </Stack>
+      </Stack>
+
       <Stack
         direction="row"
         alignItems="center"
@@ -188,58 +263,29 @@ const CreateTravel: React.FC = () => {
               defaultOpen
               title={t('browse_trip')}
               nodeOptions={[
-                <AddCircle
+                <Tooltip
                   key="add-day"
-                  color="success"
+                  title={t('add_day')}
                   onClick={planNextDay}
-                  sx={{ cursor: 'pointer' }}
-                />,
+                >
+                  <IconButton
+                    color="primary"
+                    sx={{ bgcolor: `${theme.palette.success.light}20` }}
+                  >
+                    <AddCircle
+                      key="add-day"
+                      color="success"
+                      sx={{ cursor: 'pointer' }}
+                    />
+                  </IconButton>
+                </Tooltip>,
               ]}
             >
               <TravelDaysTable.Component />
             </Collapse.Component>
-
-            <Stack
-              gap={1}
-            >
-              <LoadingButton
-                type="button"
-                variant="contained"
-                onClick={putTravel}
-                loading={btnLoading}
-              >
-                {
-                travelRecipe.id
-                  ? t('edit_travel')
-                  : t('create_travel')
-              }
-              </LoadingButton>
-
-              {
-              !travelRecipe.id && (
-                <Button
-                  type="button"
-                  color="error"
-                  variant="contained"
-                  onClick={() => dispatch(reset())}
-                >
-                  {t('reset')}
-                </Button>
-              )
-            }
-
-            </Stack>
           </>
         )
       }
-
-      <Button
-        type="button"
-        variant="outlined"
-        onClick={() => navigate(Pages.TRAVEL_RECIPES_STORE.getRedirectLink())}
-      >
-        {t('back')}
-      </Button>
     </Stack>
   )
 }
