@@ -16,7 +16,7 @@ import {
   Place,
   AccessTime,
   MonetizationOn,
-  Clear,
+  Clear, Edit,
 } from '@mui/icons-material'
 import { useTranslation } from 'react-i18next'
 import { useRouter } from '../../../../hooks'
@@ -167,6 +167,18 @@ const ActivityCard: React.FC<Props> = ({ activity, acceptElement, deleteElement 
       >
         {state?.admin && (
           <>
+            <Tooltip title={t('edit')}>
+              <IconButton
+                color="primary"
+                onClick={() => navigate(
+                  Pages.ACTIVITY_EDIT.getRedirectLink({ id: activity.id.toString() }),
+                  { state },
+                )}
+                sx={{ bgcolor: `${theme.palette.primary.light}20` }}
+              >
+                <Edit fontSize="small" />
+              </IconButton>
+            </Tooltip>
             <Tooltip title={t('accept')}>
               <IconButton
                 color="success"

@@ -91,6 +91,7 @@ const PublicLayout: React.FC<{ children: ReactNode }> = ({ children }) => {
       path: Pages.LIST_ACTIVITY.getRedirectLink(),
       isActive: () => state?.admin,
       state: {
+        previousPage: Pages.LIST_ACTIVITY.getRedirectLink(),
         admin: true,
         source: 'toAccept',
       },

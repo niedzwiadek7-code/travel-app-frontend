@@ -23,7 +23,9 @@ type QueryParams = {
 
 const ListActivity: React.FC = () => {
   const theme = useTheme()
-  const { state, query, navigate } = useRouter<StateDto, QueryParams, {}>()
+  const {
+    state, query, navigate, pathname,
+  } = useRouter<StateDto, QueryParams, {}>()
   const { t } = useTranslation('translation', { keyPrefix: 'activity_list_page' })
 
   const { getApiService, getToastUtils } = useDependencies()
@@ -106,7 +108,7 @@ const ListActivity: React.FC = () => {
       }}
     >
       {
-        state.previousPage && (
+        state.previousPage && state.previousPage !== pathname && (
           <Button
             startIcon={<ArrowBack />}
             onClick={() => navigate(state.previousPage)}

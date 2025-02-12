@@ -63,6 +63,7 @@ const TripDayElem: React.FC<Props> = ({ travelElement }) => {
       setCancelLoading(true)
       await travelService.cancelTravelElementInstance(travelElement.id)
       dispatch(cancelTravelElementInstance(travelElement.id))
+      toastUtils.Toast.showToast(toastUtils.types.SUCCESS, t('cancel_success'))
       setCancelLoading(false)
     } catch (err) {
       toastUtils.Toast.showToast(toastUtils.types.ERROR, t('error'))

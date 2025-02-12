@@ -135,6 +135,8 @@
     "accept": "Accept",
     "delete": "Delete",
     "back": "Back",
+    "fill_details": "Fill in the details of the activity",
+    "reject": "Reject",
     "inputs": {
       "name": "Name",
       "description": "Description",
@@ -185,7 +187,8 @@
       "per_hour": "per hour",
       "per_entry": "per entry",
       "accept": "Accept",
-      "reject": "Reject"
+      "reject": "Reject",
+      "edit": "Edit"
     }
   },
   "realized_trips_page": {
@@ -222,10 +225,12 @@
     "trip_table": {
       "day": "Day",
       "activities_end": "Completed Activities",
-      "browse": "Browse"
+      "browse": "Browse",
+      "actions": "Actions"
     },
     "rate": "Rate activity",
     "pass": "Pass activity",
+    "cancel_success": "Accommodation has been successfully canceled",
     "back": "Back"
   },
   "taking_trip_day_page": {
@@ -241,7 +246,8 @@
     "cancel": "Cancel",
     "rate": "Rate activity",
     "pass": "Pass activity",
-    "back": "Back"
+    "back": "Back",
+    "cancel_success": "Activity has been successfully canceled"
   },
   "travel_day_page": {
     "day": "Day",
@@ -308,7 +314,8 @@
     "photos": "Photos",
     "add_to_travel": "Add to Trip",
     "accept": "Accept",
-    "reject": "Reject"
+    "reject": "Reject",
+    "day": "day"
   },
   "state_buttons": {
     "accept_message": "The reviewed activity has been accepted",

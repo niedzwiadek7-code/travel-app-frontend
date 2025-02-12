@@ -133,7 +133,9 @@
     "create": "Stwórz aktywność",
     "accept": "Zaakceptuj",
     "delete": "Usuń",
+    "reject": "Odrzuć",
     "back": "Powrót",
+    "fill_details": "Wypełnij szczegóły aktywności",
     "inputs": {
       "name": "Nazwa",
       "description": "Opis",
@@ -184,7 +186,8 @@
       "per_hour": "za godzinę",
       "per_entry": "za wejście",
       "accept": "Zaakceptuj",
-      "reject": "Odrzuć"
+      "reject": "Odrzuć",
+      "edit": "Edytuj"
     }
   },
   "realized_trips_page": {
@@ -241,7 +244,8 @@
     "cancel": "Odwołaj",
     "rate": "Oceń aktywność",
     "pass": "Zapisz odbycie",
-    "back": "Powrót"
+    "back": "Powrót",
+    "cancel_success": "Aktywność została odwołana pomyślnie"
   },
   "travel_day_page": {
     "day": "Dzień",
@@ -308,7 +312,8 @@
     "photos": "Zdjęcia",
     "add_to_travel": "Dodaj do wycieczki",
     "accept": "Zaakceptuj",
-    "reject": "Odrzuć"
+    "reject": "Odrzuć",
+    "day": "dzień"
   },
   "state_buttons": {
     "accept_message": "Przeglądana aktywność została zaakceptowana",

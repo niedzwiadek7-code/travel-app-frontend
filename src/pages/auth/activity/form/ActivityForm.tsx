@@ -1,10 +1,14 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
-  Button, Stack,
+  Button,
+  Stack,
+  useTheme, Typography, Tooltip, IconButton,
 } from '@mui/material'
-import { SubmitHandler, useForm } from 'react-hook-form'
-import { DownhillSkiing } from '@mui/icons-material'
 import { LoadingButton } from '@mui/lab'
+import {
+  AddCircleOutline, ArrowBack, Clear, Done,
+} from '@mui/icons-material'
+import { SubmitHandler, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import * as Select from '../../../../components/UI/Select'
 import InputsMap from './InputsMap'
@@ -12,16 +16,12 @@ import * as Input from '../../../../components/UI/Input'
 import { useDependencies, useAuth } from '../../../../context'
 import { Pages } from '../../../pages'
 import * as Loading from '../../../../components/UI/Loading'
-import SaveActivityModal from './SaveActivityModal'
-import * as SaveInstanceActivityModal from '../../../../components/SaveInstanceActivityModal'
-import * as Header from '../../../../components/Header'
 import { Activity, ActivityType } from '../../../../model'
-import {
-  ExtendedActivityFormat,
-} from '../../../../services/backend/Activity/types'
+import { ExtendedActivityFormat } from '../../../../services/backend/Activity/types'
 import { useFetch } from '../../../../hooks/useFetch'
 import { StateDto } from './dto'
 import { useRouter } from '../../../../hooks'
+import StateButtons from '../../../../components/StateButtons/StateButtons'
 
 type Inputs = {
   activityType: ActivityType
@@ -48,16 +48,9 @@ const ActivityForm: React.FC = () => {
   const { t: tInputs } = useTranslation('translation', { keyPrefix: 'activity_page.inputs' })
   const { t: tGlob } = useTranslation('translation')
 
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { errors },
-  } = useForm<Inputs>()
+  const theme = useTheme()
 
-  // TODO: improve button loading logic
   const [btnLoading, setBtnLoading] = useState<boolean>(false)
-  const activityType = watch('activityType')
 
   const { getApiService, getToastUtils } = useDependencies()
   const apiService = getApiService()
@@ -75,10 +68,26 @@ const ActivityForm: React.FC = () => {
   const {
     data: activity,
     loading,
-  } = useFetch<ExtendedActivityFormat>({
-    fetchData,
-    defaultData: undefined,
-  }, [id])
+  } = useFetch<ExtendedActivityFormat>(
+    { fetchData, defaultData: undefined },
+    [id],
+  )
+
+  const {
+    register,
+    handleSubmit,
+    watch,
+    setValue,
+    formState: { errors },
+  } = useForm<Inputs>()
+
+  useEffect(() => {
+    if (activity) {
+      setValue('activityType', activity.activityType)
+    }
+  }, [activity])
+
+  const activityType = watch('activityType')
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     try {
@@ -99,10 +108,21 @@ const ActivityForm: React.FC = () => {
       )
 
       setBtnLoading(false)
+      if (!activity) {
+        navigate(
+          Pages.ACTIVITY_GET.getRedirectLink({
+            id: activityId,
+          }),
+          { state },
+        )
+        return
+      }
+
       navigate(Pages.ACTIVITY_EDIT.getRedirectLink({
         id: activityId,
       }), {
         state,
+        replace: true,
       })
     } catch (err) {
       setBtnLoading(false)
@@ -113,49 +133,15 @@ const ActivityForm: React.FC = () => {
     }
   }
 
-  const acceptActivity = async () => {
-    try {
-      if (activity) {
-        await activityService.acceptActivity(activity.id)
-        navigate(Pages.LIST_ACTIVITY.getRedirectLink(), {
-          state,
-        })
-      }
-    } catch (err) {
-      toastUtils.Toast.showToast(
-        toastUtils.types.ERROR,
-        t('error'),
-      )
-    }
-  }
-
-  const restoreActivity = async () => {
-    try {
-      if (activity) {
-        await activityService.restoreActivity(activity.id)
-        navigate(Pages.LIST_ACTIVITY.getRedirectLink(), {
-          state,
-        })
-      }
-    } catch (err) {
-      toastUtils.Toast.showToast(
-        toastUtils.types.ERROR,
-        t('error'),
-      )
-    }
-  }
-
   if (loading) {
-    return (
-      <Loading.Component />
-    )
+    return <Loading.Component />
   }
 
   const options: Record<ActivityType, string> = {
-    Attraction: tGlob('categories.attraction'),
-    Restaurant: tGlob('categories.restaurant'),
-    Trip: tGlob('categories.trip'),
-    Accommodation: tGlob('categories.accommodation'),
+    Attraction: tGlob('categories.Attraction'),
+    Restaurant: tGlob('categories.Restaurant'),
+    Trip: tGlob('categories.Trip'),
+    Accommodation: tGlob('categories.Accommodation'),
   }
 
   if (state?.availableTypes) {
@@ -169,23 +155,90 @@ const ActivityForm: React.FC = () => {
 
   return (
     <Stack
-      gap={2}
+      sx={{
+        padding: theme.spacing(3),
+        borderRadius: '12px',
+        backgroundColor: theme.palette.background.paper,
+        boxShadow: theme.shadows[1],
+        transition: 'all 0.3s ease',
+        '&:hover': {
+          boxShadow: theme.shadows[3],
+        },
+      }}
+      gap={3}
     >
-      <Header.Component
-        title={activity ? t('edit') : t('create')}
-        icon={(
-          <DownhillSkiing
-            fontSize="large"
-          />
-        )}
-      />
-
-      <form
-        onSubmit={handleSubmit(onSubmit)}
+      <Stack
+        display="flex"
+        justifyContent="flex-start"
+        alignItems="center"
+        flexDirection="row"
+        sx={{ width: '100%' }}
       >
-        <Stack
-          gap={2}
+        <Button
+          startIcon={<ArrowBack />}
+          onClick={() => navigate(state.previousPage, { state })}
         >
+          {t('back')}
+        </Button>
+      </Stack>
+
+      <Stack
+        display="flex"
+        flexDirection="row"
+        alignItems="center"
+        justifyContent="space-between"
+      >
+        <Typography variant="h4" fontWeight={700} color="text.primary">
+          {activity ? t('edit') : t('create')}
+        </Typography>
+
+        {
+          state?.admin && activity && (
+            <Stack
+              display="flex"
+              flexDirection="row"
+              gap={1}
+            >
+              <StateButtons
+                acceptButton={(
+                  <Tooltip title={t('accept')}>
+                    <IconButton
+                      color="success"
+                      sx={{ bgcolor: `${theme.palette.success.light}20` }}
+                    >
+                      <Done fontSize="small" />
+                    </IconButton>
+                  </Tooltip>
+              )}
+                deleteButton={(
+                  <Tooltip title={t('reject')}>
+                    <IconButton
+                      color="error"
+                      sx={{ bgcolor: `${theme.palette.error.light}20` }}
+                    >
+                      <Clear fontSize="small" />
+                    </IconButton>
+                  </Tooltip>
+              )}
+                addButton={(
+                  <Tooltip title={t('add_to_travel')}>
+                    <IconButton
+                      color="primary"
+                      sx={{ bgcolor: `${theme.palette.primary.light}20` }}
+                    >
+                      <AddCircleOutline fontSize="small" />
+                    </IconButton>
+                  </Tooltip>
+              )}
+                activity={Activity.fromActivityFormat(activity)}
+              />
+            </Stack>
+          )
+        }
+      </Stack>
+
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <Stack gap={3}>
           <Select.Component
             variant={Select.Variant.OUTLINED}
             label={t('pick_activity_type')}
@@ -196,14 +249,20 @@ const ActivityForm: React.FC = () => {
             disabled={Boolean(activity)}
           />
 
+          {
+            activityType && (
+              <Typography variant="body1" fontWeight={700} color="text.primary">
+                {t('fill_details')}
+              </Typography>
+            )
+          }
+
           {(InputsMap(tInputs)[activityType] || []).map((input) => {
             switch (input.type) {
-              case 'text':
-                // eslint-disable-next-line no-case-declarations
+              case 'text': {
                 const validation = ['min:3']
                 if (!input.rows) {
-                  validation.push('required')
-                  validation.push('max:50')
+                  validation.push('required', 'max:50')
                 } else {
                   validation.push('max:1000')
                 }
@@ -221,6 +280,7 @@ const ActivityForm: React.FC = () => {
                     error={errors?.[input.name]?.message || ''}
                   />
                 )
+              }
               case 'price':
                 return (
                   <Input.Component
@@ -248,79 +308,19 @@ const ActivityForm: React.FC = () => {
                   />
                 )
               default:
-                return <> </>
+                return null
             }
           })}
 
-          <LoadingButton
-            type="submit"
-            variant="contained"
-            loading={btnLoading}
-          >
-            { activity ? t('edit') : t('create') }
-          </LoadingButton>
-
+          {
+            activityType && (
+              <LoadingButton type="submit" variant="contained" loading={btnLoading}>
+                {activity ? t('edit') : t('create')}
+              </LoadingButton>
+            )
+          }
         </Stack>
       </form>
-
-      {
-        state.travelRecipe && activity && (
-          <SaveActivityModal
-            activity={activity}
-            countDay={state.countDay}
-          />
-        )
-      }
-
-      {
-        state.travelInstance && activity && (
-          <SaveInstanceActivityModal.Component
-            button={(
-              <Button
-                type="button"
-                variant="contained"
-              >
-                {t('add')}
-              </Button>
-            )}
-            activity={activity}
-            date={state.date}
-          />
-        )
-      }
-
-      {
-        state.admin && activity && (
-          <>
-            <Button
-              type="button"
-              variant="contained"
-              color="success"
-              onClick={() => acceptActivity()}
-            >
-              {t('accept')}
-            </Button>
-
-            <Button
-              type="button"
-              variant="contained"
-              color="error"
-              onClick={() => restoreActivity()}
-            >
-              {t('delete')}
-            </Button>
-          </>
-        )
-      }
-
-      <Button
-        type="button"
-        variant="outlined"
-        onClick={() => navigate(state.previousPage)}
-      >
-        {t('back')}
-      </Button>
-
     </Stack>
   )
 }
