@@ -1,9 +1,11 @@
 import React from 'react'
 import {
+  IconButton,
   Stack,
-  TableCell, TableRow, useTheme,
+  TableCell, TableRow, Tooltip, useTheme,
 } from '@mui/material'
 import { Attractions, Cancel, Edit } from '@mui/icons-material'
+import { useTranslation } from 'react-i18next'
 import { LocallyTravelElement } from '../../../../model'
 import { deleteActivityFromTravel } from '../../../../features/travelRecipe/travelRecipeSlice'
 import { useAppDispatch } from '../../../../app/hooks'
@@ -17,6 +19,7 @@ type Props = {
 const Attraction: React.FC<Props> = (props) => {
   const theme = useTheme()
   const dispatch = useAppDispatch()
+  const { t } = useTranslation('translation', { keyPrefix: 'travel_day_page.activity' })
 
   const deleteActivity = (id: string) => {
     dispatch(deleteActivityFromTravel(id))
@@ -56,24 +59,41 @@ const Attraction: React.FC<Props> = (props) => {
         >
           <SaveActivityModal.Component
             button={(
-              <Edit
-                color="primary"
-                sx={{
-                  cursor: 'pointer',
-                }}
-              />
+              <Tooltip title={t('edit')}>
+                <IconButton
+                  color="success"
+                  sx={{ bgcolor: `${theme.palette.primary.light}20` }}
+                >
+                  <Edit
+                    color="primary"
+                    sx={{
+                      cursor: 'pointer',
+                    }}
+                  />
+                </IconButton>
+              </Tooltip>
+
             )}
             travelElement={props.travelElement}
             activity={props.travelElement.activity}
             countDay={props.travelElement.dayCount.toString()}
           />
-          <Cancel
-            color="error"
+
+          <Tooltip
+            title={t('delete')}
             onClick={() => { deleteActivity(props.travelElement.id) }}
-            sx={{
-              cursor: 'pointer',
-            }}
-          />
+          >
+            <IconButton
+              sx={{ bgcolor: `${theme.palette.error.light}20` }}
+            >
+              <Cancel
+                color="error"
+                sx={{
+                  cursor: 'pointer',
+                }}
+              />
+            </IconButton>
+          </Tooltip>
         </Stack>
       </TableCell>
     </TableRow>

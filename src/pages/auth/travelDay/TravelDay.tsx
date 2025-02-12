@@ -1,8 +1,8 @@
 import React from 'react'
 import {
-  Stack, Button,
+  Stack, Button, useTheme, Typography,
 } from '@mui/material'
-import { Today } from '@mui/icons-material'
+import { ArrowBack, Today } from '@mui/icons-material'
 import { useTranslation } from 'react-i18next'
 import { Pages } from '../../pages'
 import * as TravelDayTable from './TravelDayTable'
@@ -28,6 +28,7 @@ const TravelDay: React.FC = () => {
     Params
   >()
   const { t } = useTranslation('translation', { keyPrefix: 'travel_day_page' })
+  const theme = useTheme()
 
   if (!countDay) {
     return (
@@ -38,29 +39,26 @@ const TravelDay: React.FC = () => {
   return (
     <Stack
       gap={2}
+      sx={{
+        padding: theme.spacing(3),
+        borderRadius: '12px',
+        backgroundColor: theme.palette.background.paper,
+        boxShadow: theme.shadows[1],
+        transition: 'all 0.3s ease',
+        '&:hover': {
+          boxShadow: theme.shadows[3],
+        },
+      }}
     >
-      <Header.Component
-        title={`${t('day')} ${countDay}`}
-        icon={(
-          <Today
-            fontSize="large"
-          />
-        )}
-      />
-
-      <TravelDayTable.Component
-        countDay={parseInt(countDay, 10)}
-      />
-
       <Stack
-        direction="row"
-        justifyContent="flex-end"
-        gap={1}
-        style={{ marginTop: '1em' }}
+        display="flex"
+        justifyContent="flex-start"
+        alignItems="center"
+        flexDirection="row"
+        sx={{ width: '100%' }}
       >
         <Button
-          type="button"
-          variant="outlined"
+          startIcon={<ArrowBack />}
           onClick={() => {
             if (travelRecipe.id) {
               navigate(Pages.EDIT_TRAVEL.getRedirectLink({
@@ -73,11 +71,33 @@ const TravelDay: React.FC = () => {
         >
           {t('back')}
         </Button>
+      </Stack>
+
+      <Stack
+        display="flex"
+        alignItems="center"
+        justifyContent="space-between"
+        flexDirection="row"
+      >
+        <Typography variant="h4" fontWeight={700} color="text.primary">
+          {`${t('day')} ${countDay}`}
+        </Typography>
 
         <AddActivityButton
           countDay={countDay}
         />
       </Stack>
+
+      <TravelDayTable.Component
+        countDay={parseInt(countDay, 10)}
+      />
+
+      <Stack
+        direction="row"
+        justifyContent="flex-end"
+        gap={1}
+        style={{ marginTop: '1em' }}
+      />
     </Stack>
   )
 }

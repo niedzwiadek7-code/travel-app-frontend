@@ -1,6 +1,7 @@
 import React from 'react'
-import { Button } from '@mui/material'
+import { IconButton, Tooltip } from '@mui/material'
 import { useTranslation } from 'react-i18next'
+import { AddCircle } from '@mui/icons-material'
 import { Pages } from '../../pages'
 import { locallyActivityTypes } from '../../../model'
 import { useRouter } from '../../../hooks'
@@ -21,13 +22,15 @@ const AddActivityButton: React.FC<Props> = (props) => {
     <div>
       <SplitButton.Component
         button={(
-          <Button
-            variant="contained"
-            color="success"
-            style={{ width: '100%' }}
-          >
-            {t('add_button')}
-          </Button>
+          <Tooltip title={t('add_button')}>
+            <IconButton
+              color="success"
+            >
+              <AddCircle
+                fontSize="large"
+              />
+            </IconButton>
+          </Tooltip>
         )}
         options={[
           {

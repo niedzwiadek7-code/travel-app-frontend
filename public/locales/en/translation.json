@@ -262,7 +262,10 @@
       "place": "Place",
       "people": "Number of People",
       "price": "Price",
-      "actions": "Actions"
+      "actions": "Actions",
+      "edit": "Edit",
+      "delete": "Delete",
+      "no_activities": "No activities planned for this day"
     }
   },
   "travel_recipes_get_page": {

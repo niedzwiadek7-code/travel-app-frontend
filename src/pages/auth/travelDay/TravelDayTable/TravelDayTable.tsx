@@ -1,8 +1,10 @@
 import React from 'react'
 import {
-  Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
+  alpha, Box,
+  Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, useTheme,
 } from '@mui/material'
 import { useTranslation } from 'react-i18next'
+import { EventNote } from '@mui/icons-material'
 import { useAppSelector } from '../../../../app/hooks'
 import { RootState } from '../../../../app/store'
 import Attraction from './Attraction'
@@ -22,12 +24,56 @@ const TravelDayTable: React.FC<Props> = (props) => {
     (a, b) => DateHandler.compareDates(b.from, a.from),
   )
   const { t } = useTranslation('translation', { keyPrefix: 'travel_day_page.activity' })
+  const theme = useTheme()
+
+  if (travelElementsThisDay.length === 0) {
+    return (
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: 2,
+          padding: 4,
+          borderRadius: '8px',
+          backgroundColor: alpha(theme.palette.primary.main, 0.05),
+          boxShadow: `0 4px 12px ${alpha(theme.palette.common.black, 0.1)}`,
+          textAlign: 'center',
+        }}
+      >
+        <EventNote
+          fontSize="large"
+          sx={{
+            color: theme.palette.primary.main,
+          }}
+        />
+        <Typography variant="h6" color="text.secondary">
+          {t('no_activities')}
+        </Typography>
+      </Box>
+    )
+  }
 
   return (
-    <TableContainer>
+    <TableContainer
+      sx={{
+        borderRadius: '8px',
+        boxShadow: `0 4px 12px ${alpha(theme.palette.common.black, 0.1)}`,
+        backgroundColor: theme.palette.background.paper,
+      }}
+    >
       <Table>
         <TableHead>
-          <TableRow>
+          <TableRow
+            sx={{
+              fontWeight: 700,
+              color: theme.palette.primary.dark,
+              backgroundColor: alpha(theme.palette.primary.main, 0.1),
+              borderBottom: `2px solid ${theme.palette.primary.main}`,
+              textTransform: 'uppercase',
+            }}
+          >
             <TableCell />
             <TableCell> {t('date_range')} </TableCell>
             <TableCell> {t('activity')} </TableCell>

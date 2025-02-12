@@ -260,7 +260,10 @@
       "place": "Miejsce",
       "people": "Ilość osób",
       "price": "Cena",
-      "actions": "Akcje"
+      "actions": "Akcje",
+      "edit": "Edytuj",
+      "delete": "Usuń",
+      "no_activities": "Nie zaplanowano jeszcze żadnych aktywności na ten dzień"
     }
   },
   "travel_recipes_get_page": {
