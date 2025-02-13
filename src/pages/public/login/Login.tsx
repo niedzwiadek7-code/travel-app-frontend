@@ -23,10 +23,16 @@ const Login: React.FC = () => {
   const theme = useTheme()
   const { getApiService, getToastUtils } = useDependencies()
   const apiService = getApiService()
-  const { setToken, setLoggedIn, setRoles } = useAuth()
+  const {
+    setToken, setLoggedIn, setRoles, token,
+  } = useAuth()
   const navigate = useNavigate()
   const [btnLoading, setBtnLoading] = useState<boolean>(false)
   const { t } = useTranslation('translation', { keyPrefix: 'login_page' })
+
+  if (token) {
+    navigate(Pages.TRAVEL_RECIPES_STORE.getRedirectLink())
+  }
 
   const {
     register, handleSubmit, formState: { errors },

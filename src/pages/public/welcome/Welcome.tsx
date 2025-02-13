@@ -7,11 +7,17 @@ import { useTranslation } from 'react-i18next'
 import Style from './Welcome.module.scss'
 import { Pages } from '../../pages'
 import PublicHeader from '../../../components/PublicHeader'
+import { useAuth } from '../../../context'
 
 const Welcome: React.FC = () => {
   const theme = useTheme()
   const navigate = useNavigate()
   const { t } = useTranslation('translation', { keyPrefix: 'welcome' })
+  const { token } = useAuth()
+
+  if (token) {
+    navigate(Pages.TRAVEL_RECIPES_STORE.getRedirectLink())
+  }
 
   return (
     <Stack>
