@@ -1,11 +1,10 @@
-import React, { useState } from 'react'
+import React from 'react'
 import {
   Button, IconButton, Stack, Tooltip, Typography, useTheme,
 } from '@mui/material'
 import {
-  AddCircle, ArrowBack, Create as CreateIcon, Restore, Save,
+  AddCircle, ArrowBack, Restore, Save,
 } from '@mui/icons-material'
-import { LoadingButton } from '@mui/lab'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from '../../../app/hooks'
@@ -19,12 +18,10 @@ import * as TravelSummaryTable from './TravelSummaryTable'
 import { useDependencies } from '../../../context'
 import { Pages } from '../../pages'
 import * as Loading from '../../../components/UI/Loading'
-import * as Header from '../../../components/Header'
 import * as TravelGloballyElem from './TravelGloballyElem'
 import { useRouter, useFetch } from '../../../hooks'
 import { TravelRecipe } from '../../../model'
 import * as Collapse from '../../../components/UI/Collapse'
-import AddActivityButton from '../travelDay/AddActivityButton'
 
 type Params = {
   id: string | undefined
@@ -51,7 +48,6 @@ const CreateTravel: React.FC = () => {
     formState: { errors },
   } = useForm<CountDaysInput>()
 
-  const [btnLoading, setBtnLoading] = useState<boolean>(false)
   const travelRecipe = useAppSelector((state: RootState) => state.travelRecipe)
   const dispatch = useAppDispatch()
   const { getApiService, getToastUtils } = useDependencies()
@@ -90,7 +86,6 @@ const CreateTravel: React.FC = () => {
 
   const putTravel = async () => {
     try {
-      setBtnLoading(true)
       if (travelRecipe.id) {
         await travelService.putTravelRecipe(travelRecipe)
         toastUtils.Toast.showToast(
@@ -106,9 +101,7 @@ const CreateTravel: React.FC = () => {
         )
         navigate(Pages.TRAVEL_RECIPES_STORE.getRedirectLink())
       }
-      setBtnLoading(false)
     } catch (err) {
-      setBtnLoading(false)
       toastUtils.Toast.showToast(
         toastUtils.types.ERROR,
         t('error'),

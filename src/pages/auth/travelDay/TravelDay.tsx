@@ -2,14 +2,13 @@ import React from 'react'
 import {
   Stack, Button, useTheme, Typography,
 } from '@mui/material'
-import { ArrowBack, Today } from '@mui/icons-material'
+import { ArrowBack } from '@mui/icons-material'
 import { useTranslation } from 'react-i18next'
 import { Pages } from '../../pages'
 import * as TravelDayTable from './TravelDayTable'
 import { useAppSelector } from '../../../app/hooks'
 import { RootState } from '../../../app/store'
 import AddActivityButton from './AddActivityButton'
-import * as Header from '../../../components/Header'
 import * as UnexpectedError from '../../../components/UI/UnexpectedError'
 import { useRouter } from '../../../hooks'
 

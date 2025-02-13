@@ -1,5 +1,5 @@
-import type { QueryActivityDto } from '../../../../services/backend/Activity/dto'
-import type { ActivityType } from '../../../../model'
+import type { QueryActivityDto } from '../../../services/backend/Activity/dto'
+import type { ActivityType } from '../../../model'
 
 export type StateDto = {
   travelRecipe: boolean,

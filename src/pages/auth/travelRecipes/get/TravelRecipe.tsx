@@ -4,13 +4,12 @@ import {
   Stack,
   Typography,
   useTheme,
-  styled,
   Box,
-  Paper, IconButton, Tooltip,
+  IconButton, Tooltip,
 } from '@mui/material'
 import {
   ArrowBack,
-  Done, EventAvailable, ReceiptLong, Share,
+  EventAvailable,
 } from '@mui/icons-material'
 import { useTranslation } from 'react-i18next'
 import * as UnexpectedError from '../../../../components/UI/UnexpectedError'

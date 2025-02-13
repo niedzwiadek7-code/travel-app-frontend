@@ -5,7 +5,6 @@ import {
 import { AccountCircle } from '@mui/icons-material'
 import { useTranslation } from 'react-i18next'
 import { useAuth } from '../../context'
-import Styles from './Header.module.scss'
 import { Pages } from '../../pages/pages'
 import { useAppDispatch } from '../../app/hooks'
 import { reset as resetTravelRecipe } from '../../features/travelRecipe/travelRecipeSlice'

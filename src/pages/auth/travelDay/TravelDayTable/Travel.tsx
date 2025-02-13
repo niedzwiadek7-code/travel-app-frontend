@@ -5,7 +5,7 @@ import {
   TableCell, TableRow, Tooltip, useTheme,
 } from '@mui/material'
 import {
-  AirplanemodeActive, Cancel, Done, Edit,
+  AirplanemodeActive, Cancel, Edit,
 } from '@mui/icons-material'
 import { useTranslation } from 'react-i18next'
 import { LocallyTravelElement } from '../../../../model'

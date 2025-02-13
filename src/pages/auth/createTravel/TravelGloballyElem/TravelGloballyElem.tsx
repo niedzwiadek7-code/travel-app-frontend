@@ -6,7 +6,7 @@ import {
   Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip, Typography, useTheme,
 } from '@mui/material'
 import {
-  AddCircle, Cancel, Edit, EventNote,
+  AddCircle, Edit, EventNote,
 } from '@mui/icons-material'
 import { useTranslation } from 'react-i18next'
 import TrashIcon from '@mui/icons-material/Delete'

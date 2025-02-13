@@ -7,7 +7,6 @@ import {
   TableHead,
   TableRow,
   Typography,
-  styled,
   alpha, useTheme, Box,
 } from '@mui/material'
 import { useTranslation } from 'react-i18next'

@@ -1,15 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import {
-  Button,
   Stack,
   Typography,
   useTheme,
-  styled,
   Box,
   alpha,
 } from '@mui/material'
 import { ReceiptLong } from '@mui/icons-material'
-import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { TravelInstance } from '../../../model'
 import * as Loading from '../../../components/UI/Loading'

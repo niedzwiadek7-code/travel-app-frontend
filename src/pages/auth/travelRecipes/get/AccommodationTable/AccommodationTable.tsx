@@ -8,7 +8,6 @@ import {
   TableRow,
   Typography,
   useTheme,
-  styled,
   alpha,
 } from '@mui/material'
 import { useTranslation } from 'react-i18next'

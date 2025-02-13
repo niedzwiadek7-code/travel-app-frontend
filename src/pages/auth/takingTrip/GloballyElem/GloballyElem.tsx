@@ -4,15 +4,13 @@ import {
   Stack,
   Typography,
   useTheme,
-  styled,
   alpha,
   Box, Card,
 } from '@mui/material'
 import { green } from '@mui/material/colors'
 import { useTranslation } from 'react-i18next'
-import { LoadingButton } from '@mui/lab'
 import {
-  Cancel, Grade, QuestionAnswer, Save,
+  Cancel, QuestionAnswer,
 } from '@mui/icons-material'
 import { ElementTravelInstance } from '../../../../model'
 import { useAppDispatch } from '../../../../app/hooks'
@@ -168,16 +166,6 @@ const GloballyElem: React.FC<Props> = ({ elem }) => {
               <RateActivity.Component
                 elemId={elem.id}
                 name={elem.activity.name}
-                button={(
-                  <LoadingButton
-                    type="button"
-                    variant="contained"
-                    color="primary"
-                    startIcon={<Grade />}
-                  >
-                    {t('rate')}
-                  </LoadingButton>
-                )}
               />
               <Button
                 variant="contained"
@@ -194,18 +182,6 @@ const GloballyElem: React.FC<Props> = ({ elem }) => {
           ) : (
             <>
               <PassActivity.Component
-                button={(
-                  (
-                    <LoadingButton
-                      type="button"
-                      variant="contained"
-                      color="success"
-                      startIcon={<Save />}
-                    >
-                      {t('pass')}
-                    </LoadingButton>
-                  )
-                )}
                 travelElement={elem}
               />
               <Button

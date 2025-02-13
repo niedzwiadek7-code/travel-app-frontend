@@ -13,7 +13,6 @@ import {
   Restaurant as RestaurantIcon,
   Attractions as AttractionIcon,
   AirplanemodeActive as TravelIcon,
-  Grade,
   QuestionAnswer,
   Cancel,
 } from '@mui/icons-material'

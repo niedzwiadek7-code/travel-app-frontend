@@ -1,3 +1,5 @@
+/* eslint-disable no-undef */
+
 import dayjs from 'dayjs'
 import { DateHandler } from '.'
 

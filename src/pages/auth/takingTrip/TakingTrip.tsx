@@ -1,18 +1,13 @@
 import React from 'react'
 import {
   ArrowBack,
-  EventAvailable,
-  Map,
 } from '@mui/icons-material'
 import {
   Box,
   Button,
-  IconButton,
   Stack,
-  Tooltip,
   Typography,
   useTheme,
-  Paper,
 } from '@mui/material'
 import { useTranslation } from 'react-i18next'
 import { useDependencies, useAuth } from '../../../context'

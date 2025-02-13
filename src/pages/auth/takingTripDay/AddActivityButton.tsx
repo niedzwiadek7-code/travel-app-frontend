@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, IconButton, Tooltip } from '@mui/material'
+import { IconButton, Tooltip } from '@mui/material'
 import { useTranslation } from 'react-i18next'
 import { AddCircle } from '@mui/icons-material'
 import { Pages } from '../../pages'

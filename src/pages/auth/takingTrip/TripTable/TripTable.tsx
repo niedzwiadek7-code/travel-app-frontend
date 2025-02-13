@@ -1,6 +1,5 @@
 import React from 'react'
 import {
-  Button,
   Table,
   TableBody,
   TableCell,
@@ -9,12 +8,11 @@ import {
   TableRow,
   Typography,
   useTheme,
-  styled,
   alpha,
-  Paper, Stack, LinearProgress, Tooltip, IconButton,
+  Stack, LinearProgress, Tooltip, IconButton,
 } from '@mui/material'
 import { useTranslation } from 'react-i18next'
-import { EventAvailable, Visibility } from '@mui/icons-material'
+import { Visibility } from '@mui/icons-material'
 import { useAppSelector } from '../../../../app/hooks'
 import { RootState } from '../../../../app/store'
 import { Pages } from '../../../pages'
