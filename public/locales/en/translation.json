@@ -12,6 +12,8 @@
     "register": "Register",
     "description": "Provide data for your account",
     "name": "Full Name",
+    "first_name": "First Name",
+    "last_name": "Last Name",
     "email": "Email",
     "password": "Password",
     "back": "Back",

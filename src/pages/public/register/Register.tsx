@@ -1,11 +1,11 @@
-import React, { useRef, useState } from 'react'
+import React, { useState } from 'react'
 import {
   Button,
   Stack, useTheme,
 } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { Email, Key, Badge } from '@mui/icons-material'
+import { Email, Key } from '@mui/icons-material'
 import { AxiosError } from 'axios'
 import { LoadingButton } from '@mui/lab'
 import { useTranslation } from 'react-i18next'
@@ -16,7 +16,8 @@ import { Pages } from '../../pages'
 import PublicHeader from '../../../components/PublicHeader'
 
 type Inputs = {
-  name: string,
+  firstName: string,
+  lastName: string,
   email: string,
   password: string,
   confirmPassword: string,
@@ -26,7 +27,9 @@ const Register: React.FC = () => {
   const theme = useTheme()
   const { getApiService, getToastUtils } = useDependencies()
   const apiService = getApiService()
-  const { setToken, token } = useAuth()
+  const {
+    setToken, setLoggedIn, setRoles, token,
+  } = useAuth()
   const navigate = useNavigate()
   const [btnLoading, setBtnLoading] = useState<boolean>(false)
   const { t } = useTranslation('translation', { keyPrefix: 'register_page' })
@@ -36,11 +39,11 @@ const Register: React.FC = () => {
   }
 
   const {
-    register, handleSubmit, formState: { errors }, watch,
+    register, handleSubmit, formState: { errors },
   } = useForm<Inputs>()
 
-  const password = useRef({})
-  password.current = watch('password', '')
+  // const password = useRef({})
+  // password.current = watch('password', '')
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     const toastUtils = getToastUtils()
@@ -48,17 +51,22 @@ const Register: React.FC = () => {
     try {
       const authService = apiService.getAuth()
 
-      const names = data.name.split(' ')
-      const lastName = names.splice(names.length - 1, 1)
+      // const names = data.name.split(' ')
+      // const lastName = names.splice(names.length - 1, 1)
 
       const registerData = {
-        firstName: names.join(' '),
-        lastName,
+        firstName: data.firstName,
+        lastName: data.lastName,
         email: data.email,
         password: data.password,
       }
-      const token = await authService.register(registerData)
+      const tokenTmp = await authService.register(registerData)
       setToken(token)
+
+      const userService = apiService.getUser(tokenTmp)
+      const user = await userService.get()
+      setRoles(user.roles)
+      setLoggedIn(true)
       navigate(Pages.TRAVEL_RECIPES_STORE.getRedirectLink())
     } catch (err) {
       setBtnLoading(false)
@@ -114,13 +122,27 @@ const Register: React.FC = () => {
               variant={Input.Variant.OUTLINED}
               type={Input.Type.TEXT}
               // TODO: this should be simplified
-              label={t('name')}
-              icon={
-                <Badge />
-              }
+              label={t('first_name')}
+              // icon={
+              //   <Badge />
+              // }
               register={register}
-              name="name"
-              error={errors?.name?.message || ''}
+              name="firstName"
+              error={errors?.firstName?.message || ''}
+              validation={['required', 'min:3']}
+            />
+
+            <Input.Component
+              variant={Input.Variant.OUTLINED}
+              type={Input.Type.TEXT}
+              // TODO: this should be simplified
+              label={t('last_name')}
+              // icon={
+              //   <Badge />
+              // }
+              register={register}
+              name="lastName"
+              error={errors?.lastName?.message || ''}
               validation={['required', 'min:3']}
             />
 

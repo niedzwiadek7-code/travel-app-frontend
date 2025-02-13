@@ -45,12 +45,12 @@ const Login: React.FC = () => {
     try {
       const authService = apiService.getAuth()
       const token = await authService.login(data)
-      setLoggedIn(true)
       setToken(token)
 
       const userService = apiService.getUser(token)
       const user = await userService.get()
       setRoles(user.roles)
+      setLoggedIn(true)
       navigate(Pages.TRAVEL_RECIPES_STORE.getRedirectLink())
     } catch (err) {
       setBtnLoading(false)

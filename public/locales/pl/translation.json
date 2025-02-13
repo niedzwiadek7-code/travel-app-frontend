@@ -12,6 +12,8 @@
     "register": "Zarejestruj się",
     "description": "Podaj dane do swojego konta",
     "name": "Imię i Nazwisko",
+    "first_name": "Imię",
+    "last_name": "Nazwisko",
     "email": "Email",
     "password": "Hasło",
     "back": "Powrót",
