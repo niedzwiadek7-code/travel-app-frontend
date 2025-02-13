@@ -162,36 +162,40 @@ const CreateTravel: React.FC = () => {
           {travelRecipe.id ? t('edit') : t('create')}
         </Typography>
 
-        <Stack
-          display="flex"
-          flexDirection="row"
-          alignItems="center"
-          gap={1}
-        >
-          <Tooltip title={travelRecipe.id ? t('edit_travel') : t('create_travel')}>
-            <IconButton
-              color="primary"
-              sx={{ bgcolor: `${theme.palette.primary.light}20` }}
-              onClick={putTravel}
+        {
+          travelRecipe.countDays > 0 && (
+            <Stack
+              display="flex"
+              flexDirection="row"
+              alignItems="center"
+              gap={1}
             >
-              <Save />
-            </IconButton>
-          </Tooltip>
-
-          {
-            !travelRecipe.id && (
-              <Tooltip title={t('reset')}>
+              <Tooltip title={travelRecipe.id ? t('edit_travel') : t('create_travel')}>
                 <IconButton
-                  color="error"
-                  sx={{ bgcolor: `${theme.palette.error.light}20` }}
+                  color="primary"
+                  sx={{ bgcolor: `${theme.palette.primary.light}20` }}
                   onClick={putTravel}
                 >
-                  <Restore />
+                  <Save />
                 </IconButton>
               </Tooltip>
-            )
-          }
-        </Stack>
+
+              {
+                !travelRecipe.id && (
+                  <Tooltip title={t('reset')}>
+                    <IconButton
+                      color="error"
+                      sx={{ bgcolor: `${theme.palette.error.light}20` }}
+                      onClick={putTravel}
+                    >
+                      <Restore />
+                    </IconButton>
+                  </Tooltip>
+                )
+              }
+            </Stack>
+          )
+        }
       </Stack>
 
       <Stack
