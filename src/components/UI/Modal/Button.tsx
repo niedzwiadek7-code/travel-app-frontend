@@ -11,11 +11,15 @@ const ButtonComponent: React.FC<Props> = (props) => {
   const [loading, setLoading] = useState(false)
 
   const buttonOnChange = async () => {
-    setLoading(true)
-    await props.action.onClick()
-    setLoading(false)
-    if (props.action.hideAfterClick) {
-      props.hideModal()
+    try {
+      setLoading(true)
+      await props.action.onClick()
+      setLoading(false)
+      if (props.action.hideAfterClick) {
+        props.hideModal()
+      }
+    } finally {
+      setLoading(false)
     }
   }
 

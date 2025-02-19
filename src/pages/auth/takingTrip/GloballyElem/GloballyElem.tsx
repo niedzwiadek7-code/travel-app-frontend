@@ -85,7 +85,12 @@ const GloballyElem: React.FC<Props> = ({ elem }) => {
 
         {elem.elementTravel && (
           <Typography variant="body1" color="text.secondary">
-            {elem.elementTravel.description}
+            {elem.elementTravel.description.split('\n').map((line) => (
+              <React.Fragment key={line}>
+                {line}
+                <br />
+              </React.Fragment>
+            ))}
           </Typography>
         )}
 
@@ -161,38 +166,32 @@ const GloballyElem: React.FC<Props> = ({ elem }) => {
             md: 'row',
           }}
         >
+          <RateActivity.Component
+            elemId={elem.id}
+            name={elem.activity.name}
+          />
+
           {elem.passed ? (
-            <>
-              <RateActivity.Component
-                elemId={elem.id}
-                name={elem.activity.name}
-              />
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={() => toastUtils.Toast.showToast(
-                  toastUtils.types.INFO,
-                  t('unavailable_fn'),
-                )}
-                startIcon={<QuestionAnswer />}
-              >
-                {t('answer_for_questions')}
-              </Button>
-            </>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => toastUtils.Toast.showToast(
+                toastUtils.types.INFO,
+                t('unavailable_fn'),
+              )}
+              startIcon={<QuestionAnswer />}
+            >
+              {t('answer_for_questions')}
+            </Button>
           ) : (
-            <>
-              <PassActivity.Component
-                travelElement={elem}
-              />
-              <Button
-                variant="contained"
-                color="error"
-                onClick={cancelAccommodationElementInstanceFn}
-                startIcon={<Cancel />}
-              >
-                {t('cancel')}
-              </Button>
-            </>
+            <Button
+              variant="contained"
+              color="error"
+              onClick={cancelAccommodationElementInstanceFn}
+              startIcon={<Cancel />}
+            >
+              {t('cancel')}
+            </Button>
           )}
         </Stack>
       </Stack>

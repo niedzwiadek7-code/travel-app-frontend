@@ -46,9 +46,11 @@
       "saved": "Your rating has been saved",
       "error": "An unexpected error occurred",
       "rate": "Rate Activity",
-      "your_opinion": "Your opinion",
+      "your_opinion": "Describe your impressions",
       "share_photos": "Share photos with other users",
-      "add_rating": "Add Rating"
+      "add_rating": "Add Rating",
+      "rate_scale": "Rate from 1 to 5",
+      "add_photos": "Add photos"
     },
     "pass": {
       "error": "An unexpected error occurred",
@@ -344,5 +346,12 @@
     "ongoing_trips": "Ongoing Travels",
     "manage_activities": "Manage Activities",
     "logout": "Logout"
+  },
+  "star_rating": {
+    "required": "Rating is required"
+  },
+  "stars": {
+    "ratings": "ratings",
+    "no_ratings": "No ratings"
   }
 }

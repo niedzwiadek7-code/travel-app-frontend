@@ -14,12 +14,19 @@ type Props = {
   children: ReactNode,
   actions?: Action[]
   sx?: SxProps
+  onClose?: () => void
 }
 
 const ModalComponent: React.FC<Props> = (props) => {
   const [open, setOpen] = useState<boolean>(false)
   const showModal = () => setOpen(true)
-  const hideModal = () => setOpen(false)
+
+  const hideModal = () => {
+    setOpen(false)
+    if (props.onClose) {
+      props.onClose()
+    }
+  }
 
   return (
     <div>

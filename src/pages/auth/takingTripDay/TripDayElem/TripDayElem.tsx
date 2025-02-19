@@ -118,7 +118,12 @@ const TripDayElem: React.FC<Props> = ({ travelElement }) => {
         {/* Description Section */}
         {travelElement.elementTravel && (
           <Typography variant="body1" color="text.secondary">
-            {travelElement.elementTravel.description}
+            {travelElement.elementTravel.description.split('\n').map((line) => (
+              <React.Fragment key={line}>
+                {line}
+                <br />
+              </React.Fragment>
+            ))}
           </Typography>
         )}
 
@@ -190,37 +195,30 @@ const TripDayElem: React.FC<Props> = ({ travelElement }) => {
             md: 'row',
           }}
         >
+          <RateActivity.Component
+            elemId={travelElement.id}
+            name={travelElement.activity.name}
+          />
           {travelElement.passed ? (
-            <>
-              <RateActivity.Component
-                elemId={travelElement.id}
-                name={travelElement.activity.name}
-              />
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={() => toastUtils.Toast.showToast(toastUtils.types.INFO, t('unavailable_fn'))}
-                startIcon={<QuestionAnswer />}
-              >
-                {t('answer_for_questions')}
-              </Button>
-            </>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => toastUtils.Toast.showToast(toastUtils.types.INFO, t('unavailable_fn'))}
+              startIcon={<QuestionAnswer />}
+            >
+              {t('answer_for_questions')}
+            </Button>
           ) : (
-            <>
-              <PassActivity.Component
-                travelElement={travelElement}
-              />
-              <LoadingButton
-                type="button"
-                variant="contained"
-                color="error"
-                onClick={cancelTravelElementInstanceFn}
-                loading={cancelLoading}
-                startIcon={<Cancel />}
-              >
-                {t('cancel')}
-              </LoadingButton>
-            </>
+            <LoadingButton
+              type="button"
+              variant="contained"
+              color="error"
+              onClick={cancelTravelElementInstanceFn}
+              loading={cancelLoading}
+              startIcon={<Cancel />}
+            >
+              {t('cancel')}
+            </LoadingButton>
           )}
         </Stack>
       </Stack>

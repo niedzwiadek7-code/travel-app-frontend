@@ -6,13 +6,16 @@ import { Reviews } from '@mui/icons-material'
 import { useTranslation } from 'react-i18next'
 import { Rating } from '../../../../model/Activity'
 import * as Slider from '../../../../components/UI/Slider'
+import * as Stars from '../../../../components/UI/Stars'
 
 type Props = {
   ratings: Rating[]
+  count: number
 }
 
 const Ratings: React.FC<Props> = ({
   ratings,
+  count,
 }) => {
   const { t } = useTranslation('translation', { keyPrefix: 'activity_get' })
 
@@ -34,7 +37,7 @@ const Ratings: React.FC<Props> = ({
               color="primary"
             />
             <Typography variant="h5" sx={{ fontWeight: 600 }}>
-              {t('ratings')}
+              {t('ratings')} ({count})
             </Typography>
           </Stack>
           <Divider />
@@ -78,6 +81,11 @@ const Ratings: React.FC<Props> = ({
                   </Stack>
                 </Stack>
               </Stack>
+
+              <Stars.Component
+                value={rating.rating}
+                size="small"
+              />
 
               <Typography variant="body2" sx={{ whiteSpace: 'pre-line' }}>
                 {rating.text}

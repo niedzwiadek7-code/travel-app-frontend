@@ -10,12 +10,12 @@ import {
 import { useTranslation } from 'react-i18next'
 import { ArrowBack, ReceiptLong } from '@mui/icons-material'
 import { useDependencies, useAuth } from '../../../context'
-import { ExtendedActivityFormat } from '../../../services/backend/Activity/types'
 import { usePagination, useRouter } from '../../../hooks'
 import { StateDto } from './dto/state.dto'
 import { Pages } from '../../pages'
 import ActivityCard from './ActivityCard/ActivityCard'
 import Loading from '../../../components/UI/Loading/Loading'
+import { Activity } from '../../../model'
 
 type QueryParams = {
   page?: string
@@ -37,7 +37,7 @@ const ListActivity: React.FC = () => {
   const fetchData = async (
     page: number,
     pageSize: number,
-  ): Promise<{ data: ExtendedActivityFormat[]; total: number }> => {
+  ): Promise<{ data: Activity[]; total: number }> => {
     try {
       return await activityService.getAll(
         state.source || 'all',
@@ -58,7 +58,7 @@ const ListActivity: React.FC = () => {
     totalPages,
     loading,
     goToPage,
-  } = usePagination<ExtendedActivityFormat>({
+  } = usePagination<Activity>({
     fetchData,
     initialPage: query.page ? parseInt(query.page, 10) : 1,
     initialPageSize: 10,

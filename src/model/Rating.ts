@@ -2,6 +2,12 @@ import ElementTravelInstance from './ElementTravelInstance'
 import Activity from './Activity'
 import User from './User'
 
+type PhotoFormat = {
+  id: number
+  url: string
+  isShared: boolean
+}
+
 class Rating {
   id: number
 
@@ -19,7 +25,9 @@ class Rating {
 
   elementTravel?: ElementTravelInstance
 
-  sharePhotos: boolean
+  photos: PhotoFormat[]
+
+  rating: number
 
   createdAt: Date
 
@@ -30,8 +38,9 @@ class Rating {
     this.text = obj.text
     this.activityId = obj.activityId
     this.elementTravelId = obj.elementTravelId
-    this.sharePhotos = obj.sharePhotos
+    this.photos = obj.photos
     this.authorId = obj.authorId
+    this.rating = obj.rating
     this.createdAt = obj.created_at
     this.updatedAt = obj.updated_at
 

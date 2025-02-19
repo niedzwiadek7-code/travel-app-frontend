@@ -5,6 +5,7 @@ import User from './User'
 export interface Rating {
   text: string
   photos: string[]
+  rating: number
   author: User
   createdAt: Date
 }
@@ -32,6 +33,10 @@ class Activity {
 
   priceType: string
 
+  averageRating: number
+
+  countRatings: number
+
   constructor(obj: any) {
     this.id = obj.id
     this.accepted = obj.accepted
@@ -40,6 +45,8 @@ class Activity {
     this.activityType = obj.activityType
     this.price = obj.price
     this.ratings = obj.ratings
+    this.averageRating = obj.averageRating
+    this.countRatings = obj.countRatings
 
     this.from = obj.from
     this.to = obj.to

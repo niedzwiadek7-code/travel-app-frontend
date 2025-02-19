@@ -20,6 +20,7 @@ import Ratings from './Ratings'
 import { StateDto } from './dto/state.dto'
 import StateButtons from '../../../../components/StateButtons/StateButtons'
 import Loading from '../../../../components/UI/Loading/Loading'
+import * as Stars from '../../../../components/UI/Stars'
 
 const Activity: React.FC = () => {
   const theme = useTheme()
@@ -154,6 +155,11 @@ const Activity: React.FC = () => {
                   {t('details')}
                 </Typography>
               </Stack>
+              <Stars.Component
+                value={activity.averageRating}
+                count={activity.countRatings}
+                size="medium"
+              />
               <Divider />
               <Details
                 activity={activity}
@@ -182,6 +188,7 @@ const Activity: React.FC = () => {
           activity.ratings.length > 0 && (
             <Ratings
               ratings={activity.ratings}
+              count={activity.countRatings}
             />
           )
         }

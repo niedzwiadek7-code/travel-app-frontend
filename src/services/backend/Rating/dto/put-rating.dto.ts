@@ -1,5 +1,7 @@
 export interface PutRatingDto {
   text: string
   elementTravelId: number
-  sharePhotos: boolean
+  photosToDelete?: number[]
+  photosToAdd?: File[]
+  rating: number
 }

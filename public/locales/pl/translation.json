@@ -46,9 +46,11 @@
       "saved": "Twoja ocena została zapisana",
       "error": "Wystąpił nieoczekiwany błąd",
       "rate": "Oceń aktywność",
-      "your_opinion": "Twoja opinia",
+      "your_opinion": "Opisz swoje wrażenia",
       "share_photos": "Pochwal się zdjęciami z innymi użytkownikami",
-      "add_rating": "Dodaj ocenę"
+      "add_rating": "Dodaj ocenę",
+      "rate_scale": "Oceń w skali od 1 do 5",
+      "add_photos": "Dodaj zdjęcia"
     },
     "pass": {
       "error": "Wystąpił nieoczekiwany błąd",
@@ -342,5 +344,12 @@
     "ongoing_trips": "Trwające wycieczki",
     "manage_activities": "Zarządzaj aktywnościami",
     "logout": "Wyloguj się"
+  },
+  "star_rating": {
+    "required": "Ocena jest wymagana"
+  },
+  "stars": {
+    "ratings": "osób",
+    "no_ratings": "Brak ocen"
   }
 }

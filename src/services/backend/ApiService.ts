@@ -37,15 +37,30 @@ class ApiService {
     }
   }
 
-  public async post<T>(endpoint: string, data?: any): Promise<T> {
+  public async post<T>(
+    endpoint: string,
+    data?: any,
+    headers: Record<string, string> = {},
+  ): Promise<T> {
     try {
       const url = `${this.baseUrl}${endpoint}`
-      const header = this.getHeader({})
+      const header = this.getHeader(headers)
       const response = await axios.post<T>(url, data, header)
       return response.data
     } catch (err) {
       const error = err as unknown as AxiosError
-      console.log(error)
+
+      if (error.response) {
+        console.error('Error response:', error.response.data)
+        throw new Error(JSON.stringify(error.response.data))
+      } else if (error.request) {
+        console.error('No response received:', error.request)
+        throw new Error('No response received from server')
+      } else {
+        console.error('Request error:', error.message)
+        throw new Error(error.message)
+      }
+
       throw new Error(JSON.stringify(error))
     }
   }

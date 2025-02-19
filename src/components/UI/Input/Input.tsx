@@ -69,7 +69,9 @@ const InputComponent: React.FC<Props> = (props) => {
     <FormControl
       variant={props.variant}
       error={Boolean(props.error)}
-      sx={{ width: '100%' }}
+      sx={{
+        width: '100%',
+      }}
       onChange={
         (e: React.ChangeEvent<HTMLInputElement>) => props.onChange && props.onChange(e.target.value)
       }

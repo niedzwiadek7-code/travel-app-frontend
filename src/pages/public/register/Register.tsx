@@ -61,7 +61,7 @@ const Register: React.FC = () => {
         password: data.password,
       }
       const tokenTmp = await authService.register(registerData)
-      setToken(token)
+      setToken(tokenTmp)
 
       const userService = apiService.getUser(tokenTmp)
       const user = await userService.get()

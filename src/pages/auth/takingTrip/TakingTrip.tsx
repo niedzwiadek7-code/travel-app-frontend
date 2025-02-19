@@ -21,6 +21,7 @@ import * as TripTable from './TripTable'
 import * as GloballySection from './GloballySection'
 import { useFetch, useRouter } from '../../../hooks'
 import { TravelInstance } from '../../../model'
+import * as Collapse from '../../../components/UI/Collapse'
 
 type Params = {
   id: string;
@@ -110,12 +111,12 @@ const TakingTrip: React.FC = () => {
         activityType="Accommodation"
       />
 
-      <Box>
-        <Typography variant="h5" fontWeight={700} color="text.primary" gutterBottom>
-          {t('browse_trip')}
-        </Typography>
+      <Collapse.Component
+        title={t('browse_trip')}
+        defaultOpen
+      >
         <TripTable.Component />
-      </Box>
+      </Collapse.Component>
     </Stack>
   )
 }

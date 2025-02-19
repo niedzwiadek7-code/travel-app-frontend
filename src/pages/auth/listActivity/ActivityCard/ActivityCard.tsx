@@ -1,4 +1,3 @@
-// ActivityCard.tsx
 import React from 'react'
 import {
   Avatar,
@@ -21,14 +20,14 @@ import {
 import { useTranslation } from 'react-i18next'
 import { useRouter } from '../../../../hooks'
 import { Pages } from '../../../pages'
-import { ExtendedActivityFormat } from '../../../../services/backend/Activity/types'
-import { getActivityTypeIcon } from '../../../../model'
+import { Activity, getActivityTypeIcon } from '../../../../model'
 import { StateDto } from '../dto/state.dto'
 import * as SaveInstanceActivityModal from '../../../../components/SaveInstanceActivityModal'
 import * as SaveActivityModal from '../../../../components/SaveActivityModal'
+import * as Stars from '../../../../components/UI/Stars'
 
 type Props = {
-  activity: ExtendedActivityFormat
+  activity: Activity
   acceptElement: () => void
   deleteElement: () => void
 }
@@ -149,6 +148,12 @@ const ActivityCard: React.FC<Props> = ({ activity, acceptElement, deleteElement 
             </Stack>
           )
         }
+
+          <Stars.Component
+            value={activity.averageRating}
+            count={activity.countRatings}
+            size="small"
+          />
         </Stack>
       </Stack>
 

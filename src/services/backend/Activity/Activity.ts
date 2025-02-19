@@ -30,7 +30,7 @@ class ActivityService {
     page: number = 1,
     pageSize: number = 10,
     types: ActivityType[] = [],
-  ): Promise<Paginate<ExtendedActivityFormat>> {
+  ): Promise<Paginate<Activity>> {
     const queryParams = new URLSearchParams({
       source: source || 'all',
       skip: `${page * pageSize - pageSize}`,
@@ -40,7 +40,7 @@ class ActivityService {
     types.forEach((type) => queryParams.append('types[]', type))
 
     const { data, total } = await this.apiService
-      .get<Paginate<ExtendedActivityFormat>>(`${this.activityUrl}/all?${queryParams.toString()}`)
+      .get<Paginate<Activity>>(`${this.activityUrl}/all?${queryParams.toString()}`)
 
     return {
       data,

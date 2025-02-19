@@ -1,10 +1,10 @@
-import { Stack, Typography } from '@mui/material'
 import React from 'react'
 import { ActivityType } from '../../../../model'
 import * as GloballyElem from '../GloballyElem'
 import AddActivityButton from './AddActivityButton'
 import { useAppSelector } from '../../../../app/hooks'
 import { RootState } from '../../../../app/store'
+import * as Collapse from '../../../../components/UI/Collapse'
 
 type Props = {
   title: string
@@ -23,24 +23,15 @@ const ActivitySection: React.FC<Props> = (props) => {
     })
 
   return (
-    <Stack
-      gap={1}
-    >
-      <Stack
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-        flexDirection="row"
-      >
-        <Typography variant="h5" component="h5">
-          {props.title}
-        </Typography>
-
+    <Collapse.Component
+      title={props.title}
+      nodeOptions={[
         <AddActivityButton
+          key={0}
           activityType={props.activityType}
-        />
-      </Stack>
-
+        />,
+      ]}
+    >
       {
         travelElements.map((elem) => (
           <GloballyElem.Component
@@ -49,7 +40,7 @@ const ActivitySection: React.FC<Props> = (props) => {
           />
         ))
       }
-    </Stack>
+    </Collapse.Component>
   )
 }
 
